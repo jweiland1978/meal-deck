@@ -770,6 +770,7 @@ const MEALS = [
 const FOOD = {
   chk:["Chicken breast, boneless skinless","M","oz",34,6.5,0,0.75], thigh:["Chicken thighs, boneless skinless","M","oz",40,5.5,0,1.9],
   tur:["Ground turkey, 93% lean","M","oz",42,5.3,0,2.3], beef:["Lean ground beef, 93%","M","oz",43,5.9,0,2],
+  beef90:["Lean ground beef, 90%","M","oz",44,5,0,2.5], round:["Beef top round steak","M","oz",34,6.2,0,0.9], rbeef:["Deli roast beef, lean","M","oz",30,5,0.5,0.8],
   sir:["Top sirloin steak","M","oz",40,6.2,0,1.6], flank:["Flank steak","M","oz",44,6,0,2.2], pork:["Pork tenderloin","M","oz",34,5.9,0,1],
   sal:["Sockeye salmon","M","oz",38,6.3,0,1.4], cod:["Cod fillet","M","oz",23,5,0,0.2], tilapia:["Tilapia fillet","M","oz",27,5.7,0,0.5],
   shr:["Shrimp","M","oz",24,5.7,0.1,0.3], sm:["Smoked salmon","M","oz",33,5.2,0,1.2], deli:["Deli turkey breast, low-sodium","M","oz",30,5.5,1,0.5],
@@ -812,9 +813,11 @@ const FOOD = {
   vin:["Light vinaigrette","A","tbsp",20,0,1.5,1.5], dij:["Dijon mustard","A","tsp",5,0.3,0.3,0.3], olv:["Kalamata olives","A","",8,0,0.3,0.75], cap:["Capers","A","tsp",1,0,0.2,0],
   rice_cake:["Rice cakes","A","",35,0.7,7.3,0.3], crack:["Whole-grain crackers","A","",15,0.4,2.5,0.5], crumbs:["Whole-wheat breadcrumbs","A","tbsp",27,1,5,0.4],
   cocoa:["Unsweetened cocoa powder","A","tsp",5,0.3,0.9,0.2], gran:["Low-sugar granola","A","cup",440,10,64,16], sri:["Sriracha","A","",0,0,0,0], hot:["Hot sauce","A","",0,0,0,0],
-  sesame:["Sesame seeds","A","",0,0,0,0], vanilla:["Vanilla extract","A","tsp",0,0,0,0],
+  sesame:["Sesame seeds","A","",0,0,0,0], gochu:["Gochujang","A","tbsp",30,0.6,6.5,0.3], kimchi:["Kimchi","P","cup",23,1.7,4,0.2], ketch:["Ketchup, no sugar added","A","tbsp",10,0.2,2,0],
+  pick:["Dill pickle chips","A","",1,0,0.2,0], bbroth:["Low-sodium beef broth","A","cup",15,3,0.5,0.5], wor:["Worcestershire sauce","A","tsp",4,0,1,0], tpaste:["Tomato paste","A","tbsp",13,0.7,3,0.1],
+  hrad:["Prepared horseradish","A","tsp",2,0,0.5,0], vanilla:["Vanilla extract","A","tsp",0,0,0,0],
   bread:["Sprouted whole-grain bread","B","slice",80,5,15,0.5], emuf:["Whole-wheat English muffin","B","",134,6,26,1.2], tort:["High-fiber tortillas","B","",115,5,18,3],
-  pita:["Whole-wheat pita","B","",172,6,35,1.7], ctort:["Corn tortillas, small","B","",54,1.4,11,0.7],
+  pita:["Whole-wheat pita","B","",172,6,35,1.7], ctort:["Corn tortillas, small","B","",54,1.4,11,0.7], bun:["Whole-wheat burger buns","B","",140,6,24,2],
   salt:["Salt","S","",0,0,0,0], pep:["Black pepper","S","",0,0,0,0], cin:["Cinnamon","S","",0,0,0,0], cum:["Cumin","S","",0,0,0,0], chili:["Chili powder","S","",0,0,0,0],
   pap:["Paprika","S","",0,0,0,0], spap:["Smoked paprika","S","",0,0,0,0], oreg:["Oregano","S","",0,0,0,0], ital:["Italian seasoning","S","",0,0,0,0], thyme:["Thyme","S","",0,0,0,0],
   garp:["Garlic powder","S","",0,0,0,0], curry:["Curry powder","S","",0,0,0,0], garam:["Garam masala","S","",0,0,0,0], cajun:["Cajun seasoning","S","",0,0,0,0],
@@ -1012,6 +1015,98 @@ const MEALS2 = [
  steps:["Thread tomatoes, cheese cubes, folded turkey, and basil onto toothpicks.","Drizzle with vinaigrette."]}
 ];
 
+/* ===================== BEEF COLLECTION (macros computed from FOOD) ===================== */
+const MEALS3 = [
+// ---------- BREAKFAST ----------
+{id:"bf01",type:"Breakfast",emoji:"🥔",name:"Beef & Egg Breakfast Hash",why:"Crispy potatoes, lean beef, and eggs in one skillet. A hearty breakfast with carbs for a training morning.",time:20,day:"train",tags:["one pan"],
+ ing:[["beef",3,"oz"],["egg",2],["ew",0.25,"cup"],["pot",5,"oz","diced small"],["bp",0.5,"","diced"],["on",0.25,"","diced"],["spap"],["salt"],["pep"],["spray"]],
+ steps:["Microwave the diced potatoes 3 minutes, then crisp them in a sprayed skillet for 6–8 minutes.","Push the potatoes aside and brown the beef with onion, pepper, and smoked paprika, 5 minutes.","Make two wells, crack in the eggs, pour egg whites around, cover, and cook 3–4 minutes until set."]},
+{id:"bf02",type:"Breakfast",emoji:"🍳",name:"Ground Beef, Spinach & Mushroom Scramble",why:"A low-carb, savory scramble for rest days. Beef and egg whites give over 40 g of protein.",time:12,day:"rest",tags:["low carb","quick-cook"],
+ ing:[["beef",3,"oz"],["egg",1],["ew",0.75,"cup"],["spin",1.5,"oz"],["mush",0.75,"cup","sliced"],["feta",0.5,"oz"],["garp"],["salt"],["pep"],["spray"]],
+ steps:["Brown the beef with mushrooms and garlic powder for 5 minutes.","Add spinach and stir until wilted.","Pour in the egg and egg whites and gently scramble until just set. Top with feta."]},
+{id:"bf03",type:"Breakfast",emoji:"🍔",name:"Cheeseburger Breakfast Sandwich",why:"A smashed lean beef patty plus egg on an English muffin. Like a drive-thru breakfast, but with 40+ g of protein.",time:12,day:"any",tags:["portable"],
+ ing:[["beef",3,"oz","formed into a thin patty"],["emuf",1],["egg",1],["ew",0.25,"cup"],["ched",1],["ketch",1,"tbsp"],["salt"],["pep"],["spray"]],
+ steps:["Smash the beef thin in a hot sprayed pan, season, and cook 2 minutes per side.","Cook the egg and egg whites in a sprayed ramekin or small pan.","Toast the muffin and stack the patty, cheese, and egg. Add ketchup."]},
+{id:"bf04",type:"Breakfast",emoji:"🍠",name:"Steak & Eggs Sweet Potato Hash",why:"Classic steak and eggs with sweet potato for slow carbs before you lift.",time:20,day:"train",tags:["one pan"],
+ ing:[["sir",3.5,"oz","cubed"],["egg",1],["ew",0.5,"cup"],["swp",5,"oz","diced"],["on",0.25,"","diced"],["spin",1,"oz"],["spap"],["salt"],["pep"],["spray"]],
+ steps:["Microwave the sweet potato 3 minutes, then brown it with the onion in a sprayed skillet, 6 minutes.","Add the steak cubes and sear 2–3 minutes, then stir in the spinach.","Scramble the egg and egg whites alongside and serve together."]},
+// ---------- LUNCH ----------
+{id:"bf05",type:"Lunch",emoji:"🍚",name:"Korean Ground Beef Rice Bowl",batch:4,why:"Sweet-spicy gochujang beef over jasmine rice with crunchy cucumber and kimchi. Preps well for the week.",time:20,day:"train",tags:["meal-prep friendly","high protein"],
+ ing:[["beef",5,"oz"],["jrice",0.75,"cup"],["gochu",1,"tbsp"],["soy",1,"tbsp"],["honey",1,"tsp"],["sesoil",1,"tsp"],["gar",1,"clove","minced"],["ging"],["cuke",0.5,"","sliced"],["kimchi",0.25,"cup"],["scal"],["sesame"]],
+ steps:["Brown the beef with garlic and ginger, 6 minutes.","Stir in gochujang, soy, honey, and sesame oil and simmer 2 minutes.","Serve over rice with cucumber, kimchi, scallions, and sesame seeds."]},
+{id:"bf06",type:"Lunch",emoji:"🥙",name:"Greek Beef & Rice Bowl",why:"Oregano-lemon beef with rice, a crisp cucumber-tomato salad, and tzatziki.",time:20,day:"train",tags:["meal-prep friendly"],
+ ing:[["beef",5,"oz"],["brice",0.75,"cup"],["cuke",0.5,"","diced"],["tom",1,"","diced"],["ron",0.125,"","sliced"],["tz",0.25,"cup"],["lem",0.5],["oreg"],["garp"],["salt"]],
+ steps:["Brown the beef with oregano, garlic powder, and a squeeze of lemon.","Toss cucumber, tomato, and red onion with lemon and salt.","Build the bowl with rice, beef, and salad, and top with tzatziki."]},
+{id:"bf07",type:"Lunch",emoji:"🌯",name:"Ground Beef Burrito Bowl",batch:4,why:"Everything you want from a burrito with lean beef, rice, beans, and corn. Batch it for the week.",time:20,day:"train",tags:["meal-prep friendly","high fiber"],
+ ing:[["beef90",5,"oz"],["brice",0.5,"cup"],["bb",0.25,"cup"],["corn",0.25,"cup"],["pico",0.25,"cup"],["rom",0.25,"head","shredded"],["yog",2,"tbsp","as sour cream"],["taco"],["lime",0.25]],
+ steps:["Brown the beef with taco seasoning and a splash of water.","Warm the rice, beans, and corn.","Build the bowl over romaine and top with pico, yogurt, and lime."]},
+{id:"bf08",type:"Lunch",emoji:"🍔",name:"Cheeseburger Bowl with Special Sauce",why:"All the flavor of a burger without the bun. A low-carb rest-day lunch with a creamy yogurt sauce.",time:15,day:"rest",tags:["low carb"],
+ ing:[["beef",5,"oz"],["rom",0.5,"head","chopped"],["ct",0.5,"cup","halved"],["pick",6],["ron",0.125,"","diced"],["ched",1,"","chopped"],["yog",3,"tbsp"],["ketch",1,"tbsp"],["dij",1,"tsp"],["salt"],["pep"]],
+ steps:["Brown the beef with salt and pepper and drain.","Stir yogurt, ketchup, mustard, and a little pickle juice into a sauce.","Pile lettuce, tomatoes, pickles, and onion in a bowl, add beef and cheese, and drizzle with sauce."]},
+{id:"bf09",type:"Lunch",emoji:"🥬",name:"Ginger Beef Lettuce Wraps",why:"Savory ginger-garlic beef with crunchy veggies in butter lettuce cups. Light and low-carb.",time:15,day:"rest",tags:["low carb","quick-cook"],
+ ing:[["beef",5.5,"oz"],["mush",0.75,"cup","minced"],["car",1,"","shredded"],["bl",0.5,"head","leaves"],["soy",1.5,"tbsp"],["honey",1,"tsp"],["sesoil",1,"tsp"],["gar",2,"clove","minced"],["ging"],["sri"],["scal"]],
+ steps:["Brown the beef with mushrooms, garlic, and ginger, 6–7 minutes.","Stir in soy, honey, sesame oil, and sriracha.","Spoon into lettuce cups and top with carrot and scallions."]},
+{id:"bf10",type:"Lunch",emoji:"🌯",name:"Roast Beef & Horseradish Wrap",why:"A deli-style wrap with zippy horseradish sauce. No cooking and ready in 5 minutes.",time:5,day:"any",tags:["no cook","portable"],
+ ing:[["rbeef",5,"oz"],["tort",1],["swiss",1],["arug",1,"oz"],["ron",0.125,"","sliced"],["yog",2,"tbsp"],["hrad",1,"tsp"],["dij",1,"tsp"]],
+ steps:["Stir yogurt, horseradish, and Dijon into a sauce.","Spread it on the tortilla and layer roast beef, Swiss, arugula, and onion.","Roll it up tightly and slice in half."]},
+{id:"bf11",type:"Lunch",emoji:"🥗",name:"Thai Flank Steak Salad",why:"Seared flank steak over crunchy veggies with a lime-soy dressing. Bright, filling, and low-carb.",time:20,day:"rest",tags:["low carb"],
+ ing:[["flank",5.5,"oz"],["greens",3,"oz"],["cuke",0.5,"","sliced"],["ct",0.5,"cup","halved"],["ron",0.125,"","sliced"],["lime",1],["soy",1,"tbsp"],["honey",1,"tsp"],["sesoil",1,"tsp"],["cil"],["flakes"]],
+ steps:["Sear the flank steak 4–5 minutes per side, rest 5 minutes, and slice thin against the grain.","Whisk lime juice, soy, honey, sesame oil, and chili flakes.","Toss greens, cucumber, tomatoes, onion, and cilantro with the dressing, and top with steak."]},
+// ---------- DINNER ----------
+{id:"bf12",type:"Dinner",emoji:"🥧",name:"Lean Shepherd's Pie",batch:4,why:"A comfort-food classic made lighter with a potato-cauliflower mash. Freezes well.",time:50,day:"any",tags:["meal-prep friendly","freezer friendly"],
+ ing:[["beef",5,"oz"],["on",0.25,"","diced"],["car",0.5,"","diced"],["peas",0.25,"cup"],["tpaste",1,"tbsp"],["wor",1,"tsp"],["bbroth",0.25,"cup"],["pot",4,"oz"],["cauli",1,"cup"],["milk",2,"tbsp"],["thyme"],["salt"],["pep"]],
+ steps:["Boil potatoes and cauliflower until tender, about 15 minutes, then mash with milk, salt, and pepper.","Brown the beef with onion and carrot, and stir in tomato paste, Worcestershire, broth, thyme, and peas. Simmer 5 minutes.","Spread the filling in a baking dish, top with the mash, and bake at 400°F for 20 minutes."]},
+{id:"bf13",type:"Dinner",emoji:"🍝",name:"Weeknight Spaghetti Bolognese",batch:4,why:"A rich meat sauce with veggies hidden in it, over whole-wheat spaghetti. Great after a training day.",time:30,day:"train",tags:["meal-prep friendly","freezer friendly"],
+ ing:[["beef90",5,"oz"],["wwp",2,"oz"],["mar",0.5,"cup"],["on",0.25,"","diced"],["car",0.5,"","finely diced"],["gar",1,"clove","minced"],["parm",1,"tbsp"],["ital"],["basil"]],
+ steps:["Brown the beef with onion, carrot, and garlic, 7 minutes.","Add marinara and Italian seasoning and simmer 10–15 minutes.","Boil the pasta, toss it with the sauce, and top with parmesan and basil."]},
+{id:"bf14",type:"Dinner",emoji:"🫑",name:"Italian Beef Stuffed Peppers",batch:4,why:"Peppers filled with seasoned beef, cauliflower rice, and tomato under melted mozzarella. Low-carb and preps well.",time:40,day:"rest",tags:["meal-prep friendly","low carb"],
+ ing:[["beef",5,"oz"],["bp",1.5,"","halved"],["cauliR",0.5,"cup"],["crt",0.5,"cup"],["on",0.25,"","diced"],["moz",2,"tbsp"],["ital"],["garp"],["salt"]],
+ steps:["Heat oven to 400°F. Brown the beef with onion, cauliflower rice, and seasonings.","Stir in crushed tomatoes and simmer 3 minutes.","Fill the pepper halves, top with mozzarella, and bake 25 minutes."]},
+{id:"bf15",type:"Dinner",emoji:"🍟",name:"Smash Burger & Oven Fries",why:"A real burger night with lean beef, cheese, and crispy baked potato wedges. Higher carb for training days.",time:35,day:"train",tags:["family favorite"],
+ ing:[["beef",5,"oz","smashed into 2 thin patties"],["bun",1],["ched",1],["rom",0.125,"head","leaves"],["tom",0.5,"","sliced"],["pick",4],["ketch",1,"tbsp"],["dij",1,"tsp"],["pot",6,"oz","wedges"],["spray"],["salt"],["pep"]],
+ steps:["Toss potato wedges with spray, salt, and pepper and bake at 425°F for 25–30 minutes.","Smash the beef into two thin patties in a very hot pan, cook 2 minutes, flip, add cheese, and cook 1 more minute.","Build on the toasted bun with lettuce, tomato, pickles, ketchup, and mustard."]},
+{id:"bf16",type:"Dinner",emoji:"🧆",name:"Beef Kofta with Herbed Couscous",why:"Spiced beef skewers with fluffy couscous and cool tzatziki. Middle Eastern flavor for a training day.",time:25,day:"train",tags:["meal-prep friendly"],
+ ing:[["beef",5,"oz"],["on",0.125,"","grated"],["pars"],["cum"],["cin"],["cous",0.75,"cup"],["cuke",0.5,"","diced"],["tom",0.5,"","diced"],["tz",3,"tbsp"],["lem",0.5],["salt"]],
+ steps:["Mix the beef with grated onion, parsley, cumin, a pinch of cinnamon, and salt, then shape onto skewers or into logs.","Grill or broil 8–10 minutes, turning once.","Serve over couscous with cucumber-tomato salad, tzatziki, and lemon."]},
+{id:"bf17",type:"Dinner",emoji:"🥢",name:"Garlic-Ginger Beef & Green Beans",why:"A fast stir-fry with blistered green beans over cauliflower rice. Big flavor, few carbs.",time:20,day:"rest",tags:["low carb","quick-cook"],
+ ing:[["beef",5,"oz"],["gb",1.5,"cup"],["cauliR",1,"cup"],["soy",1.5,"tbsp"],["gar",2,"clove","minced"],["ging"],["sesoil",1,"tsp"],["flakes"],["scal"]],
+ steps:["Blister the green beans in a hot pan, 5–6 minutes, then set aside.","Brown the beef with garlic, ginger, and chili flakes.","Add soy and sesame oil, toss with the green beans, and serve over sautéed cauliflower rice."]},
+{id:"bf18",type:"Dinner",emoji:"🌶️",name:"Texas-Style No-Bean Beef Chili",batch:4,why:"A thick, smoky, all-beef chili. Low in carbs, and it freezes beautifully.",time:45,day:"rest",tags:["meal-prep friendly","freezer friendly","low carb"],
+ ing:[["beef90",5,"oz"],["crt",0.75,"cup"],["on",0.25,"","diced"],["bp",0.5,"","diced"],["gar",1,"clove","minced"],["bbroth",0.25,"cup"],["chili"],["cum"],["spap"],["shc",2,"tbsp"],["yog",2,"tbsp"],["scal"]],
+ steps:["Brown the beef with onion, pepper, and garlic.","Add the spices and toast 1 minute, then stir in tomatoes and broth.","Simmer 25–30 minutes until thick. Top with cheese, yogurt, and scallions."]},
+{id:"bf19",type:"Dinner",emoji:"🫕",name:"Beef Enchilada Skillet",batch:4,why:"Enchilada flavor without the rolling. Beef, beans, and tortilla strips simmered in a spicy tomato sauce.",time:25,day:"train",tags:["meal-prep friendly","one pan"],
+ ing:[["beef",4.5,"oz"],["ctort",2,"","cut into strips"],["bb",0.25,"cup"],["crt",0.5,"cup"],["salsa",2,"tbsp"],["on",0.25,"","diced"],["shc",2,"tbsp"],["chili"],["cum"],["cil"]],
+ steps:["Brown the beef with onion, chili powder, and cumin.","Stir in tomatoes, salsa, beans, and tortilla strips and simmer 8 minutes.","Top with cheese, cover until melted, and finish with cilantro."]},
+{id:"bf20",type:"Dinner",emoji:"🍝",name:"Beef Meatballs & Spaghetti Squash",batch:4,why:"Tender lean beef meatballs in marinara over spaghetti squash. Low-carb Italian comfort food.",time:40,day:"rest",tags:["meal-prep friendly","low carb","freezer friendly"],
+ ing:[["beef",5,"oz"],["crumbs",1,"tbsp"],["ew",2,"tbsp"],["garp"],["ital"],["mar",0.5,"cup"],["squash",1.5,"cup"],["parm",1,"tbsp"],["basil"]],
+ steps:["Mix the beef, breadcrumbs, egg whites, and seasonings, and roll into 5–6 meatballs.","Bake at 400°F for 15 minutes, then simmer in marinara for 5 minutes.","Microwave halved spaghetti squash 10–12 minutes, fluff it, and top with meatballs and parmesan."]},
+{id:"bf21",type:"Dinner",emoji:"🫑",name:"Philly Cheesesteak Stuffed Peppers",why:"Thin-sliced sirloin, onions, and mushrooms under melted Swiss, served in peppers instead of a roll.",time:30,day:"rest",tags:["low carb"],
+ ing:[["sir",5.5,"oz","sliced thin"],["bp",1,"","halved"],["on",0.5,"","sliced"],["mush",1,"cup","sliced"],["swiss",1.5],["wor",1,"tsp"],["salt"],["pep"],["spray"]],
+ steps:["Heat oven to 400°F and bake the pepper halves for 10 minutes.","Sauté the onions and mushrooms 6 minutes, then add the steak and Worcestershire and cook 2 minutes.","Fill the peppers, top with Swiss, and bake 8–10 minutes until melted."]},
+{id:"bf22",type:"Dinner",emoji:"🥩",name:"Chimichurri Flank Steak & Potatoes",why:"Juicy flank steak with bright herb sauce, roasted potatoes, and asparagus. A steakhouse plate for training days.",time:30,day:"train",tags:["gluten free"],
+ ing:[["flank",5.5,"oz"],["pot",7,"oz","halved"],["asp",0.5,"bunch"],["chimi",1,"tbsp"],["spray"],["salt"],["pep"]],
+ steps:["Roast the potatoes at 425°F for 25 minutes, adding the asparagus for the last 10.","Season the steak and sear 4–5 minutes per side, then rest 5 minutes.","Slice against the grain and spoon chimichurri over the top."]},
+{id:"bf23",type:"Dinner",emoji:"🍲",name:"Slow-Cooker Top Round Pot Roast",batch:4,why:"Very lean top round cooked low and slow until it's fork-tender, with potatoes and carrots. Set it and forget it.",time:20,day:"any",tags:["meal-prep friendly","slow cooker"],
+ ing:[["round",6,"oz"],["pot",5,"oz"],["car",1,"","chunked"],["on",0.25,"","wedges"],["cel",1,"stalk"],["bbroth",0.5,"cup"],["tpaste",1,"tbsp"],["wor",1,"tsp"],["thyme"],["gar",1,"clove"],["salt"],["pep"]],
+ steps:["Season the beef and sear on all sides (optional, but it adds flavor).","Put the vegetables in the slow cooker, set the beef on top, and add broth, tomato paste, Worcestershire, garlic, and thyme.","Cook on low 8 hours (or high 4–5) and shred or slice to serve."]},
+{id:"bf24",type:"Dinner",emoji:"🍄",name:"Lighter Beef Stroganoff",why:"Seared sirloin and mushrooms in a creamy yogurt-Dijon sauce over whole-wheat noodles.",time:25,day:"train",tags:["high protein"],
+ ing:[["sir",4.5,"oz","sliced thin"],["mush",1.5,"cup","sliced"],["on",0.25,"","sliced"],["bbroth",0.5,"cup"],["yog",0.25,"cup"],["dij",1,"tsp"],["wwp",2,"oz"],["pars"],["salt"],["pep"],["spray"]],
+ steps:["Boil the pasta.","Sear the steak 2 minutes and set it aside, then cook the mushrooms and onion 6 minutes. Add broth and reduce by half.","Take the pan off the heat, stir in yogurt and Dijon, return the steak, and serve over the noodles with parsley."]},
+// ---------- SNACKS ----------
+{id:"bf25",type:"Snack",emoji:"🧆",name:"Mini Beef Meatball Bites",batch:4,why:"Bake a tray of mini meatballs to grab cold or warm with a marinara dip.",time:25,day:"any",tags:["meal-prep friendly","portable"],
+ ing:[["beef",3,"oz"],["crumbs",1,"tbsp"],["ital"],["garp"],["mar",0.25,"cup","for dipping"]],
+ steps:["Mix the beef, breadcrumbs, and seasonings and roll into 6 small balls.","Bake at 400°F for 12–14 minutes.","Dip in warm marinara."]},
+{id:"bf26",type:"Snack",emoji:"🥒",name:"Roast Beef Pickle Roll-Ups",why:"Roast beef wrapped around cream cheese and pickles. Salty, crunchy, and almost no carbs.",time:3,day:"rest",tags:["no cook","low carb"],
+ ing:[["rbeef",4,"oz"],["ccl",1,"tbsp"],["pick",6]],
+ steps:["Spread a thin layer of cream cheese on each roast beef slice.","Roll each one around a few pickle chips."]},
+{id:"bf27",type:"Snack",emoji:"🍎",name:"Jerky, Cheese & Apple Pack",why:"A grab-and-go snack with protein from jerky and string cheese, and carbs from apple. Great before the gym.",time:2,day:"train",tags:["no cook","portable"],
+ ing:[["jerky",1,"oz"],["str",1],["apple",0.5,"","sliced"]],
+ steps:["Pack the jerky, string cheese, and apple slices together."]},
+{id:"bf28",type:"Snack",emoji:"🌮",name:"Taco Beef Lettuce Cups",why:"Leftover taco beef in crunchy lettuce cups with salsa. A small, high-protein snack.",time:10,day:"rest",tags:["low carb","quick-cook"],
+ ing:[["beef",3,"oz"],["bl",0.25,"head","leaves"],["salsa",2,"tbsp"],["shc",1,"tbsp"],["taco"]],
+ steps:["Brown the beef with taco seasoning (or use leftovers).","Spoon into lettuce cups and top with salsa and cheese."]}
+];
+
 /* ===================== MEAL GENERATOR =====================
  * Builds new cards from components (protein + carb + veg + flavor profile), sized to hit
  * protein and carb targets for the chosen meal type and training/rest day. Macros come from FOOD.
@@ -1021,8 +1116,8 @@ const GEN = {
     chicken:{k:"chk",oz:6,short:"Chicken",group:"Chicken",cook:"Season the chicken and sear 5–6 minutes per side (or bake at 425°F for 18–20 minutes) until it reaches 165°F, then slice."},
     thigh:{k:"thigh",oz:6,short:"Chicken Thigh",group:"Chicken",cook:"Sear the thighs 5–6 minutes per side until they reach 175°F, then slice."},
     turkey:{k:"tur",oz:5.5,short:"Turkey",group:"Turkey",cook:"Brown the ground turkey in a hot pan for 6–7 minutes, breaking it up."},
-    beef:{k:"beef",oz:5,short:"Beef",group:"Beef",cook:"Brown the lean beef for 6–7 minutes and drain any fat."},
-    steak:{k:"sir",oz:5.5,short:"Steak",group:"Beef",cook:"Pat the steak dry, sear 3–4 minutes per side, rest 5 minutes, and slice thin."},
+    beef:{k:"beef",oz:5,short:"Ground Beef",group:"Beef",cook:"Brown the 93% lean ground beef for 6–7 minutes and drain any fat."},
+    steak:{k:"sir",oz:5.5,short:"Sirloin",group:"Beef",cook:"Pat the sirloin dry, sear 3–4 minutes per side, rest 5 minutes, and slice thin."},
     pork:{k:"pork",oz:6,short:"Pork",group:"Pork",cook:"Roast the tenderloin at 425°F for 18–20 minutes to 145°F, rest, and slice."},
     salmon:{k:"sal",oz:6,short:"Salmon",group:"Fish",cook:"Bake the salmon at 400°F for 12 minutes until it flakes."},
     cod:{k:"cod",oz:8,short:"Cod",group:"Fish",cook:"Bake the cod at 400°F for 10–12 minutes until opaque and flaky."},
@@ -1210,7 +1305,7 @@ function buildCompact(src){
   return m;
 }
 let customSpecs = LS.get("mealdeck.custom", []);
-const ALLM = [...MEALS, ...MEALS2.map(buildCompact)];
+const ALLM = [...MEALS, ...MEALS2.map(buildCompact), ...MEALS3.map(buildCompact)];
 const byId = {};
 function registerMeal(m){
   const names = [];
@@ -1272,6 +1367,9 @@ const EXCL = {
 function tokRe(tok){
   let t = tok.toLowerCase().trim().replace(/[^a-z0-9 %-]/g, "");
   if (!t) return null;
+  if (/^(beef|red meat)$/.test(t)) return /\bbeef\b|steak|sirloin|flank|top round|jerky/;
+  if (/^steaks?$/.test(t)) return /steak|sirloin|flank|top round/;
+  if (/^(hamburger|burger meat|minced beef)$/.test(t)) return /ground beef/;
   t = t.replace(/oes$/, "o").replace(/ies$/, "y").replace(/([^s])s$/, "$1");
   const core = /y$/.test(t) ? `${t.slice(0,-1)}(y|ies)` : `${t}(e?s)?`;
   return new RegExp(`\\b${core}\\b`);
@@ -1579,7 +1677,7 @@ function attachDrag(el){
 }
 
 /* ---------- deck controls & ingredient filter ---------- */
-const ING_CHIPS = ["Chicken","Turkey","Beef","Salmon","Shrimp","Eggs","Tofu","Greek yogurt","Rice","Potato","Pasta","Oats","Broccoli","Spinach","Beans","Avocado"];
+const ING_CHIPS = ["Chicken","Turkey","Beef","Ground beef","Salmon","Shrimp","Eggs","Tofu","Greek yogurt","Rice","Potato","Pasta","Oats","Broccoli","Spinach","Beans","Avocado"];
 function renderControls(){
   document.querySelectorAll("#daySeg button").forEach(b => b.classList.toggle("on", b.dataset.day === prefs.day));
   const n = filters.include.length;
