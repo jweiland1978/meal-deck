@@ -375,6 +375,15 @@ nav button.on{color:var(--accent)}
 .brand small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .counter{white-space:nowrap}
 header{gap:8px}
+.kcards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:8px}
+.kcard{border-radius:14px;padding:9px 6px;text-align:center;background:#FAF5EF}
+.kcard span{display:block;font-size:10.5px;font-weight:700;color:var(--muted)}
+.kcard b{display:block;font-size:19px;letter-spacing:-.3px;margin-top:2px}
+.kcard small{font-size:10.5px;color:var(--muted)}
+.kcard.t{background:#FFF0D6}.kcard.r{background:#E6EEF8}.kcard.p{background:#E4EFE6}
+.muted{color:var(--muted)}
+#modeSeg button{font-size:12px}
+.stat b{white-space:nowrap}.stat{gap:10px}
 </style>
 </head>
 <body>
@@ -1328,7 +1337,8 @@ customSpecs.forEach(s => { try { const m = buildCompact(s); ALLM.push(m); regist
 let favs    = LS.get("mealdeck.favs", []).filter(id => byId[id]);
 let skipped = LS.get("mealdeck.skipped", []).filter(id => byId[id]);
 let prefs   = Object.assign({day:"train", type:"All"}, LS.get("mealdeck.prefs", {}));
-let goals   = Object.assign({weight:"", goal:""}, LS.get("mealdeck.goals", {}));
+let goals   = Object.assign({weight:"", goal:"", mode:"fat"}, LS.get("mealdeck.goals", {}));
+let rebalanceAll = false;
 let filters = Object.assign({exclude:[], avoid:"", include:[]}, LS.get("mealdeck.filters", {}));
 let ratings = LS.get("mealdeck.ratings", {});
 let logData = LS.get("mealdeck.log", {});
@@ -1351,6 +1361,10 @@ const savePlan = () => LS.set("mealdeck.plan", plan);
     ["off","checked","cleared"].forEach(k => { if (!Array.isArray(groc[k])) groc[k] = []; });
     if (typeof groc.serv !== "object" || !groc.serv) groc.serv = {};
     saveGroc(); persist(); LS.set("mealdeck.v", 2);
+  }
+  if (LS.get("mealdeck.v", 1) < 3){
+    goals.mode = "fat";            // v3: lower calorie targets for fat loss (changeable in Me → Goals)
+    LS.set("mealdeck.goals", goals); LS.set("mealdeck.v", 3); rebalanceAll = true;
   }
 })();
 
@@ -1412,11 +1426,17 @@ function goalNumbers(){
   const base = (g >= 80 && g <= 500) ? g : w;
   return { w, base, pLo: round5(base * 0.8), pHi: round5(base * 1.0), mLo: Math.round(w * 14 / 50) * 50, mHi: Math.round(w * 16 / 50) * 50 };
 }
+const GOAL_MODES = {
+  fat:   {label:"🔥 Fat loss",       short:"Fat loss",        train:-300, rest:-500, note:"About 300 kcal under maintenance on training days and 500 under on rest days, for a steady loss of roughly ½–1 lb a week."},
+  recomp:{label:"⚖️ Recomp",         short:"Recomp / maintain", train:0,  rest:-300, note:"Maintenance on training days and about 300 kcal under on rest days. Weight stays roughly steady while you build muscle and lose fat slowly."},
+  bulk:  {label:"💪 Lean bulk",      short:"Lean bulk",       train:350,  rest:150,  note:"About 250 kcal over maintenance on average (more on training days), for slow muscle gain with little fat."}
+};
 function targets(){
   const g = goalNumbers();
   const p = g ? round5((g.pLo + g.pHi) / 2) : 160;
   const mid = g ? Math.round((g.mLo + g.mHi) / 2 / 50) * 50 : 2500;
-  return {p, kTrain: mid, kRest: mid - 300, set: !!g};
+  const M = GOAL_MODES[goals.mode] || GOAL_MODES.fat;
+  return {p, kTrain: mid + M.train, kRest: mid + M.rest, maint: mid, mode: goals.mode in GOAL_MODES ? goals.mode : "fat", set: !!g};
 }
 const trainDays = () => (plan && plan.trainDays) || DEFAULT_TRAIN_DAYS;
 const isTrainDay = d => trainDays().includes(d);
@@ -2143,7 +2163,7 @@ function renderPlan(){
   const addons = day.addons.map((a, ai) => { const b = BOOSTERS[a.set][a.i]; return b ? `<span class="addon">+ ${esc(b.n)} <small>${b.kcal} kcal</small><button data-rmaddon="${ai}" aria-label="Remove">✕</button></span>` : ""; }).join("");
   $("#planBody").innerHTML = `
     <div class="plan-head"><h2 class="section-title">This week</h2><button class="btn ghost sm" id="pRegen">🎲 Regenerate</button></div>
-    <p class="section-sub">${T.set ? "" : "Using default targets. Add your weight in <b>Me → Goals</b> for personal ones. "}Protein <b>${T.p} g</b> a day · calories <b>${T.kTrain.toLocaleString()}</b> on training days, <b>${T.kRest.toLocaleString()}</b> on rest days.</p>
+    <p class="section-sub">${T.set ? "" : "Using default targets. Add your weight in <b>Me → Goals</b> for personal ones. "}<b>${GOAL_MODES[T.mode].label}</b> · protein <b>${T.p} g</b> a day · calories <b>${T.kTrain.toLocaleString()}</b> on training days, <b>${T.kRest.toLocaleString()}</b> on rest days <span class="muted">(change in Me → Goals)</span>.</p>
     <div class="panel pset">
       <button class="gpanel-head" id="pSetHead"><b>Plan settings</b><span>${plan.open ? "Hide ▲" : "Edit ▼"}</span></button>
       ${plan.open ? `<div class="pset-body"><label>Training days</label>
@@ -2364,7 +2384,7 @@ function renderTracker(){
         <p class="trk-left">${left ? `<b>${left} g</b> to go today` : "🎉 Protein goal hit!"}</p>
         <div class="kline"><span>Calories</span><b>${tot.kcal.toLocaleString()} <small>/ ${kT.toLocaleString()}</small></b></div>
         <span class="ptrack k"><i style="width:${Math.min(100, tot.kcal / kT * 100)}%"></i></span>
-        <small class="dtag">${isTrainDay(di) ? "💪 Training day target" : "🧘 Rest day target"}</small>
+        <small class="dtag">${isTrainDay(di) ? "💪 Training day" : "🧘 Rest day"} target · ${GOAL_MODES[targets().mode].short}</small>
       </div>
     </div>
     <div class="panel">
@@ -2401,14 +2421,14 @@ function renderFavsMe(){
     </div>`).join("")}`;
 }
 function goalStatsHtml(){
-  const g = goalNumbers(), T = targets();
-  return g ? `
-    <div class="stat"><span>Daily protein target (est.)</span><b class="hl">${g.pLo}–${g.pHi} g</b></div>
-    <div class="stat"><span>Plan & tracker use</span><b>${T.p} g protein</b></div>
-    <div class="stat"><span>Rough maintenance calories</span><b>${g.mLo.toLocaleString()}–${g.mHi.toLocaleString()}</b></div>
-    <div class="stat"><span>Plan calories · training / rest</span><b>${T.kTrain.toLocaleString()} / ${T.kRest.toLocaleString()}</b></div>
-    <p class="note" style="margin-top:6px">Protein is based on about 0.8–1 g per lb of ${g.base === g.w ? "body" : "goal"} weight. For recomposition, a common approach is to eat near maintenance on training days and about 200–400 kcal below it on rest days. Adjust based on how your weight and strength trend over 2–3 weeks.</p>`
-    : `<p class="note">Enter your weight to see an estimated daily protein target and calorie range. Until then, the plan and tracker use 160 g protein and 2,500 / 2,200 kcal.</p>`;
+  const g = goalNumbers(), T = targets(), M = GOAL_MODES[T.mode];
+  const kc = `<div class="kcards"><div class="kcard t"><span>💪 Training days</span><b>${T.kTrain.toLocaleString()}</b><small>kcal / day</small></div>
+      <div class="kcard r"><span>🧘 Rest days</span><b>${T.kRest.toLocaleString()}</b><small>kcal / day</small></div>
+      <div class="kcard p"><span>Protein</span><b>${T.p} g</b><small>every day</small></div></div>`;
+  return `${kc}
+    ${g ? `<div class="stat"><span>Protein range (0.8–1 g per lb of ${g.base === g.w ? "body" : "goal"} weight)</span><b class="hl">${g.pLo}–${g.pHi} g</b></div>
+    <div class="stat"><span>Est. maintenance (used as the base)</span><b>${T.maint.toLocaleString()}</b></div>` : ""}
+    <p class="note" style="margin-top:6px"><b>${M.short}:</b> ${M.note} ${g ? "" : "These use a default of 2,500 kcal maintenance until you enter your weight. "}These are estimates, not prescriptions. If your weight or strength isn't trending the way you want after 2–3 weeks, switch modes or adjust. You can change this anytime.</p>`;
 }
 function renderGoalsMe(){
   const nGen = customSpecs.length;
@@ -2418,7 +2438,11 @@ function renderGoalsMe(){
       <div class="field"><input id="wIn" type="number" inputmode="decimal" min="80" max="500" placeholder="e.g. 195" value="${esc(goals.weight)}"><span>lbs</span></div>
       <label for="gIn">Goal body weight <span style="color:var(--muted);font-weight:500">(optional)</span></label>
       <div class="field"><input id="gIn" type="number" inputmode="decimal" min="80" max="500" placeholder="e.g. 185" value="${esc(goals.goal)}"><span>lbs</span></div>
-      <div id="goalStats">${goalStatsHtml()}</div>
+    </div>
+    <div class="panel">
+      <label>Goal mode</label>
+      <div class="seg small" id="modeSeg">${Object.entries(GOAL_MODES).map(([k, v]) => `<button class="${targets().mode === k ? "on" : ""}" data-mode="${k}">${v.label}</button>`).join("")}</div>
+      <div id="goalStats" style="margin-top:12px">${goalStatsHtml()}</div>
     </div>
     <div class="panel">
       <label>Foods to avoid</label>
@@ -2464,6 +2488,14 @@ $("#meBody").addEventListener("click", e => {
   if (op) return openModal(byId[op.dataset.open]);
   if (rm) return toggleFav(rm.dataset.remove);
   if (rl){ const k = dateKey(); logData[k].splice(+rl.dataset.rmlog, 1); saveLog(); toast("Entry deleted"); return renderMe(); }
+  const md = t.closest("[data-mode]");
+  if (md){
+    goals.mode = md.dataset.mode; LS.set("mealdeck.goals", goals);
+    document.querySelectorAll("#modeSeg button").forEach(b => b.classList.toggle("on", b === md));
+    $("#goalStats").innerHTML = goalStatsHtml();
+    if (plan && plan.days){ plan.days.forEach((_, i) => balanceDay(i)); savePlan(); }
+    const T = targets(); return toast(`${GOAL_MODES[T.mode].short}: ${T.kTrain.toLocaleString()} / ${T.kRest.toLocaleString()} kcal`);
+  }
   if (ex){ const k = ex.dataset.excl; filters.exclude = filters.exclude.includes(k) ? filters.exclude.filter(x => x !== k) : [...filters.exclude, k]; ex.classList.toggle("on"); filtersChanged(); return; }
   if (t.closest("#resetSkipped")){ const n = skipped.length; skipped = []; persist(); buildDeck(); renderStack(true); renderMe(); return toast(n ? `🔄 ${n} skipped meal${n > 1 ? "s" : ""} back in the deck` : "No skipped meals to bring back"); }
   if (t.closest("#clearFavs")){ if (!favs.length) return toast("No favorites to clear"); if (!confirm("Remove all saved favorites?")) return; favs = []; persist(); updateBadge(); buildDeck(); renderStack(true); renderMe(); return toast("Favorites cleared"); }
@@ -2472,6 +2504,7 @@ $("#meBody").addEventListener("input", e => {
   if (e.target.id === "wIn" || e.target.id === "gIn"){
     goals.weight = $("#wIn").value; goals.goal = $("#gIn").value; LS.set("mealdeck.goals", goals);
     $("#goalStats").innerHTML = goalStatsHtml();
+    if (plan && plan.days){ plan.days.forEach((_, i) => balanceDay(i)); savePlan(); }
     stack.querySelectorAll(".card").forEach(c => c.remove()); renderStack();
   }
 });
@@ -2511,6 +2544,7 @@ let toastT;
 function toast(msg){ const t = $("#toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("show"), 2200); }
 
 renderControls(); buildDeck(); renderStack(true); updateBadge(); ensurePlan();
+if (rebalanceAll && plan && plan.days){ plan.days.forEach((_, i) => balanceDay(i)); savePlan(); }
 
 /* ---------- offline / install (only when served over http(s); harmless when opened as a file) ---------- */
 if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
