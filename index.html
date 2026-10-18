@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#FBF6EF">
+<meta name="description" content="Swipeable high-protein meal cards with favorites and a grocery list.">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Meal Deck">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="application-name" content="Meal Deck">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<title>Meal Deck · Recomp Cookbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FBF6EF; --surface:#FFFFFF; --ink:#2A221D; --muted:#7A6D63; --line:#EADFD3;
+  --accent:#D9573A; --accent-ink:#fff; --sage:#4F7D5C; --sage-soft:#E4EFE6;
+  --skip:#C8463A; --save:#3E8E5A;
+  --breakfast:#F2A93B; --lunch:#5E9C6E; --dinner:#D9573A; --snack:#8B5FA8;
+  --radius:24px; --shadow:0 18px 40px -18px rgba(70,40,20,.35), 0 2px 6px rgba(70,40,20,.08);
+  --serif:"Fraunces", Georgia, "Times New Roman", serif;
+  --sans:"Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow:hidden;
+  background-image:radial-gradient(circle at 15% -10%, #FFE7CF 0, transparent 45%), radial-gradient(circle at 110% 20%, #E7F0E2 0, transparent 40%);}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;-webkit-tap-highlight-color:transparent}
+input{font:inherit}
+.app{max-width:480px;margin:0 auto;height:100dvh;display:flex;flex-direction:column;padding:env(safe-area-inset-top) 0 0}
+header{display:flex;align-items:center;justify-content:space-between;padding:14px 20px 6px}
+.brand{display:flex;align-items:center;gap:10px}
+.logo{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#F2A93B);display:grid;place-items:center;font-size:20px;box-shadow:0 6px 14px -6px rgba(217,87,58,.7)}
+.brand h1{font-family:var(--serif);font-size:22px;letter-spacing:-.3px;line-height:1}
+.brand small{display:block;font-size:11.5px;color:var(--muted);font-weight:500;margin-top:3px}
+.counter{font-size:12px;color:var(--muted);font-weight:600;background:var(--surface);border:1px solid var(--line);padding:6px 10px;border-radius:999px}
+main{flex:1;min-height:0;position:relative}
+.view{position:absolute;inset:0;display:none;flex-direction:column}
+.view.active{display:flex;animation:fade .25s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* controls */
+.controls{padding:6px 16px 0}
+.seg{display:flex;background:#F1E8DD;border-radius:14px;padding:4px;gap:4px}
+.seg button{flex:1;white-space:nowrap;padding:9px 6px;border-radius:10px;font-size:13px;font-weight:600;color:var(--muted);transition:.2s}
+.seg button.on{background:var(--surface);color:var(--ink);box-shadow:0 2px 6px rgba(60,30,10,.12)}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:10px 2px 4px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;padding:7px 14px;border-radius:999px;border:1.5px solid var(--line);background:var(--surface);font-size:13px;font-weight:600;color:var(--muted);transition:.2s}
+.chip.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.daynote{font-size:11.5px;color:var(--muted);padding:2px 4px 0}
+
+/* stack */
+.stack-wrap{flex:1;min-height:0;position:relative;margin:8px 16px 0}
+.card{position:absolute;inset:0 0 14px;touch-action:pan-y;user-select:none;-webkit-user-select:none;
+  transition:transform .35s cubic-bezier(.2,.8,.2,1), opacity .35s;will-change:transform;perspective:1400px}
+.card.pos-0{transform:none;z-index:3;cursor:grab}
+.card.pos-0:active{cursor:grabbing}
+.card.pos-1{transform:translateY(12px) scale(.955);z-index:2;opacity:.9;pointer-events:none}
+.card.pos-2{transform:translateY(24px) scale(.91);z-index:1;opacity:.6;pointer-events:none}
+.card .face>*{transition:opacity .3s}
+.card.pos-1 .face>*,.card.pos-2 .face>*{opacity:0}
+.card.entering{opacity:0;transform:translateY(34px) scale(.88)}
+.card-inner{position:relative;width:100%;height:100%;transition:transform .55s cubic-bezier(.2,.8,.2,1);transform-style:preserve-3d}
+.card.flipped .card-inner{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;border-radius:var(--radius);background:var(--surface);box-shadow:var(--shadow);overflow:hidden;
+  backface-visibility:hidden;-webkit-backface-visibility:hidden;display:flex;flex-direction:column;border:1px solid rgba(0,0,0,.04)}
+.back{transform:rotateY(180deg)}
+.hero{position:relative;height:30%;min-height:118px;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(140deg,var(--tc) 0%, color-mix(in srgb,var(--tc) 55%, #fff) 100%)}
+.hero::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 80% 20%,rgba(255,255,255,.35),transparent 50%)}
+.hero .emoji{font-size:64px;filter:drop-shadow(0 8px 12px rgba(0,0,0,.18));z-index:1}
+.pill{position:absolute;z-index:2;top:14px;font-size:11.5px;font-weight:700;letter-spacing:.3px;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.92);color:var(--ink)}
+.pill.type{left:14px;text-transform:uppercase}
+.pill.time{right:14px}
+.pill.day{left:14px;top:auto;bottom:12px;background:rgba(42,34,29,.78);color:#fff}
+.front-body{flex:1;min-height:0;padding:16px 18px 12px;display:flex;flex-direction:column;gap:10px;overflow-y:auto;scrollbar-width:none}
+.front-body::-webkit-scrollbar{display:none}
+.name{font-family:var(--serif);font-size:24px;line-height:1.15;letter-spacing:-.3px}
+.why{font-size:14px;line-height:1.45;color:var(--muted)}
+.macros{display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr;gap:6px;margin-top:2px}
+.m{background:#FAF5EF;border-radius:14px;padding:8px 6px;text-align:center}
+.m b{display:block;font-size:18px;font-weight:700;letter-spacing:-.3px}
+.m span{font-size:10.5px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.4px}
+.m.kcal{background:#FFF0E6}.m.kcal b{color:var(--accent)}
+.bar{display:flex;height:6px;border-radius:6px;overflow:hidden;background:#eee}
+.bar i{display:block;height:100%}
+.est{font-size:11px;color:var(--muted);display:flex;justify-content:space-between;gap:8px}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-size:11.5px;font-weight:600;padding:4px 9px;border-radius:999px;background:var(--sage-soft);color:var(--sage)}
+.tag.t-train{background:#FFF0D6;color:#A86A06}.tag.t-rest{background:#E6EEF8;color:#3C6390}
+.hint{margin-top:auto;font-size:12px;color:var(--muted);text-align:center;font-weight:500;opacity:.85}
+.goalfit{font-size:12px;color:var(--sage);font-weight:600}
+.back-head{padding:16px 18px 10px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}
+.back-head .emoji{font-size:28px}
+.back-head h3{font-family:var(--serif);font-size:18px;line-height:1.2}
+.back-head small{color:var(--muted);font-size:12px}
+.back-body{flex:1;overflow-y:auto;padding:12px 18px 18px;-webkit-overflow-scrolling:touch}
+.recipe h4{font-size:12px;text-transform:uppercase;letter-spacing:.8px;color:var(--accent);margin:12px 0 8px}
+.recipe ul{list-style:none}
+.recipe ul li{padding:7px 0 7px 22px;position:relative;font-size:14.5px;border-bottom:1px dashed var(--line)}
+.recipe ul li::before{content:"";position:absolute;left:2px;top:13px;width:8px;height:8px;border-radius:50%;background:var(--tc,#D9573A);opacity:.7}
+.recipe ol{list-style:none;counter-reset:s}
+.recipe ol li{counter-increment:s;position:relative;padding:6px 0 10px 36px;font-size:14.5px;line-height:1.45}
+.recipe ol li::before{content:counter(s);position:absolute;left:0;top:4px;width:24px;height:24px;border-radius:50%;background:var(--ink);color:#fff;font-size:12px;font-weight:700;display:grid;place-items:center}
+.recipe .why{margin-top:4px}
+.stamp{position:absolute;top:28px;z-index:5;font-weight:800;font-size:26px;letter-spacing:2px;padding:6px 14px;border:4px solid;border-radius:12px;opacity:0;pointer-events:none;background:rgba(255,255,255,.85)}
+.stamp.save{left:22px;color:var(--save);transform:rotate(-14deg)}
+.stamp.skip{right:22px;color:var(--skip);transform:rotate(14deg)}
+
+.actions{display:flex;align-items:center;justify-content:center;gap:18px;padding:8px 0 10px}
+.fab{width:62px;height:62px;border-radius:50%;background:var(--surface);box-shadow:0 10px 22px -10px rgba(70,40,20,.45),0 1px 3px rgba(0,0,0,.08);display:grid;place-items:center;transition:transform .15s}
+.fab:active{transform:scale(.92)}
+.fab svg{width:28px;height:28px}
+.fab.skip{color:var(--skip)} .fab.save{color:var(--save)}
+.fab.small{width:46px;height:46px}.fab.small svg{width:20px;height:20px}
+.fab.small{color:var(--muted)}
+.fab[disabled]{opacity:.35;pointer-events:none}
+
+.empty{position:absolute;inset:0 0 14px;border-radius:var(--radius);background:var(--surface);box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px;gap:12px}
+.empty .big{font-size:56px}
+.empty h3{font-family:var(--serif);font-size:22px}
+.empty p{color:var(--muted);font-size:14px;line-height:1.5}
+.btn{background:var(--accent);color:#fff;font-weight:700;padding:12px 20px;border-radius:14px;font-size:14px;box-shadow:0 8px 18px -10px rgba(217,87,58,.8)}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line);box-shadow:none}
+
+/* lists / panels */
+.scroll{flex:1;overflow-y:auto;padding:6px 16px 24px}
+.section-title{font-family:var(--serif);font-size:26px;padding:6px 4px 2px}
+.section-sub{color:var(--muted);font-size:13.5px;padding:0 4px 14px}
+.fav{display:flex;align-items:center;gap:12px;background:var(--surface);border-radius:18px;padding:12px;margin-bottom:10px;box-shadow:0 6px 16px -12px rgba(70,40,20,.5);border:1px solid rgba(0,0,0,.03);animation:fade .25s}
+.fav .thumb{width:54px;height:54px;flex:none;border-radius:14px;display:grid;place-items:center;font-size:28px;background:linear-gradient(140deg,var(--tc),color-mix(in srgb,var(--tc) 50%,#fff))}
+.fav .info{flex:1;min-width:0;text-align:left}
+.fav .info b{display:block;font-size:15px;line-height:1.25}
+.fav .info small{color:var(--muted);font-size:12.5px}
+.icon-btn{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;color:var(--muted);flex:none}
+.icon-btn:hover{background:#F6EEE6;color:var(--skip)}
+.fav-filter{display:flex;gap:8px;overflow-x:auto;padding:0 2px 12px;scrollbar-width:none}
+.panel{background:var(--surface);border-radius:20px;padding:18px;margin-bottom:12px;box-shadow:0 6px 16px -12px rgba(70,40,20,.5)}
+.panel label{display:block;font-size:13px;font-weight:600;margin-bottom:6px}
+.field{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.field input{flex:1;padding:12px 14px;border:1.5px solid var(--line);border-radius:12px;background:#FFFCF8;font-size:16px;outline:none;width:100%}
+.field input:focus{border-color:var(--accent)}
+.field span{color:var(--muted);font-size:13px;font-weight:600}
+.stat{display:flex;justify-content:space-between;align-items:baseline;padding:10px 0;border-top:1px solid var(--line)}
+.stat:first-of-type{border-top:0}
+.stat span{color:var(--muted);font-size:13.5px}
+.stat b{font-size:18px}
+.stat b.hl{color:var(--accent)}
+.note{font-size:12.5px;color:var(--muted);line-height:1.5}
+.disclaimer{font-size:11.5px;color:var(--muted);background:#F4ECE2;border-radius:12px;padding:10px 12px;line-height:1.45}
+.row-btns{display:flex;gap:8px;flex-wrap:wrap}
+
+/* grocery */
+.gtop{display:flex;gap:8px;margin:0 0 12px}
+.gtop .btn{flex:1;padding:11px 8px;font-size:13px;display:flex;align-items:center;justify-content:center;gap:6px}
+.gtools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.gtools .btn{padding:9px 12px;font-size:12.5px}
+.gpanel-head{display:flex;justify-content:space-between;align-items:center;width:100%;text-align:left}
+.gpanel-head b{font-size:14px}
+.gpanel-head span{font-size:12.5px;color:var(--muted);font-weight:600}
+.gmeals{margin-top:10px}
+.gmeal{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px dashed var(--line)}
+.gmeal.off .gm-name{opacity:.45}
+.gm-check{width:24px;height:24px;flex:none;border-radius:8px;border:2px solid var(--line);display:grid;place-items:center;font-size:14px;color:#fff;transition:.15s}
+.gmeal:not(.off) .gm-check{background:var(--sage);border-color:var(--sage)}
+.gm-name{flex:1;min-width:0;text-align:left;font-size:14px;font-weight:600;line-height:1.25;display:flex;gap:8px;align-items:center}
+.gm-name small{display:block;font-weight:500;color:var(--muted);font-size:11.5px}
+.stepper{display:flex;align-items:center;background:#F6EEE6;border-radius:12px;flex:none}
+.stepper button{width:32px;height:32px;font-size:18px;font-weight:700;color:var(--ink);border-radius:12px}
+.stepper button:active{background:#EADFD3}
+.stepper output{min-width:34px;text-align:center;font-weight:700;font-size:13.5px}
+.gmeal.off .stepper{opacity:.4;pointer-events:none}
+.switch-row{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;text-align:left;font-size:13.5px;font-weight:600}
+.switch-row small{display:block;color:var(--muted);font-weight:500;font-size:11.5px}
+.switch{width:46px;height:28px;border-radius:14px;background:#DDD2C6;position:relative;flex:none;transition:.2s}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:.2s}
+.switch.on{background:var(--sage)}.switch.on::after{left:21px}
+.gprog{display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--muted);font-weight:600;margin:4px 2px 10px}
+.gprog .track{flex:1;height:6px;border-radius:6px;background:#EDE3D8;overflow:hidden}
+.gprog .track i{display:block;height:100%;background:var(--sage);transition:width .3s}
+.gsec{background:var(--surface);border-radius:20px;padding:6px 14px 4px;margin-bottom:12px;box-shadow:0 6px 16px -12px rgba(70,40,20,.5)}
+.gsec h4{font-size:12px;text-transform:uppercase;letter-spacing:.8px;color:var(--accent);padding:10px 0 6px;display:flex;justify-content:space-between}
+.gsec h4 span{color:var(--muted);letter-spacing:0}
+.gitem{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;padding:10px 0;border-top:1px dashed var(--line);transition:opacity .2s}
+.gitem .circ{width:22px;height:22px;flex:none;margin-top:1px;border-radius:50%;border:2px solid #D6C8BA;display:grid;place-items:center;color:#fff;font-size:12px;transition:.15s}
+.gitem .gt{flex:1;min-width:0}
+.gitem .gn{display:flex;justify-content:space-between;gap:10px;font-size:14.5px;font-weight:600}
+.gitem .gq{font-weight:700;color:var(--ink);text-align:right;flex:none;max-width:55%}
+.gitem .gfor{font-size:11.5px;color:var(--muted);margin-top:2px;line-height:1.35}
+.gitem.done{opacity:.5}
+.gitem.done .circ{background:var(--sage);border-color:var(--sage)}
+.gitem.done .gn span:first-child,.gitem.done .gq{text-decoration:line-through}
+.gnote{font-size:11.5px;color:var(--muted);line-height:1.45;padding:2px 4px 8px}
+.linkish{color:var(--accent);font-weight:700;text-decoration:underline;font-size:12.5px}
+.fav-cta{width:100%;margin-bottom:12px}
+
+/* nav */
+nav{display:flex;justify-content:space-around;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:6px 0 calc(6px + env(safe-area-inset-bottom))}
+nav button{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;font-weight:600;color:var(--muted);padding:4px 8px;min-width:68px;position:relative}
+nav button svg{width:24px;height:24px}
+nav button.on{color:var(--accent)}
+.badge{position:absolute;top:0;right:12px;background:var(--accent);color:#fff;font-size:10px;font-weight:700;min-width:17px;height:17px;border-radius:9px;display:grid;place-items:center;padding:0 4px}
+.badge:empty{display:none}
+
+/* modal */
+.modal{position:fixed;inset:0;background:rgba(30,20,12,.45);display:none;align-items:flex-end;justify-content:center;z-index:50}
+.modal.open{display:flex;animation:fadeBg .2s}
+@keyframes fadeBg{from{opacity:0}to{opacity:1}}
+.sheet{background:var(--surface);width:100%;max-width:480px;max-height:90dvh;border-radius:26px 26px 0 0;overflow:hidden;display:flex;flex-direction:column;animation:up .3s cubic-bezier(.2,.8,.2,1)}
+@keyframes up{from{transform:translateY(100%)}to{transform:none}}
+.sheet .hero{height:150px;flex:none}
+.sheet .close{position:absolute;top:12px;right:12px;z-index:3;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.92);display:grid;place-items:center;font-size:18px}
+.sheet .content{overflow-y:auto;padding:16px 20px calc(24px + env(safe-area-inset-bottom))}
+
+.toast{position:fixed;left:50%;bottom:92px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;font-size:13.5px;font-weight:600;padding:11px 16px;border-radius:14px;opacity:0;transition:.3s;z-index:60;pointer-events:none;max-width:90vw;text-align:center;box-shadow:0 10px 24px -10px rgba(0,0,0,.5)}
+.toast.show{opacity:1;transform:translateX(-50%)}
+@media (min-height:820px){.name{font-size:26px}}
+@media (max-width:370px){.seg button{font-size:12px;padding:9px 4px}.est span:last-child{display:none}}
+@media (max-height:700px){.hero{min-height:96px}.hero .emoji{font-size:48px}.why{font-size:13px}.fab{width:54px;height:54px}.front-body{gap:8px;padding:12px 16px 10px}}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="brand"><div class="logo">🍽️</div><div><h1>Meal Deck</h1><small>High-protein ideas for lean gains</small></div></div>
+    <div class="counter" id="counter">–</div>
+  </header>
+  <main>
+    <!-- DECK -->
+    <section class="view active" id="view-deck">
+      <div class="controls">
+        <div class="seg" id="daySeg" role="tablist" aria-label="Day type">
+          <button data-day="train">💪 Training day</button>
+          <button data-day="rest">🧘 Rest day</button>
+          <button data-day="all">All</button>
+        </div>
+        <div class="chips" id="typeChips"></div>
+      </div>
+      <div class="stack-wrap" id="stack" aria-live="polite"></div>
+      <div class="actions">
+        <button class="fab small" id="undoBtn" title="Undo (U)" aria-label="Undo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg></button>
+        <button class="fab skip" id="skipBtn" title="Skip (←)" aria-label="Skip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+        <button class="fab save" id="saveBtn" title="Save (→)" aria-label="Save to favorites"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7.5-4.6-9.6-9.2C.8 8.3 2.9 4.5 6.6 4.5c2.1 0 3.6 1.1 4.4 2.5h2c.8-1.4 2.3-2.5 4.4-2.5 3.7 0 5.8 3.8 4.2 7.3C19.5 16.4 12 21 12 21z"/></svg></button>
+        <button class="fab small" id="flipBtn" title="Full recipe (Space)" aria-label="Show full recipe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5V5a2 2 0 0 1 2-2h13v15H6a2 2 0 0 0-2 2zm0 0A2 2 0 0 0 6 22h13"/><path d="M9 8h6M9 12h4"/></svg></button>
+      </div>
+    </section>
+
+    <!-- FAVORITES -->
+    <section class="view" id="view-favs">
+      <div class="scroll">
+        <h2 class="section-title">Favorites</h2>
+        <p class="section-sub" id="favSub">Meals you've saved. Tap one to open the recipe.</p>
+        <button class="btn fav-cta" id="favGroc" style="display:none">🛒 Make a grocery list from these</button>
+        <div class="fav-filter chips" id="favChips"></div>
+        <div id="favList"></div>
+      </div>
+    </section>
+
+    <!-- GROCERY -->
+    <section class="view" id="view-grocery">
+      <div class="scroll" id="grocScroll">
+        <h2 class="section-title">Grocery list</h2>
+        <p class="section-sub">Made from your saved meals. Tap an item to check it off.</p>
+        <div id="grocBody"></div>
+      </div>
+    </section>
+
+    <!-- GOALS -->
+    <section class="view" id="view-goals">
+      <div class="scroll">
+        <h2 class="section-title">My goals</h2>
+        <p class="section-sub">Build lean muscle and lose body fat. Lift 3× a week.</p>
+        <div class="panel">
+          <label for="wIn">Current body weight</label>
+          <div class="field"><input id="wIn" type="number" inputmode="decimal" min="80" max="500" placeholder="e.g. 195"><span>lbs</span></div>
+          <label for="gIn">Goal body weight <span style="color:var(--muted);font-weight:500">(optional)</span></label>
+          <div class="field"><input id="gIn" type="number" inputmode="decimal" min="80" max="500" placeholder="e.g. 185"><span>lbs</span></div>
+          <div id="goalStats"></div>
+        </div>
+        <div class="panel">
+          <label>How the deck fits your goals</label>
+          <p class="note">Main meals aim for about 35–50 g of protein and snacks for 15–30 g. They focus on whole foods and veggies. <b>Training day</b> mode leans toward meals with more carbs to fuel and refuel your lifts. <b>Rest day</b> mode leans lower-carb. Macro numbers are rough estimates for the listed portions and will vary by brand and how you measure.</p>
+        </div>
+        <div class="panel">
+          <label>Deck data</label>
+          <p class="note" id="dataNote" style="margin-bottom:12px"></p>
+          <div class="row-btns">
+            <button class="btn ghost" id="resetSkipped">Bring back skipped</button>
+            <button class="btn ghost" id="clearFavs">Clear favorites</button>
+          </div>
+        </div>
+        <p class="disclaimer">ℹ️ These are general estimates for meal planning, not medical or nutrition advice. If you have health conditions or take medications, check with your doctor or a registered dietitian before changing your diet.</p>
+      </div>
+    </section>
+  </main>
+  <nav>
+    <button data-view="deck" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="3"/><path d="M2 7v10M22 7v10" stroke-linecap="round"/></svg>Deck</button>
+    <button data-view="favs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 20s-7-4.3-9-8.6C1.6 8.2 3.5 5 6.8 5c2 0 3.4 1 4.2 2.3h2C13.8 6 15.2 5 17.2 5c3.3 0 5.2 3.2 3.8 6.4C19 15.7 12 20 12 20z"/></svg>Favorites<span class="badge" id="favBadge"></span></button>
+    <button data-view="grocery"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h2.2l2.3 11h10.8l2-8H6.6"/><circle cx="9.5" cy="19.5" r="1.4"/><circle cx="17" cy="19.5" r="1.4"/></svg>Grocery</button>
+    <button data-view="goals"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg>My goals</button>
+  </nav>
+</div>
+
+<div class="modal" id="modal" aria-hidden="true"><div class="sheet" id="sheet" role="dialog" aria-modal="true"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ===================== MEAL DATA =====================
+ * Add a meal by copying any object below. Fields:
+ *  id (unique), type: Breakfast|Lunch|Dinner|Snack, emoji, name, why,
+ *  kcal, p (protein g), c (carbs g), f (fat g)  -> estimates per serving
+ *  time (minutes), day: "train" (higher carb) | "rest" (lower carb) | "any"
+ *  tags (extra labels; "training day", "lower carb" & "quick" are added automatically)
+ *  batch (optional): servings a meal-prep recipe makes; used as the default on the grocery list
+ *  ing: one entry per recipe line: ["display text", [qty, unit, item, section], ...]
+ *       The display text is what the recipe shows. Each [qty, unit, item, section] after it is a
+ *       structured grocery item (several are allowed per line, or none for heading lines).
+ *       qty: number per serving, or null for "as needed".
+ *       unit: tsp|tbsp|cup (volume) · oz|lb|g|kg (weight) · "" (count) · or a count unit like slice/clove/head/stalk/scoop
+ *       item: canonical name; use exactly the same name across meals so it merges
+ *       section: P Produce · M Meat & Seafood · D Dairy & Eggs · A Pantry · S Spices · F Frozen · B Bakery · O Other
+ *  steps (short numbered steps)
+ */
+const MEALS = [
+// ---------- BREAKFAST (15) ----------
+{id:"b01",type:"Breakfast",emoji:"🫐",name:"Berry Walnut Protein Yogurt Bowl",
+ why:"Over 40 g of protein with zero cooking, plus berries for fiber and walnuts for healthy fats.",
+ kcal:420,p:46,c:35,f:10,time:5,day:"any",tags:["no cook","high protein"],
+ ing:[["1½ cups plain nonfat Greek yogurt",[1.5,"cup","Greek yogurt, plain nonfat","D"]],["½ scoop vanilla whey protein",[0.5,"scoop","Whey protein powder","A"]],["¾ cup mixed berries",[0.75,"cup","Berries, fresh","P"]],["2 tbsp chopped walnuts",[2,"tbsp","Walnuts, chopped","A"]],["1 tsp honey",[1,"tsp","Honey","A"]],["Pinch of cinnamon",[null,"","Cinnamon","S"]]],
+ steps:["Stir the whey and cinnamon into the yogurt until smooth.","Top with berries and walnuts.","Drizzle with honey and eat."]},
+{id:"b02",type:"Breakfast",emoji:"🍳",name:"Loaded Veggie Egg Scramble & Avocado Toast",
+ why:"Whole eggs plus egg whites give lots of protein for the calories, and the veggies add volume and fiber.",
+ kcal:455,p:44,c:29,f:18,time:12,day:"any",tags:["vegetarian"],
+ ing:[["2 large eggs",[2,"","Eggs, large","D"]],["1 cup liquid egg whites",[1,"cup","Liquid egg whites","D"]],["1 cup baby spinach",[1,"oz","Baby spinach","P"]],["½ bell pepper, diced",[0.5,"","Bell pepper","P"]],["¼ onion, diced",[0.25,"","Onion","P"]],["1 slice sprouted whole-grain bread",[1,"slice","Sprouted whole-grain bread","B"]],["¼ avocado",[0.25,"","Avocado","P"]],["Salt, pepper, hot sauce",[null,"","Salt","S"],[null,"","Black pepper","S"],[null,"","Hot sauce","A"]],["Cooking spray",[null,"","Cooking spray","A"]]],
+ steps:["Sauté onion and pepper in a sprayed nonstick pan for 3 minutes.","Add spinach until wilted.","Whisk eggs with egg whites, pour in, and stir gently until just set.","Toast the bread, smash avocado on top, and serve alongside."]},
+{id:"b03",type:"Breakfast",emoji:"🥣",name:"Banana Chia Overnight Protein Oats",
+ why:"Slow-digesting oats and banana fuel a morning lift, and whey plus yogurt cover your protein.",
+ kcal:475,p:43,c:53,f:10,time:5,day:"train",tags:["meal-prep friendly","no cook","high fiber"],
+ ing:[["½ cup rolled oats",[0.5,"cup","Rolled oats","A"]],["1 scoop vanilla whey protein",[1,"scoop","Whey protein powder","A"]],["½ cup plain nonfat Greek yogurt",[0.5,"cup","Greek yogurt, plain nonfat","D"]],["1 cup unsweetened almond milk",[1,"cup","Unsweetened almond milk","D"]],["1 tbsp chia seeds",[1,"tbsp","Chia seeds","A"]],["½ banana, sliced",[0.5,"","Banana","P"]],["Cinnamon",[null,"","Cinnamon","S"]]],
+ steps:["Mix oats, whey, chia, and cinnamon in a jar.","Stir in yogurt and almond milk until no dry pockets remain.","Refrigerate overnight (or at least 4 hours).","Top with banana in the morning. Keeps 3 days."]},
+{id:"b04",type:"Breakfast",emoji:"🥞",name:"Cottage Cheese Oat Pancakes",
+ why:"Fluffy pancakes made with cottage cheese and eggs, so every stack carries 45 g of protein.",
+ kcal:485,p:45,c:41,f:15,time:15,day:"train",tags:["vegetarian"],
+ ing:[["1 cup low-fat cottage cheese",[1,"cup","Cottage cheese, low-fat","D"]],["2 large eggs",[2,"","Eggs, large","D"]],["½ cup rolled oats",[0.5,"cup","Rolled oats","A"]],["½ tsp baking powder",[0.5,"tsp","Baking powder","A"]],["½ tsp vanilla",[0.5,"tsp","Vanilla extract","A"]],["½ cup berries for topping",[0.5,"cup","Berries, fresh","P"]],["Cooking spray",[null,"","Cooking spray","A"]]],
+ steps:["Blend cottage cheese, eggs, oats, baking powder, and vanilla until smooth.","Let the batter rest 2 minutes to thicken.","Cook ¼-cup pancakes on a sprayed pan over medium heat, 2 minutes per side.","Top with berries."]},
+{id:"b05",type:"Breakfast",emoji:"🐟",name:"Smoked Salmon & Egg Breakfast Plate",
+ why:"Omega-3s from salmon and lots of protein with just one slice of rye. A good low-carb rest-day start.",
+ kcal:390,p:44,c:19,f:15,time:10,day:"rest",tags:["omega-3"],
+ ing:[["3 oz smoked salmon",[3,"oz","Smoked salmon","M"]],["2 large eggs",[2,"","Eggs, large","D"]],["½ cup liquid egg whites",[0.5,"cup","Liquid egg whites","D"]],["1 slice dark rye bread",[1,"slice","Dark rye bread","B"]],["½ cucumber, sliced",[0.5,"","Cucumber","P"]],["1 small tomato, sliced",[1,"","Tomato","P"]],["Capers, dill, lemon",[1,"tsp","Capers","A"],[null,"","Dill","P"],[0.25,"","Lemon","P"]]],
+ steps:["Scramble or soft-cook eggs with egg whites.","Toast the rye.","Plate with salmon, cucumber, and tomato.","Finish with capers, dill, and a squeeze of lemon."]},
+{id:"b06",type:"Breakfast",emoji:"🌯",name:"Turkey Sausage Breakfast Burrito",
+ why:"A hearty grab-and-go burrito with nearly 50 g of protein. Make 5 at once for the week.",
+ kcal:495,p:48,c:26,f:22,time:20,batch:5,day:"any",tags:["meal-prep friendly","portable"],
+ ing:[["1 high-fiber low-carb tortilla",[1,"","High-fiber tortillas","B"]],["2 large eggs + ½ cup egg whites",[2,"","Eggs, large","D"],[0.5,"cup","Liquid egg whites","D"]],["3 oz lean turkey breakfast sausage",[3,"oz","Turkey breakfast sausage, lean","M"]],["¼ cup diced peppers & onion",[0.25,"","Bell pepper","P"],[0.125,"","Onion","P"]],["2 tbsp shredded reduced-fat cheese",[0.125,"cup","Reduced-fat shredded cheese","D"]],["2 tbsp salsa",[2,"tbsp","Salsa","A"]]],
+ steps:["Brown sausage with peppers and onion, 5–6 minutes.","Add whisked eggs and egg whites and scramble until set.","Fill the tortilla with eggs, cheese, and salsa, then roll tightly.","To meal prep: wrap in foil, refrigerate up to 4 days, and reheat 90 seconds."]},
+{id:"b07",type:"Breakfast",emoji:"🥤",name:"Green Berry Protein Smoothie",
+ why:"Ready in 3 minutes. It sneaks in a cup of spinach and has 40 g of protein.",
+ kcal:400,p:41,c:32,f:12,time:3,day:"any",tags:["portable","vegetarian"],
+ ing:[["1 scoop whey protein",[1,"scoop","Whey protein powder","A"]],["1 cup frozen mixed berries",[1,"cup","Frozen mixed berries","F"]],["1 cup baby spinach",[1,"oz","Baby spinach","P"]],["½ cup plain nonfat Greek yogurt",[0.5,"cup","Greek yogurt, plain nonfat","D"]],["1 tbsp peanut butter",[1,"tbsp","Peanut butter","A"]],["1 cup unsweetened almond milk",[1,"cup","Unsweetened almond milk","D"]],["Ice as needed"]],
+ steps:["Add liquids and spinach to the blender first.","Add remaining ingredients.","Blend 45–60 seconds until smooth."]},
+{id:"b08",type:"Breakfast",emoji:"🍅",name:"Shakshuka with Feta",
+ why:"Eggs poached in a tomato and pepper sauce. Lots of flavor, lots of veggies, and steady energy.",
+ kcal:490,p:38,c:35,f:22,time:25,day:"any",tags:["one pan","vegetarian"],
+ ing:[["3 large eggs",[3,"","Eggs, large","D"]],["½ cup liquid egg whites",[0.5,"cup","Liquid egg whites","D"]],["1 cup crushed tomatoes",[1,"cup","Crushed tomatoes, canned","A"]],["½ bell pepper + ¼ onion, diced",[0.5,"","Bell pepper","P"],[0.25,"","Onion","P"]],["1 garlic clove, cumin, paprika",[1,"clove","Garlic","P"],[null,"","Cumin","S"],[null,"","Paprika","S"]],["1 oz crumbled feta",[1,"oz","Feta, crumbled","D"]],["½ whole-wheat pita",[0.5,"","Whole-wheat pita","B"]]],
+ steps:["Sauté pepper, onion, and garlic 4 minutes, then add spices.","Add tomatoes and simmer 5 minutes.","Stir in egg whites, make 3 wells, crack in eggs, cover, and cook 5–7 minutes.","Top with feta and serve with warm pita."]},
+{id:"b09",type:"Breakfast",emoji:"🍠",name:"Sweet Potato & Turkey Breakfast Hash",
+ why:"Sweet potato carbs to top up energy for training, with lean turkey and eggs for protein.",
+ kcal:495,p:36,c:35,f:23,time:25,day:"train",tags:["one pan","meal-prep friendly"],
+ ing:[["5 oz sweet potato, small dice",[5,"oz","Sweet potato","P"]],["4 oz 93% lean ground turkey",[4,"oz","Ground turkey, 93% lean","M"]],["2 large eggs",[2,"","Eggs, large","D"]],["½ bell pepper + ¼ onion, diced",[0.5,"","Bell pepper","P"],[0.25,"","Onion","P"]],["1 tsp olive oil",[1,"tsp","Olive oil","A"]],["Smoked paprika, salt, pepper",[null,"","Smoked paprika","S"],[null,"","Salt","S"],[null,"","Black pepper","S"]]],
+ steps:["Microwave diced sweet potato 3 minutes to par-cook.","Brown turkey in oil, then add potato, pepper, onion, and spices. Cook 8–10 minutes until crisp.","Make 2 wells, crack in eggs, cover until set."]},
+{id:"b10",type:"Breakfast",emoji:"🥒",name:"Savory Cottage Cheese Power Bowl",
+ why:"A no-cook, lower-carb bowl. Cottage cheese gives slow-digesting casein protein.",
+ kcal:370,p:42,c:16,f:15,time:5,day:"rest",tags:["no cook","vegetarian"],
+ ing:[["1¼ cups low-fat cottage cheese",[1.25,"cup","Cottage cheese, low-fat","D"]],["1 hard-boiled egg, chopped",[1,"","Eggs, large","D"]],["½ cup cherry tomatoes, halved",[0.5,"cup","Cherry tomatoes","P"]],["½ cucumber, diced",[0.5,"","Cucumber","P"]],["¼ avocado, diced",[0.25,"","Avocado","P"]],["Everything-bagel seasoning, black pepper",[null,"","Everything-bagel seasoning","S"],[null,"","Black pepper","S"]]],
+ steps:["Spoon cottage cheese into a bowl.","Top with egg, tomatoes, cucumber, and avocado.","Shower with everything seasoning and pepper."]},
+{id:"b11",type:"Breakfast",emoji:"🍞",name:"Protein French Toast with Berries",
+ why:"A classic made with egg whites and sprouted bread, then topped with Greek yogurt.",
+ kcal:470,p:46,c:47,f:11,time:15,day:"train",tags:["vegetarian"],
+ ing:[["2 slices sprouted whole-grain bread",[2,"slice","Sprouted whole-grain bread","B"]],["2 large eggs + ½ cup egg whites",[2,"","Eggs, large","D"],[0.5,"cup","Liquid egg whites","D"]],["Cinnamon & vanilla",[null,"","Cinnamon","S"],[0.5,"tsp","Vanilla extract","A"]],["½ cup plain nonfat Greek yogurt",[0.5,"cup","Greek yogurt, plain nonfat","D"]],["½ cup berries",[0.5,"cup","Berries, fresh","P"]],["1 tsp maple syrup",[1,"tsp","Maple syrup","A"]]],
+ steps:["Whisk eggs, egg whites, cinnamon, and vanilla in a shallow dish.","Soak bread 20 seconds per side.","Cook on a sprayed pan 2–3 minutes per side, pouring any leftover egg over the slices.","Top with yogurt, berries, and maple."]},
+{id:"b12",type:"Breakfast",emoji:"🧁",name:"Ham & Veggie Egg Muffins",
+ why:"Batch-cooked muffins you can grab and reheat on busy mornings, with lots of protein and few carbs.",
+ kcal:310,p:39,c:5,f:15,time:30,batch:4,day:"rest",tags:["meal-prep friendly","portable"],
+ ing:[["Per serving (3 muffins):"],["2 large eggs + ½ cup egg whites",[2,"","Eggs, large","D"],[0.5,"cup","Liquid egg whites","D"]],["2 oz lean ham, diced",[2,"oz","Lean ham","M"]],["Handful of spinach, chopped",[1,"oz","Baby spinach","P"]],["2 tbsp diced bell pepper",[0.125,"","Bell pepper","P"]],["2 tbsp shredded reduced-fat cheese",[0.125,"cup","Reduced-fat shredded cheese","D"]]],
+ steps:["Heat oven to 350°F and spray a muffin tin.","Divide ham, spinach, pepper, and cheese among the cups.","Pour whisked eggs over the fillings, about ¾ full.","Bake 20–22 minutes. They keep 4 days in the fridge. Add fruit on training days."]},
+{id:"b13",type:"Breakfast",emoji:"🥜",name:"PB Banana Protein Oatmeal",
+ why:"A warm, filling oatmeal with enough carbs to fuel a hard session and 40+ g of protein.",
+ kcal:510,p:41,c:58,f:12,time:8,day:"train",tags:["high fiber","vegetarian"],
+ ing:[["½ cup rolled oats",[0.5,"cup","Rolled oats","A"]],["1 cup skim milk",[1,"cup","Skim milk","D"]],["1 scoop vanilla or chocolate whey",[1,"scoop","Whey protein powder","A"]],["½ banana, sliced",[0.5,"","Banana","P"]],["1 tbsp peanut butter",[1,"tbsp","Peanut butter","A"]],["Cinnamon, pinch of salt",[null,"","Cinnamon","S"],[null,"","Salt","S"]]],
+ steps:["Cook oats in milk for 3–4 minutes, stirring.","Take off the heat, wait 30 seconds, then stir in whey (stirring it in off the heat keeps it from clumping).","Top with banana, peanut butter, and cinnamon."]},
+{id:"b14",type:"Breakfast",emoji:"🌶️",name:"Huevos Rancheros Bowl",
+ why:"Black beans add fiber and plant protein to eggs for a breakfast that keeps you full.",
+ kcal:420,p:36,c:29,f:18,time:12,day:"any",tags:["high fiber","vegetarian"],
+ ing:[["2 large eggs + ½ cup egg whites",[2,"","Eggs, large","D"],[0.5,"cup","Liquid egg whites","D"]],["½ cup black beans, rinsed",[0.5,"cup","Black beans, canned","A"]],["3 tbsp salsa",[3,"tbsp","Salsa","A"]],["¼ avocado",[0.25,"","Avocado","P"]],["2 tbsp plain Greek yogurt",[0.125,"cup","Greek yogurt, plain nonfat","D"]],["Cilantro, lime, cumin",[null,"","Cilantro","P"],[0.5,"","Lime","P"],[null,"","Cumin","S"]]],
+ steps:["Warm beans with cumin and a splash of water.","Scramble or fry the eggs and egg whites.","Layer beans, eggs, salsa, and avocado in a bowl.","Top with Greek yogurt (in place of sour cream), cilantro, and lime."]},
+{id:"b15",type:"Breakfast",emoji:"🍮",name:"Raspberry Chia Protein Pudding",
+ why:"Make it the night before. It tastes like dessert and has over 45 g of protein and lots of fiber.",
+ kcal:400,p:46,c:28,f:12,time:5,day:"rest",tags:["meal-prep friendly","no cook","high fiber"],
+ ing:[["2 tbsp chia seeds",[2,"tbsp","Chia seeds","A"]],["1 cup unsweetened soy milk",[1,"cup","Unsweetened soy milk","D"]],["1 scoop vanilla whey or casein",[1,"scoop","Whey protein powder","A"]],["½ cup plain nonfat Greek yogurt",[0.5,"cup","Greek yogurt, plain nonfat","D"]],["½ cup raspberries",[0.5,"cup","Raspberries","P"]]],
+ steps:["Whisk protein powder into the soy milk until smooth.","Stir in chia and yogurt, then whisk again after 5 minutes.","Refrigerate at least 3 hours or overnight.","Top with raspberries."]},
+
+// ---------- LUNCH (15) ----------
+{id:"l01",type:"Lunch",emoji:"🌯",name:"Chicken Burrito Bowl",
+ why:"Lean chicken, rice, and beans give balanced carbs and fiber for a training day. Easy to batch.",
+ kcal:530,p:48,c:57,f:13,time:20,day:"train",tags:["meal-prep friendly","high fiber"],
+ ing:[["4 oz grilled chicken breast",[4,"oz","Chicken breast, boneless skinless","M"]],["½ cup cooked brown rice",[0.5,"cup","Brown rice (cooked)","A"]],["½ cup black beans",[0.5,"cup","Black beans, canned","A"]],["½ cup sautéed peppers & onion",[0.25,"","Bell pepper","P"],[0.25,"","Onion","P"]],["3 tbsp salsa",[3,"tbsp","Salsa","A"]],["¼ avocado",[0.25,"","Avocado","P"]],["2 tbsp plain Greek yogurt",[0.125,"cup","Greek yogurt, plain nonfat","D"]],["Lime, cilantro",[0.5,"","Lime","P"],[null,"","Cilantro","P"]]],
+ steps:["Season chicken with chili powder, cumin, and salt, then grill or pan-sear 5–6 minutes per side.","Warm rice and beans and sauté the peppers and onion.","Slice chicken and build the bowl.","Top with salsa, avocado, yogurt, lime, and cilantro."]},
+{id:"l02",type:"Lunch",emoji:"🥗",name:"Tuna & White Bean Arugula Salad",
+ why:"Pantry staples make a lower-carb, high-protein salad in 10 minutes.",
+ kcal:455,p:44,c:23,f:21,time:10,day:"rest",tags:["no cook","omega-3"],
+ ing:[["1 can (5 oz) tuna in water, drained",[5,"oz","Tuna in water (can/pouch)","A"]],["½ cup cannellini beans, rinsed",[0.5,"cup","Cannellini beans, canned","A"]],["2 cups arugula",[2,"oz","Arugula","P"]],["½ cup cherry tomatoes",[0.5,"cup","Cherry tomatoes","P"]],["2 tbsp thinly sliced red onion",[0.125,"","Red onion","P"]],["1 hard-boiled egg",[1,"","Eggs, large","D"]],["1 tbsp olive oil + juice of ½ lemon",[1,"tbsp","Olive oil","A"],[0.5,"","Lemon","P"]]],
+ steps:["Whisk olive oil, lemon, salt, and pepper in a big bowl.","Add arugula, beans, tomatoes, and onion, then toss.","Top with tuna and the quartered egg."]},
+{id:"l03",type:"Lunch",emoji:"🫓",name:"Turkey Hummus Veggie Wrap",
+ why:"A fast, packable lunch with lean protein and crunchy veggies.",
+ kcal:410,p:36,c:44,f:10,time:7,day:"any",tags:["portable","no cook"],
+ ing:[["1 high-fiber tortilla",[1,"","High-fiber tortillas","B"]],["5 oz low-sodium sliced turkey breast",[5,"oz","Deli turkey breast, low-sodium","M"]],["3 tbsp hummus",[3,"tbsp","Hummus","O"]],["Handful of spinach",[1,"oz","Baby spinach","P"]],["¼ cucumber, sliced",[0.25,"","Cucumber","P"]],["2 tbsp roasted red peppers",[2,"tbsp","Roasted red peppers (jar)","A"]],["1 cup baby carrots on the side",[1,"cup","Baby carrots","P"]]],
+ steps:["Spread hummus over the tortilla.","Layer spinach, turkey, cucumber, and peppers.","Roll tightly, slice in half, and serve with carrots."]},
+{id:"l04",type:"Lunch",emoji:"🫒",name:"Grilled Chicken Greek Salad",
+ why:"A big, satisfying salad with 50 g of protein and few carbs. Good for rest days.",
+ kcal:415,p:50,c:13,f:18,time:15,day:"rest",tags:["meal-prep friendly"],
+ ing:[["5 oz grilled chicken breast",[5,"oz","Chicken breast, boneless skinless","M"]],["2 cups chopped romaine",[0.33,"head","Romaine lettuce","P"]],["½ cucumber + 1 tomato, chopped",[0.5,"","Cucumber","P"],[1,"","Tomato","P"]],["2 tbsp red onion",[0.125,"","Red onion","P"]],["1 oz feta",[1,"oz","Feta, crumbled","D"]],["8 kalamata olives",[8,"","Kalamata olives","A"]],["2 tbsp Greek-yogurt dressing (yogurt, lemon, garlic, oregano)",[0.125,"cup","Greek yogurt, plain nonfat","D"],[0.25,"","Lemon","P"],[0.5,"clove","Garlic","P"],[null,"","Oregano","S"]]],
+ steps:["Season chicken with oregano, lemon, and garlic, then grill 5–6 minutes per side.","Chop the veggies and combine with feta and olives.","Slice chicken on top and add the dressing."]},
+{id:"l05",type:"Lunch",emoji:"🍣",name:"Sesame Salmon Quinoa Bowl",
+ why:"Salmon gives omega-3s and quinoa plus edamame add complete plant protein and fiber.",
+ kcal:440,p:41,c:33,f:16,time:20,day:"any",tags:["omega-3","high fiber"],
+ ing:[["5 oz sockeye salmon fillet",[5,"oz","Sockeye salmon","M"]],["½ cup cooked quinoa",[0.5,"cup","Quinoa (cooked)","A"]],["⅓ cup shelled edamame",[0.33,"cup","Edamame, shelled (frozen)","F"]],["1 cup shredded cabbage, carrot & cucumber",[0.75,"cup","Coleslaw mix (cabbage & carrot)","P"],[0.25,"","Cucumber","P"]],["1 tbsp sesame-ginger dressing",[1,"tbsp","Sesame-ginger dressing","A"]],["Sesame seeds, scallion",[null,"","Sesame seeds","A"],[null,"","Scallions","P"]]],
+ steps:["Season salmon and bake at 400°F for 10–12 minutes (or air-fry 8).","Warm quinoa and edamame.","Build the bowl with the slaw veggies.","Flake salmon on top, drizzle with dressing, and garnish."]},
+{id:"l06",type:"Lunch",emoji:"🍲",name:"Chicken & Lentil Vegetable Soup",
+ why:"Very filling for the calories, with 40+ g of protein and lots of fiber. Freezes well.",
+ kcal:380,p:44,c:30,f:9,time:30,batch:4,day:"any",tags:["meal-prep friendly","high fiber","freezer friendly"],
+ ing:[["Per serving:"],["4 oz cooked chicken breast, shredded",[4,"oz","Chicken breast, boneless skinless","M"]],["½ cup cooked lentils",[0.5,"cup","Lentils (cooked)","A"]],["1 cup carrots, celery & onion",[0.5,"","Carrots","P"],[1,"stalk","Celery","P"],[0.25,"","Onion","P"]],["1 cup spinach",[1,"oz","Baby spinach","P"]],["2 cups low-sodium chicken broth",[2,"cup","Low-sodium chicken broth","A"]],["1 tsp olive oil, thyme, garlic",[1,"tsp","Olive oil","A"],[null,"","Thyme","S"],[1,"clove","Garlic","P"]]],
+ steps:["Sauté carrots, celery, onion, and garlic in oil for 5 minutes.","Add broth, lentils (dry lentils need 20 minutes), and thyme, and simmer.","Stir in chicken and spinach until hot.","Batch tip: multiply by 4 and freeze in single portions."]},
+{id:"l07",type:"Lunch",emoji:"🥬",name:"Greek Yogurt Egg Salad Lettuce Wraps",
+ why:"A lighter egg salad made with protein-rich yogurt instead of mayo, wrapped in crisp lettuce.",
+ kcal:330,p:38,c:11,f:15,time:15,day:"rest",tags:["meal-prep friendly","vegetarian"],
+ ing:[["3 hard-boiled eggs + 3 hard-boiled egg whites",[6,"","Eggs, large","D"]],["⅓ cup plain nonfat Greek yogurt",[0.33,"cup","Greek yogurt, plain nonfat","D"]],["1 tsp Dijon mustard",[1,"tsp","Dijon mustard","A"]],["1 celery stalk, diced",[1,"stalk","Celery","P"]],["Butter lettuce leaves",[0.5,"head","Butter lettuce","P"]],["1 cup cherry tomatoes on the side",[1,"cup","Cherry tomatoes","P"]],["Paprika, chives",[null,"","Paprika","S"],[null,"","Chives","P"]]],
+ steps:["Chop the eggs and whites.","Mix with yogurt, mustard, celery, salt, and pepper.","Spoon into lettuce cups and dust with paprika and chives.","Serve with cherry tomatoes."]},
+{id:"l08",type:"Lunch",emoji:"🦐",name:"Shrimp Cobb Salad",
+ why:"A lighter Cobb with lean shrimp, so you keep the flavor and get 45 g of protein.",
+ kcal:415,p:45,c:14,f:20,time:15,day:"rest",tags:["quick-cook"],
+ ing:[["6 oz cooked shrimp",[6,"oz","Shrimp","M"]],["2 cups chopped romaine",[0.33,"head","Romaine lettuce","P"]],["1 hard-boiled egg",[1,"","Eggs, large","D"]],["¼ avocado",[0.25,"","Avocado","P"]],["1 strip turkey bacon, crumbled",[1,"strip","Turkey bacon","M"]],["½ cup tomato & cucumber",[0.5,"","Tomato","P"],[0.25,"","Cucumber","P"]],["2 tbsp light vinaigrette",[2,"tbsp","Light vinaigrette","A"]]],
+ steps:["Sauté shrimp 2 minutes per side with garlic and paprika (or use pre-cooked).","Cook turkey bacon until crisp and crumble it.","Arrange everything in rows over the romaine.","Drizzle with vinaigrette."]},
+{id:"l09",type:"Lunch",emoji:"🥩",name:"Steak & Roasted Veggie Farro Bowl",
+ why:"Lean sirloin gives iron, zinc, and creatine, and farro adds chewy whole-grain carbs.",
+ kcal:465,p:41,c:38,f:17,time:25,day:"train",tags:["meal-prep friendly"],
+ ing:[["4 oz lean top sirloin (cooked weight)",[4,"oz","Top sirloin steak","M"]],["½ cup cooked farro",[0.5,"cup","Farro (cooked)","A"]],["1½ cups broccoli & bell pepper",[1,"cup","Broccoli florets","P"],[0.5,"","Bell pepper","P"]],["1 tsp olive oil",[1,"tsp","Olive oil","A"]],["1 tbsp chimichurri",[1,"tbsp","Chimichurri","O"]]],
+ steps:["Roast veggies with oil at 425°F for 15–18 minutes.","Sear seasoned steak 3–4 minutes per side, rest 5 minutes, and slice thin.","Build the bowl with farro, veggies, and steak.","Spoon chimichurri over the top."]},
+{id:"l10",type:"Lunch",emoji:"🥙",name:"Lightened Chicken Caesar Wrap",
+ why:"Classic Caesar flavor with a Greek-yogurt dressing, so you get more protein and less fat.",
+ kcal:360,p:44,c:20,f:12,time:10,day:"any",tags:["portable"],
+ ing:[["1 high-fiber tortilla",[1,"","High-fiber tortillas","B"]],["4 oz grilled chicken breast, sliced",[4,"oz","Chicken breast, boneless skinless","M"]],["1½ cups chopped romaine",[0.25,"head","Romaine lettuce","P"]],["2 tbsp Greek-yogurt Caesar dressing",[2,"tbsp","Greek-yogurt Caesar dressing","O"]],["1 tbsp grated parmesan",[1,"tbsp","Parmesan, grated","D"]],["Black pepper, lemon",[null,"","Black pepper","S"],[0.25,"","Lemon","P"]]],
+ steps:["Toss romaine with dressing, parmesan, and lemon.","Lay chicken and salad on the tortilla.","Roll up and slice."]},
+{id:"l11",type:"Lunch",emoji:"🌶️",name:"Hearty Turkey Bean Chili",
+ why:"One pot makes 4 lunches. It's high in protein and fiber and tastes even better the next day.",
+ kcal:390,p:39,c:33,f:12,time:30,batch:4,day:"any",tags:["meal-prep friendly","high fiber","freezer friendly","one pan"],
+ ing:[["Per serving:"],["5 oz 93% lean ground turkey",[5,"oz","Ground turkey, 93% lean","M"]],["½ cup kidney beans",[0.5,"cup","Kidney beans, canned","A"]],["¾ cup crushed tomatoes",[0.75,"cup","Crushed tomatoes, canned","A"]],["½ cup diced onion & bell pepper",[0.25,"","Onion","P"],[0.25,"","Bell pepper","P"]],["Chili powder, cumin, garlic, oregano",[null,"","Chili powder","S"],[null,"","Cumin","S"],[1,"clove","Garlic","P"],[null,"","Oregano","S"]],["2 tbsp plain Greek yogurt to top",[0.125,"cup","Greek yogurt, plain nonfat","D"]]],
+ steps:["Brown turkey with onion and pepper.","Add spices and cook 1 minute.","Add tomatoes and beans and simmer 15–20 minutes.","Top with Greek yogurt. Batch tip: multiply by 4."]},
+{id:"l12",type:"Lunch",emoji:"🥙",name:"Mediterranean Chicken Pita",
+ why:"Whole-wheat pita gives training-day carbs, and the chicken and tzatziki keep the protein high.",
+ kcal:400,p:43,c:42,f:7,time:15,day:"train",tags:["portable"],
+ ing:[["1 whole-wheat pita",[1,"","Whole-wheat pita","B"]],["4 oz grilled chicken breast",[4,"oz","Chicken breast, boneless skinless","M"]],["¼ cup tzatziki (Greek-yogurt based)",[0.25,"cup","Tzatziki","O"]],["Sliced cucumber, tomato & red onion",[0.25,"","Cucumber","P"],[0.5,"","Tomato","P"],[0.125,"","Red onion","P"]],["Lemon, oregano",[0.25,"","Lemon","P"],[null,"","Oregano","S"]]],
+ steps:["Season chicken with lemon and oregano, then grill and slice.","Warm the pita and cut open the pocket.","Fill with chicken and veggies.","Spoon in tzatziki."]},
+{id:"l13",type:"Lunch",emoji:"🌮",name:"Turkey Taco Salad",
+ why:"All the taco flavor without the fried shell, with balanced macros and plenty of crunch.",
+ kcal:405,p:39,c:29,f:15,time:15,day:"any",tags:["meal-prep friendly","high fiber"],
+ ing:[["4 oz 93% lean ground turkey",[4,"oz","Ground turkey, 93% lean","M"]],["Taco seasoning (low sodium)",[null,"","Taco seasoning","S"]],["⅓ cup black beans",[0.33,"cup","Black beans, canned","A"]],["¼ cup corn",[0.25,"cup","Corn (frozen)","F"]],["2 cups chopped romaine + tomato",[0.33,"head","Romaine lettuce","P"],[0.5,"","Tomato","P"]],["1 oz reduced-fat shredded cheese",[0.25,"cup","Reduced-fat shredded cheese","D"]],["Salsa + 2 tbsp plain Greek yogurt",[3,"tbsp","Salsa","A"],[0.125,"cup","Greek yogurt, plain nonfat","D"]]],
+ steps:["Brown turkey with taco seasoning and a splash of water.","Warm beans and corn.","Pile everything on the romaine.","Top with cheese, salsa, and yogurt."]},
+{id:"l14",type:"Lunch",emoji:"🍜",name:"Peanut-Lime Chicken Soba Bowl",
+ why:"Soba noodles give carbs for training and chicken gives 50 g of protein. Good cold or warm.",
+ kcal:490,p:50,c:55,f:8,time:20,day:"train",tags:["meal-prep friendly"],
+ ing:[["2 oz dry soba noodles",[2,"oz","Soba noodles (dry)","A"]],["4 oz cooked chicken breast, shredded",[4,"oz","Chicken breast, boneless skinless","M"]],["¼ cup shelled edamame",[0.25,"cup","Edamame, shelled (frozen)","F"]],["1 cup shredded cabbage, carrot & cucumber",[0.75,"cup","Coleslaw mix (cabbage & carrot)","P"],[0.25,"","Cucumber","P"]],["Sauce: 1 tbsp powdered peanut butter, 1 tbsp low-sodium soy, lime juice, sriracha, water",[1,"tbsp","Powdered peanut butter","A"],[1,"tbsp","Low-sodium soy sauce","A"],[0.5,"","Lime","P"],[null,"","Sriracha","A"]]],
+ steps:["Cook soba 4–5 minutes, then rinse under cold water.","Whisk the sauce until pourable.","Toss noodles, veggies, edamame, and chicken with the sauce.","Garnish with scallions or cilantro."]},
+{id:"l15",type:"Lunch",emoji:"🧀",name:"Open-Faced Tuna Melt",
+ why:"A comfort-food lunch where cottage cheese replaces most of the mayo.",
+ kcal:390,p:49,c:34,f:6,time:10,day:"any",tags:["quick-cook"],
+ ing:[["4 oz tuna (pouch or can, in water)",[4,"oz","Tuna in water (can/pouch)","A"]],["¼ cup low-fat cottage cheese",[0.25,"cup","Cottage cheese, low-fat","D"]],["1 tsp Dijon, diced celery & pickle",[1,"tsp","Dijon mustard","A"],[0.5,"stalk","Celery","P"],[1,"","Dill pickles","A"]],["2 slices sprouted whole-grain bread",[2,"slice","Sprouted whole-grain bread","B"]],["Tomato slices",[0.5,"","Tomato","P"]],["1 slice reduced-fat Swiss, halved",[1,"slice","Reduced-fat Swiss, sliced","D"]]],
+ steps:["Mix tuna, cottage cheese, Dijon, celery, and pickle.","Toast the bread and top with tuna mix, tomato, and cheese.","Broil or air-fry 2–3 minutes until melty."]},
+
+// ---------- DINNER (18) ----------
+{id:"d01",type:"Dinner",emoji:"🍋",name:"Sheet-Pan Lemon Herb Chicken & Potatoes",
+ why:"One pan with lean protein, potatoes for carbs, and two veggies. Easy to cook in bulk.",
+ kcal:465,p:47,c:39,f:14,time:30,day:"train",tags:["one pan","meal-prep friendly"],
+ ing:[["4½ oz chicken breast, cubed",[4.5,"oz","Chicken breast, boneless skinless","M"]],["6 oz baby potatoes, halved",[6,"oz","Baby potatoes","P"]],["1 cup broccoli florets",[1,"cup","Broccoli florets","P"]],["½ zucchini, sliced",[0.5,"","Zucchini","P"]],["2 tsp olive oil",[2,"tsp","Olive oil","A"]],["Lemon zest + juice, garlic, rosemary, thyme",[1,"","Lemon","P"],[2,"clove","Garlic","P"],[null,"","Rosemary","S"],[null,"","Thyme","S"]]],
+ steps:["Heat oven to 425°F.","Toss potatoes with half the oil and herbs and roast 10 minutes.","Add chicken, broccoli, and zucchini with the rest of the oil and lemon, and roast 15–18 minutes more.","Finish with fresh lemon juice."]},
+{id:"d02",type:"Dinner",emoji:"🐟",name:"Garlic Butter Salmon & Asparagus",
+ why:"A rest-day dinner with omega-3s, 40 g of protein, and very few carbs.",
+ kcal:380,p:42,c:14,f:17,time:20,day:"rest",tags:["omega-3","one pan"],
+ ing:[["6 oz sockeye salmon",[6,"oz","Sockeye salmon","M"]],["1 bunch (about 1 cup) asparagus",[1,"bunch","Asparagus","P"]],["1 tsp butter + 1 tsp olive oil",[1,"tsp","Butter","D"],[1,"tsp","Olive oil","A"]],["2 garlic cloves, minced",[2,"clove","Garlic","P"]],["1 cup cauliflower rice",[1,"cup","Riced cauliflower (frozen)","F"]],["Lemon, parsley",[0.5,"","Lemon","P"],[null,"","Parsley","P"]]],
+ steps:["Heat oven to 400°F. Put salmon and asparagus on a tray.","Melt butter with oil and garlic and brush it over both.","Roast 12 minutes.","Serve over sautéed cauliflower rice with lemon."]},
+{id:"d03",type:"Dinner",emoji:"🌮",name:"Lean Beef Taco Bowl with Cauli Rice",
+ why:"Taco-night flavor on a low-carb base of cauliflower rice, with plenty of protein from lean beef.",
+ kcal:420,p:41,c:25,f:18,time:20,day:"rest",tags:["meal-prep friendly"],
+ ing:[["5 oz 93% lean ground beef",[5,"oz","Lean ground beef, 93%","M"]],["1 cup cauliflower rice",[1,"cup","Riced cauliflower (frozen)","F"]],["⅓ cup black beans",[0.33,"cup","Black beans, canned","A"]],["Pico de gallo",[0.25,"cup","Pico de gallo","P"]],["¼ avocado",[0.25,"","Avocado","P"]],["2 tbsp plain Greek yogurt",[0.125,"cup","Greek yogurt, plain nonfat","D"]],["Shredded lettuce, taco spices",[0.15,"head","Romaine lettuce","P"],[null,"","Taco seasoning","S"]]],
+ steps:["Brown beef with taco spices and a splash of water.","Sauté cauliflower rice 4–5 minutes.","Build the bowl with cauli rice, beef, beans, and lettuce.","Top with pico, avocado, and yogurt."]},
+{id:"d04",type:"Dinner",emoji:"🥢",name:"Ginger Garlic Chicken Stir-Fry",
+ why:"A colorful training-day dinner with fast-cooking veggies and brown rice to refuel.",
+ kcal:525,p:48,c:60,f:11,time:20,day:"train",tags:["meal-prep friendly"],
+ ing:[["4½ oz chicken breast, sliced thin",[4.5,"oz","Chicken breast, boneless skinless","M"]],["2 cups mixed stir-fry veggies (broccoli, snap peas, peppers)",[1,"cup","Broccoli florets","P"],[0.5,"cup","Snap peas","P"],[0.5,"","Bell pepper","P"]],["¾ cup cooked brown rice",[0.75,"cup","Brown rice (cooked)","A"]],["Sauce: 1½ tbsp low-sodium soy, 1 tsp honey, 1 tsp cornstarch, ginger, garlic",[1.5,"tbsp","Low-sodium soy sauce","A"],[1,"tsp","Honey","A"],[1,"tsp","Cornstarch","A"],[null,"","Fresh ginger","P"],[1,"clove","Garlic","P"]],["1 tsp sesame oil",[1,"tsp","Sesame oil","A"]]],
+ steps:["Whisk the sauce ingredients with 2 tbsp water.","Sear chicken in sesame oil over high heat for 4–5 minutes, then remove.","Stir-fry veggies 3–4 minutes.","Return the chicken, add sauce, and toss until glossy. Serve over rice."]},
+{id:"d05",type:"Dinner",emoji:"🍝",name:"Turkey Meatballs & Zucchini Noodles",
+ why:"Comfort food that's lighter: tender meatballs and marinara over zucchini noodles.",
+ kcal:420,p:39,c:30,f:16,time:30,day:"rest",tags:["meal-prep friendly","freezer friendly"],
+ ing:[["5 oz 93% lean ground turkey",[5,"oz","Ground turkey, 93% lean","M"]],["1 egg white + 2 tbsp whole-wheat breadcrumbs",[1,"","Eggs, large","D"],[2,"tbsp","Whole-wheat breadcrumbs","A"]],["Garlic, Italian seasoning",[1,"clove","Garlic","P"],[null,"","Italian seasoning","S"]],["½ cup low-sugar marinara",[0.5,"cup","Marinara sauce, low-sugar","A"]],["2 medium zucchini, spiralized",[2,"","Zucchini","P"]],["1 tbsp grated parmesan",[1,"tbsp","Parmesan, grated","D"]]],
+ steps:["Mix turkey, egg white, breadcrumbs, and seasoning, then roll into 6 meatballs.","Bake at 400°F for 15–18 minutes.","Sauté zucchini noodles 2 minutes and warm the marinara.","Toss and top with parmesan."]},
+{id:"d06",type:"Dinner",emoji:"🥩",name:"Sirloin, Sweet Potato & Green Beans",
+ why:"A classic muscle-building plate: lean red meat, complex carbs, and greens.",
+ kcal:460,p:45,c:42,f:13,time:30,day:"train",tags:["meal-prep friendly"],
+ ing:[["4½ oz lean top sirloin (cooked weight)",[4.5,"oz","Top sirloin steak","M"]],["6 oz sweet potato",[6,"oz","Sweet potato","P"]],["1 cup green beans",[1,"cup","Green beans","P"]],["1 tsp olive oil",[1,"tsp","Olive oil","A"]],["Garlic powder, salt, pepper, rosemary",[null,"","Garlic powder","S"],[null,"","Salt","S"],[null,"","Black pepper","S"],[null,"","Rosemary","S"]]],
+ steps:["Cube sweet potato, toss with half the oil, and roast at 425°F for 25 minutes.","Season steak and sear 3–4 minutes per side. Rest 5 minutes.","Sauté or steam green beans with garlic.","Slice steak and plate."]},
+{id:"d07",type:"Dinner",emoji:"🐠",name:"Mediterranean Baked Cod",
+ why:"Cod is one of the leanest proteins around. It bakes in a tomato and olive sauce with couscous on the side.",
+ kcal:395,p:44,c:31,f:11,time:25,day:"any",tags:["one pan"],
+ ing:[["7 oz cod fillet",[7,"oz","Cod fillet","M"]],["1 cup cherry tomatoes, halved",[1,"cup","Cherry tomatoes","P"]],["6 kalamata olives + 1 tsp capers",[6,"","Kalamata olives","A"],[1,"tsp","Capers","A"]],["1 tsp olive oil, garlic, oregano",[1,"tsp","Olive oil","A"],[1,"clove","Garlic","P"],[null,"","Oregano","S"]],["Handful of spinach",[1,"oz","Baby spinach","P"]],["½ cup cooked whole-wheat couscous",[0.5,"cup","Whole-wheat couscous (cooked)","A"]]],
+ steps:["Heat oven to 400°F.","Toss tomatoes, olives, capers, garlic, and oil in a baking dish.","Nestle in the seasoned cod and bake 15 minutes.","Stir spinach into the hot sauce and serve with couscous."]},
+{id:"d08",type:"Dinner",emoji:"🫑",name:"Sheet-Pan Chicken Fajitas",
+ why:"A fun, quick dinner. Corn tortillas give a moderate amount of carbs for training days.",
+ kcal:445,p:48,c:40,f:11,time:25,day:"train",tags:["one pan","meal-prep friendly"],
+ ing:[["4½ oz chicken breast, sliced",[4.5,"oz","Chicken breast, boneless skinless","M"]],["1½ cups sliced peppers & onion",[1,"","Bell pepper","P"],[0.5,"","Onion","P"]],["1 tsp oil + fajita spices",[1,"tsp","Olive oil","A"],[null,"","Fajita seasoning","S"]],["2 small corn tortillas",[2,"","Corn tortillas, small","B"]],["Salsa, lime",[3,"tbsp","Salsa","A"],[0.5,"","Lime","P"]],["2 tbsp plain Greek yogurt",[0.125,"cup","Greek yogurt, plain nonfat","D"]]],
+ steps:["Toss chicken and veggies with oil and spices on a sheet pan.","Roast at 425°F for 18–20 minutes.","Warm the tortillas.","Fill with chicken and veggies and top with salsa, lime, and yogurt."]},
+{id:"d09",type:"Dinner",emoji:"🍤",name:"Shrimp & Broccoli Cauliflower Fried Rice",
+ why:"Takeout-style fried rice that's high in protein and low in carbs. Ready in 20 minutes.",
+ kcal:390,p:48,c:23,f:12,time:20,day:"rest",tags:["one pan"],
+ ing:[["6 oz raw shrimp, peeled",[6,"oz","Shrimp","M"]],["2 cups riced cauliflower",[2,"cup","Riced cauliflower (frozen)","F"]],["1 cup broccoli, chopped small",[1,"cup","Broccoli florets","P"]],["¼ cup peas",[0.25,"cup","Peas (frozen)","F"]],["1 large egg",[1,"","Eggs, large","D"]],["1½ tbsp low-sodium soy sauce, garlic, ginger",[1.5,"tbsp","Low-sodium soy sauce","A"],[1,"clove","Garlic","P"],[null,"","Fresh ginger","P"]],["1 tsp sesame oil, scallions",[1,"tsp","Sesame oil","A"],[null,"","Scallions","P"]]],
+ steps:["Sear shrimp in half the oil 2 minutes per side, then remove.","Stir-fry broccoli, peas, and cauliflower rice 5 minutes.","Push to the side and scramble the egg.","Add shrimp, soy, garlic, and ginger, toss, and top with scallions."]},
+{id:"d10",type:"Dinner",emoji:"🍚",name:"Slow-Cooker Salsa Chicken Bowls",
+ why:"Set it and forget it, and you've got several days of lean, saucy chicken with rice and beans.",
+ kcal:420,p:48,c:44,f:6,time:15,batch:4,day:"train",tags:["meal-prep friendly","high fiber"],
+ ing:[["Per serving:"],["4½ oz chicken breast",[4.5,"oz","Chicken breast, boneless skinless","M"]],["¼ cup salsa (for cooking) + more to top",[0.375,"cup","Salsa","A"]],["½ cup cooked brown rice",[0.5,"cup","Brown rice (cooked)","A"]],["⅓ cup pinto beans",[0.33,"cup","Pinto beans, canned","A"]],["Shredded lettuce, pico, lime",[0.15,"head","Romaine lettuce","P"],[0.25,"cup","Pico de gallo","P"],[0.25,"","Lime","P"]]],
+ steps:["Put chicken in the slow cooker and cover with salsa and cumin (scale up for the week).","Cook on low 6 hours or high 3 (or Instant Pot 12 minutes).","Shred with two forks.","Serve over rice and beans with lettuce and pico."]},
+{id:"d11",type:"Dinner",emoji:"🍎",name:"Dijon Pork Tenderloin with Apples & Brussels",
+ why:"Pork tenderloin is about as lean as chicken breast. Sweet apples pair well with roasted Brussels sprouts.",
+ kcal:415,p:42,c:37,f:11,time:30,day:"any",tags:["one pan","high fiber"],
+ ing:[["6 oz pork tenderloin",[6,"oz","Pork tenderloin","M"]],["1 cup Brussels sprouts, halved",[1,"cup","Brussels sprouts","P"]],["½ apple, sliced",[0.5,"","Apple","P"]],["1 tsp olive oil + 1 tsp Dijon",[1,"tsp","Olive oil","A"],[1,"tsp","Dijon mustard","A"]],["½ cup cooked wild rice",[0.5,"cup","Wild rice (cooked)","A"]],["Thyme, salt, pepper",[null,"","Thyme","S"],[null,"","Salt","S"],[null,"","Black pepper","S"]]],
+ steps:["Heat oven to 425°F. Rub pork with Dijon, thyme, salt, and pepper.","Sear pork 2 minutes per side in an oven-safe pan.","Add Brussels and apple tossed in oil and roast 15–18 minutes (to 145°F inside).","Rest 5 minutes, slice, and serve with wild rice."]},
+{id:"d12",type:"Dinner",emoji:"🫑",name:"Turkey & Black Bean Stuffed Peppers",
+ why:"Colorful, filling, and made for batch cooking. Peppers add volume and vitamin C.",
+ kcal:435,p:37,c:39,f:15,time:30,day:"any",tags:["meal-prep friendly","high fiber","freezer friendly"],
+ ing:[["2 bell peppers, halved and seeded",[2,"","Bell pepper","P"]],["4 oz 93% lean ground turkey",[4,"oz","Ground turkey, 93% lean","M"]],["⅓ cup black beans",[0.33,"cup","Black beans, canned","A"]],["¼ cup cooked brown rice",[0.25,"cup","Brown rice (cooked)","A"]],["¼ cup salsa + cumin, chili powder",[0.25,"cup","Salsa","A"],[null,"","Cumin","S"],[null,"","Chili powder","S"]],["¼ cup reduced-fat shredded cheese",[0.25,"cup","Reduced-fat shredded cheese","D"]]],
+ steps:["Heat oven to 400°F and microwave pepper halves 3 minutes to soften.","Brown turkey with spices, then stir in beans, rice, and salsa.","Stuff the peppers and top with cheese.","Bake 15 minutes."]},
+{id:"d13",type:"Dinner",emoji:"🍗",name:"Greek Chicken Souvlaki Plate",
+ why:"Lemon-oregano chicken with tzatziki and a crisp salad. Lots of flavor, light on calories.",
+ kcal:405,p:49,c:28,f:11,time:25,day:"any",tags:["meal-prep friendly"],
+ ing:[["4½ oz chicken breast, cubed",[4.5,"oz","Chicken breast, boneless skinless","M"]],["Marinade: lemon, garlic, oregano, 1 tsp olive oil",[0.5,"","Lemon","P"],[1,"clove","Garlic","P"],[null,"","Oregano","S"],[1,"tsp","Olive oil","A"]],["⅓ cup Greek-yogurt tzatziki",[0.33,"cup","Tzatziki","O"]],["Cucumber, tomato & red onion salad",[0.5,"","Cucumber","P"],[1,"","Tomato","P"],[0.125,"","Red onion","P"]],["½ whole-wheat pita",[0.5,"","Whole-wheat pita","B"]]],
+ steps:["Marinate chicken 10+ minutes (or overnight).","Thread onto skewers, or just pan-sear 8–10 minutes.","Toss the salad with lemon and salt.","Plate with tzatziki and warm pita."]},
+{id:"d14",type:"Dinner",emoji:"🥦",name:"Better-Than-Takeout Beef & Broccoli",
+ why:"Lean flank steak gives protein, iron, and B12, and you get a big serving of broccoli.",
+ kcal:435,p:36,c:43,f:13,time:20,day:"train",tags:["quick-cook"],
+ ing:[["5 oz flank steak, sliced thin against the grain",[5,"oz","Flank steak","M"]],["2 cups broccoli florets",[2,"cup","Broccoli florets","P"]],["Sauce: 1½ tbsp low-sodium soy, 1 tsp honey, 1 tsp cornstarch, garlic, ginger",[1.5,"tbsp","Low-sodium soy sauce","A"],[1,"tsp","Honey","A"],[1,"tsp","Cornstarch","A"],[1,"clove","Garlic","P"],[null,"","Fresh ginger","P"]],["1 tsp sesame oil",[1,"tsp","Sesame oil","A"]],["½ cup cooked jasmine rice",[0.5,"cup","Jasmine rice (cooked)","A"]]],
+ steps:["Toss beef with 1 tsp of the cornstarch.","Steam broccoli 3 minutes.","Sear beef in sesame oil over high heat for 2–3 minutes.","Add broccoli and sauce, toss until thick, and serve over rice."]},
+{id:"d15",type:"Dinner",emoji:"🍣",name:"Ahi Tuna Poke Bowl",
+ why:"Lean ahi tuna has very little fat. Rice and edamame make it a good post-workout meal.",
+ kcal:420,p:44,c:33,f:13,time:15,day:"train",tags:["no cook","omega-3"],
+ ing:[["5 oz sushi-grade ahi tuna, cubed",[5,"oz","Ahi tuna, sushi-grade","M"]],["½ cup cooked sushi or brown rice",[0.5,"cup","Brown rice (cooked)","A"]],["¼ cup shelled edamame",[0.25,"cup","Edamame, shelled (frozen)","F"]],["Cucumber, shredded carrot, seaweed strips",[0.25,"","Cucumber","P"],[0.25,"","Carrots","P"],[1,"sheet","Nori (seaweed)","A"]],["¼ avocado",[0.25,"","Avocado","P"]],["1 tbsp low-sodium soy + ½ tsp sesame oil, sriracha to taste",[1,"tbsp","Low-sodium soy sauce","A"],[0.5,"tsp","Sesame oil","A"],[null,"","Sriracha","A"]]],
+ steps:["Toss tuna with soy, sesame oil, and sriracha. Chill 5 minutes.","Add rice to a bowl.","Arrange tuna, edamame, veggies, and avocado on top.","Sprinkle with sesame seeds and scallion."]},
+{id:"d16",type:"Dinner",emoji:"🍛",name:"Light Chicken, Chickpea & Spinach Curry",
+ why:"A cozy curry made with light coconut milk and Greek yogurt, with fiber from chickpeas.",
+ kcal:475,p:43,c:52,f:11,time:30,day:"train",tags:["meal-prep friendly","high fiber","freezer friendly"],
+ ing:[["5 oz boneless skinless chicken thigh, cubed",[5,"oz","Chicken thighs, boneless skinless","M"]],["⅓ cup chickpeas",[0.33,"cup","Chickpeas, canned","A"]],["½ cup crushed tomatoes + ½ onion, diced",[0.5,"cup","Crushed tomatoes, canned","A"],[0.5,"","Onion","P"]],["¼ cup light coconut milk",[0.25,"cup","Light coconut milk","A"]],["1 cup spinach",[1,"oz","Baby spinach","P"]],["¼ cup plain Greek yogurt",[0.25,"cup","Greek yogurt, plain nonfat","D"]],["Curry powder, garam masala, ginger, garlic",[null,"","Curry powder","S"],[null,"","Garam masala","S"],[null,"","Fresh ginger","P"],[2,"clove","Garlic","P"]],["½ cup cooked basmati rice",[0.5,"cup","Basmati rice (cooked)","A"]]],
+ steps:["Sauté onion, garlic, and ginger, then add spices for 30 seconds.","Add chicken and brown 4 minutes.","Add tomatoes, coconut milk, and chickpeas, and simmer 12–15 minutes.","Stir in spinach, then take off the heat and stir in yogurt. Serve over rice."]},
+{id:"d17",type:"Dinner",emoji:"🍔",name:"Lettuce-Wrap Turkey Burgers & Roasted Veg",
+ why:"All the burger flavor with fewer carbs, which suits a rest day.",
+ kcal:405,p:39,c:14,f:22,time:25,day:"rest",tags:["meal-prep friendly"],
+ ing:[["6 oz 93% lean ground turkey (1 large or 2 small patties)",[6,"oz","Ground turkey, 93% lean","M"]],["1 slice reduced-fat cheddar",[1,"slice","Reduced-fat cheddar, sliced","D"]],["Butter lettuce, tomato, red onion, pickles, mustard",[0.5,"head","Butter lettuce","P"],[0.5,"","Tomato","P"],[0.125,"","Red onion","P"],[1,"","Dill pickles","A"],[null,"","Mustard","A"]],["1½ cups zucchini & carrots, sliced",[0.5,"","Zucchini","P"],[1,"","Carrots","P"]],["1 tsp olive oil",[1,"tsp","Olive oil","A"]]],
+ steps:["Roast veggies with oil at 425°F for 18–20 minutes.","Season turkey (garlic, onion powder, Worcestershire) and form patties.","Grill or pan-sear 5 minutes per side to 165°F, adding cheese at the end.","Wrap in lettuce with toppings."]},
+{id:"d18",type:"Dinner",emoji:"🍝",name:"High-Protein Turkey Bolognese",
+ why:"Pasta night that works for your goals: chickpea pasta and a lean meat sauce with hidden veggies.",
+ kcal:460,p:38,c:46,f:14,time:25,day:"train",tags:["meal-prep friendly","high fiber"],
+ ing:[["2 oz dry chickpea or lentil pasta",[2,"oz","Chickpea or lentil pasta (dry)","A"]],["4 oz 93% lean ground turkey",[4,"oz","Ground turkey, 93% lean","M"]],["½ cup low-sugar marinara",[0.5,"cup","Marinara sauce, low-sugar","A"]],["¼ cup finely diced carrot, celery & onion",[0.25,"","Carrots","P"],[0.5,"stalk","Celery","P"],[0.125,"","Onion","P"]],["Handful of spinach",[1,"oz","Baby spinach","P"]],["1 tbsp grated parmesan, basil",[1,"tbsp","Parmesan, grated","D"],[null,"","Basil","P"]]],
+ steps:["Boil pasta according to the package.","Sauté carrot, celery, and onion 4 minutes, then brown the turkey.","Add marinara and simmer 8–10 minutes, stirring in spinach at the end.","Toss with pasta and top with parmesan and basil."]},
+
+// ---------- SNACKS (12) ----------
+{id:"s01",type:"Snack",emoji:"🍓",name:"Greek Yogurt Berry Cup",
+ why:"The easiest protein snack there is: 23 g of protein and almost no fat.",
+ kcal:170,p:23,c:17,f:1,time:2,day:"any",tags:["no cook","vegetarian"],
+ ing:[["1 cup plain nonfat Greek yogurt",[1,"cup","Greek yogurt, plain nonfat","D"]],["½ cup berries",[0.5,"cup","Berries, fresh","P"]],["Cinnamon or a drop of vanilla",[null,"","Cinnamon","S"]]],
+ steps:["Top yogurt with berries and cinnamon.","Eat."]},
+{id:"s02",type:"Snack",emoji:"🍍",name:"Cottage Cheese & Pineapple",
+ why:"Slow-digesting casein protein with a little natural sweetness. Good for the afternoon or before bed.",
+ kcal:150,p:21,c:12,f:2,time:2,day:"any",tags:["no cook","vegetarian"],
+ ing:[["¾ cup low-fat cottage cheese",[0.75,"cup","Cottage cheese, low-fat","D"]],["⅓ cup pineapple chunks",[0.33,"cup","Pineapple chunks","P"]],["Pinch of black pepper or Tajín (optional)",[null,"","Black pepper","S"]]],
+ steps:["Spoon cottage cheese into a bowl.","Top with pineapple and seasoning."]},
+{id:"s03",type:"Snack",emoji:"🥒",name:"Turkey & Cheese Roll-Ups",
+ why:"A savory, very low-carb snack that's ready in 3 minutes.",
+ kcal:160,p:26,c:5,f:4,time:3,day:"rest",tags:["no cook","portable"],
+ ing:[["4 oz low-sodium sliced turkey",[4,"oz","Deli turkey breast, low-sodium","M"]],["1 light string cheese, split in strips",[1,"","Light string cheese","D"]],["Cucumber spears",[0.25,"","Cucumber","P"]],["Mustard",[null,"","Mustard","A"]]],
+ steps:["Lay out turkey slices and spread with mustard.","Roll each around a strip of cheese or a cucumber spear."]},
+{id:"s04",type:"Snack",emoji:"🥚",name:"Hard-Boiled Eggs & Edamame",
+ why:"A whole-food mix of animal and plant protein that's easy to batch-prep.",
+ kcal:240,p:21,c:8,f:14,time:5,day:"rest",tags:["meal-prep friendly","portable","vegetarian"],
+ ing:[["2 hard-boiled eggs",[2,"","Eggs, large","D"]],["½ cup shelled edamame (steamed)",[0.5,"cup","Edamame, shelled (frozen)","F"]],["Flaky salt, chili flakes",[null,"","Salt","S"],[null,"","Chili flakes","S"]]],
+ steps:["Peel eggs, or keep a batch boiled for the week.","Microwave frozen edamame 1–2 minutes.","Season both and eat."]},
+{id:"s05",type:"Snack",emoji:"🍌",name:"Post-Workout Banana Shake",
+ why:"Fast protein plus quick carbs to refuel right after lifting.",
+ kcal:240,p:25,c:30,f:2,time:2,day:"train",tags:["portable","post-workout"],
+ ing:[["1 scoop whey protein",[1,"scoop","Whey protein powder","A"]],["1 medium banana",[1,"","Banana","P"]],["10–12 oz cold water or ice"],["Pinch of cinnamon",[null,"","Cinnamon","S"]]],
+ steps:["Shake whey with water, or blend everything with ice.","Drink alongside or blended with the banana."]},
+{id:"s06",type:"Snack",emoji:"🐟",name:"Tuna Cucumber Bites",
+ why:"A savory, crunchy snack with lean protein and very few calories.",
+ kcal:170,p:21,c:14,f:3,time:5,day:"any",tags:["no cook"],
+ ing:[["1 pouch (2.5 oz) tuna in water",[2.5,"oz","Tuna in water (can/pouch)","A"]],["1 tbsp plain Greek yogurt + squeeze of lemon",[0.0625,"cup","Greek yogurt, plain nonfat","D"],[0.25,"","Lemon","P"]],["1 cucumber, sliced into rounds",[1,"","Cucumber","P"]],["4 whole-grain crackers",[4,"","Whole-grain crackers","A"]],["Dill, black pepper",[null,"","Dill","P"],[null,"","Black pepper","S"]]],
+ steps:["Mix tuna with yogurt, lemon, dill, and pepper.","Spoon onto cucumber rounds and crackers."]},
+{id:"s07",type:"Snack",emoji:"🥩",name:"Beef Jerky & Almonds",
+ why:"Shelf-stable protein for the car, office, or gym bag.",
+ kcal:180,p:17,c:8,f:9,time:1,day:"any",tags:["portable","no cook"],
+ ing:[["1.5 oz lean beef jerky (low sugar)",[1.5,"oz","Beef jerky, lean","A"]],["15 almonds",[15,"","Almonds","A"]]],
+ steps:["Portion into a small bag or container.","Snack whenever you need it."]},
+{id:"s08",type:"Snack",emoji:"🍫",name:"Chocolate PB Protein Energy Bites",
+ why:"Make a batch on Sunday. They're good before a workout and handle a sweet craving.",
+ kcal:280,p:19,c:26,f:11,time:15,batch:3,day:"train",tags:["meal-prep friendly","portable","no cook"],
+ ing:[["Per serving (3 bites):"],["¼ cup rolled oats",[0.25,"cup","Rolled oats","A"]],["½ scoop chocolate whey",[0.5,"scoop","Whey protein powder","A"]],["1 tbsp peanut butter",[1,"tbsp","Peanut butter","A"]],["1 tsp honey + 1 tsp chia",[1,"tsp","Honey","A"],[1,"tsp","Chia seeds","A"]],["1 tsp cocoa powder, splash of milk as needed",[1,"tsp","Unsweetened cocoa powder","A"],[null,"","Skim milk","D"]]],
+ steps:["Mix everything in a bowl, adding milk a teaspoon at a time until it holds together.","Roll into 3 balls (scale up for the week).","Chill 20 minutes. They keep 7 days in the fridge."]},
+{id:"s09",type:"Snack",emoji:"🍮",name:"Chocolate Protein Yogurt Pudding",
+ why:"A dessert-like snack with almost 30 g of protein. A good pick for the evening.",
+ kcal:175,p:29,c:12,f:1,time:3,day:"rest",tags:["no cook","vegetarian"],
+ ing:[["¾ cup plain nonfat Greek yogurt",[0.75,"cup","Greek yogurt, plain nonfat","D"]],["½ scoop chocolate whey or casein",[0.5,"scoop","Whey protein powder","A"]],["1 tsp unsweetened cocoa",[1,"tsp","Unsweetened cocoa powder","A"]],["A few raspberries",[0.25,"cup","Raspberries","P"]]],
+ steps:["Whisk powder and cocoa into the yogurt until it's smooth like pudding.","Top with raspberries."]},
+{id:"s10",type:"Snack",emoji:"🍘",name:"Smoked Salmon Rice Cakes",
+ why:"A crunchy, savory snack with omega-3s from salmon and protein from whipped cottage cheese.",
+ kcal:180,p:20,c:17,f:4,time:5,day:"any",tags:["omega-3"],
+ ing:[["2 plain rice cakes",[2,"","Rice cakes","A"]],["¼ cup low-fat cottage cheese, blended smooth",[0.25,"cup","Cottage cheese, low-fat","D"]],["2 oz smoked salmon",[2,"oz","Smoked salmon","M"]],["Cucumber slices, dill, capers",[0.25,"","Cucumber","P"],[null,"","Dill","P"],[1,"tsp","Capers","A"]]],
+ steps:["Spread whipped cottage cheese on the rice cakes.","Top with salmon, cucumber, dill, and capers."]},
+{id:"s11",type:"Snack",emoji:"🧆",name:"Crunchy Roasted Chickpeas & String Cheese",
+ why:"Fiber, crunch, and protein together, so it keeps you full until dinner.",
+ kcal:210,p:17,c:17,f:8,time:2,day:"any",tags:["portable","high fiber","vegetarian"],
+ ing:[["⅓ cup roasted chickpeas (store-bought or homemade)",[0.33,"cup","Roasted chickpeas","A"]],["2 light string cheeses",[2,"","Light string cheese","D"]]],
+ steps:["Portion chickpeas into a container.","Eat with the string cheese. (Homemade: roast drained chickpeas at 400°F for 25–30 minutes with spices.)"]},
+{id:"s12",type:"Snack",emoji:"☕",name:"Egg White Veggie Mug Omelet",
+ why:"A warm, savory 2-minute microwave snack with 23 g of protein and almost no fat.",
+ kcal:140,p:23,c:5,f:3,time:4,day:"rest",tags:["vegetarian"],
+ ing:[["¾ cup liquid egg whites",[0.75,"cup","Liquid egg whites","D"]],["Handful of spinach + diced tomato",[1,"oz","Baby spinach","P"],[0.5,"","Tomato","P"]],["2 tbsp crumbled feta",[0.5,"oz","Feta, crumbled","D"]],["Salt, pepper, hot sauce",[null,"","Salt","S"],[null,"","Black pepper","S"],[null,"","Hot sauce","A"]]],
+ steps:["Spray a large mug and add egg whites, veggies, and seasoning.","Microwave 60 seconds, stir, then 30–45 seconds more until set.","Top with feta."]}
+];
+
+/* ===================== APP ===================== */
+const TYPES = ["All","Breakfast","Lunch","Dinner","Snack"];
+const TYPE_COLOR = {Breakfast:"var(--breakfast)",Lunch:"var(--lunch)",Dinner:"var(--dinner)",Snack:"var(--snack)"};
+const byId = Object.fromEntries(MEALS.map(m => [m.id, m]));
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const LS = {
+  get(k, d){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; }catch(e){ return d; } },
+  set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+};
+let favs    = LS.get("mealdeck.favs", []).filter(id => byId[id]);
+let skipped = LS.get("mealdeck.skipped", []).filter(id => byId[id]);
+let prefs   = Object.assign({day:"train", type:"All"}, LS.get("mealdeck.prefs", {}));
+let goals   = Object.assign({weight:"", goal:""}, LS.get("mealdeck.goals", {}));
+let favType = "All";
+let deck = [], history = [], busy = false;
+const persist = () => { LS.set("mealdeck.favs", favs); LS.set("mealdeck.skipped", skipped); LS.set("mealdeck.prefs", prefs); };
+
+function tagsFor(m){
+  const t = [];
+  if (m.day === "train") t.push(["training day","t-train"]);
+  if (m.day === "rest")  t.push(["lower carb","t-rest"]);
+  if (m.time <= 15) t.push(["quick",""]);
+  m.tags.forEach(x => { if (!t.some(y => y[0] === x)) t.push([x,""]); });
+  return t;
+}
+const dayLabel = d => d === "train" ? "💪 Great on training days" : d === "rest" ? "🧘 Lower-carb · rest days" : "⚖️ Any day";
+function shuffle(a){ for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function matches(m){
+  if (prefs.type !== "All" && m.type !== prefs.type) return false;
+  if (prefs.day === "train" && m.day === "rest") return false;
+  if (prefs.day === "rest" && m.day === "train") return false;
+  return true;
+}
+function poolSize(){ return MEALS.filter(matches).length; }
+function buildDeck(){
+  deck = shuffle(MEALS.filter(m => matches(m) && !favs.includes(m.id) && !skipped.includes(m.id)).map(m => m.id));
+  ensureDeck();
+}
+function ensureDeck(){
+  if (deck.length) return;
+  const sk = MEALS.filter(m => matches(m) && skipped.includes(m.id) && !favs.includes(m.id)).map(m => m.id);
+  if (!sk.length) return;
+  skipped = skipped.filter(id => !sk.includes(id));
+  deck = shuffle(sk);
+  persist();
+  toast("🔄 That's the whole deck! Reshuffling the meals you skipped.");
+}
+
+/* ---------- goals math ---------- */
+function goalNumbers(){
+  const w = parseFloat(goals.weight), g = parseFloat(goals.goal);
+  if (!(w >= 80 && w <= 500)) return null;
+  const base = (g >= 80 && g <= 500) ? g : w;
+  return {
+    w, base,
+    pLo: Math.round(base * 0.8 / 5) * 5, pHi: Math.round(base * 1.0 / 5) * 5,
+    mLo: Math.round(w * 14 / 50) * 50, mHi: Math.round(w * 16 / 50) * 50
+  };
+}
+
+/* ---------- card markup ---------- */
+function macroBlock(m){
+  const pc = m.p * 4, cc = m.c * 4, fc = m.f * 9, tot = pc + cc + fc;
+  return `<div class="macros">
+      <div class="m kcal"><b>${m.kcal}</b><span>kcal</span></div>
+      <div class="m"><b>${m.p}g</b><span>Protein</span></div>
+      <div class="m"><b>${m.c}g</b><span>Carbs</span></div>
+      <div class="m"><b>${m.f}g</b><span>Fat</span></div>
+    </div>
+    <div class="bar" title="Calories from protein / carbs / fat">
+      <i style="width:${pc/tot*100}%;background:var(--sage)"></i><i style="width:${cc/tot*100}%;background:var(--breakfast)"></i><i style="width:${fc/tot*100}%;background:var(--accent)"></i>
+    </div>
+    <div class="est"><span>Estimated · per serving</span><span>${Math.round(pc/tot*100)}% protein · ${Math.round(cc/tot*100)}% carbs · ${Math.round(fc/tot*100)}% fat</span></div>`;
+}
+function goalFit(m){
+  const g = goalNumbers();
+  if (!g) return "";
+  const pct = Math.round(m.p / ((g.pLo + g.pHi) / 2) * 100);
+  return `<div class="goalfit">✓ About ${pct}% of your daily protein target</div>`;
+}
+const tagHtml = m => `<div class="tags">${tagsFor(m).map(([t,c]) => `<span class="tag ${c}">${esc(t)}</span>`).join("")}</div>`;
+function recipeHtml(m){
+  return `<div class="recipe">
+    <h4>Ingredients · 1 serving</h4><ul>${m.ing.map(i => `<li>${esc(i[0])}</li>`).join("")}</ul>
+    <h4>Steps</h4><ol>${m.steps.map(s => `<li>${esc(s)}</li>`).join("")}</ol>
+  </div>`;
+}
+function makeCard(m){
+  const el = document.createElement("div");
+  el.className = "card";
+  el.dataset.id = m.id;
+  el.style.setProperty("--tc", TYPE_COLOR[m.type]);
+  el.innerHTML = `
+    <div class="stamp save">SAVE</div><div class="stamp skip">SKIP</div>
+    <div class="card-inner">
+      <div class="face front">
+        <div class="hero"><span class="pill type">${m.type}</span><span class="pill time">⏱ ${m.time} min</span>
+          <span class="emoji">${m.emoji}</span><span class="pill day">${dayLabel(m.day)}</span></div>
+        <div class="front-body">
+          <h2 class="name">${esc(m.name)}</h2>
+          <p class="why">${esc(m.why)}</p>
+          ${macroBlock(m)}
+          ${goalFit(m)}
+          ${tagHtml(m)}
+          <div class="hint">Tap card for full recipe ↻</div>
+        </div>
+      </div>
+      <div class="face back">
+        <div class="back-head"><span class="emoji">${m.emoji}</span><div><h3>${esc(m.name)}</h3>
+          <small>${m.type} · ⏱ ${m.time} min · ${m.kcal} kcal · ${m.p}g protein (est.)</small></div></div>
+        <div class="back-body">${recipeHtml(m)}<div class="hint" style="margin-top:14px">Tap to flip back ↻</div></div>
+      </div>
+    </div>`;
+  attachDrag(el);
+  return el;
+}
+
+/* ---------- stack rendering ---------- */
+const stack = $("#stack");
+function renderStack(reset){
+  if (reset) stack.innerHTML = "";
+  const top = deck.slice(0, 3);
+  stack.querySelectorAll(".card:not(.leaving)").forEach(el => { if (!top.includes(el.dataset.id)) el.remove(); });
+  const old = stack.querySelector(".empty"); if (old) old.remove();
+  top.forEach((id, i) => {
+    let el = stack.querySelector(`.card[data-id="${id}"]:not(.leaving)`);
+    if (!el){
+      el = makeCard(byId[id]);
+      el.classList.add("entering");
+      stack.appendChild(el);
+      void el.offsetWidth;
+      el.classList.remove("entering");
+    }
+    el.classList.remove("pos-0","pos-1","pos-2");
+    el.classList.add("pos-" + i);
+    el.setAttribute("aria-hidden", i ? "true" : "false");
+  });
+  if (!top.length) renderEmpty();
+  $("#skipBtn").disabled = $("#saveBtn").disabled = $("#flipBtn").disabled = !top.length;
+  $("#undoBtn").disabled = !history.length;
+  const pool = poolSize(), seen = pool - deck.length;
+  $("#counter").textContent = top.length ? `${Math.min(seen + 1, pool)} / ${pool}` : `${pool} / ${pool}`;
+}
+function renderEmpty(){
+  const e = document.createElement("div");
+  e.className = "empty";
+  const savedHere = MEALS.filter(m => matches(m) && favs.includes(m.id)).length;
+  e.innerHTML = savedHere
+    ? `<div class="big">🏆</div><h3>You saved every meal here!</h3><p>All ${savedHere} meals in this filter are in your favorites. Try another meal type or day mode, or open Favorites to start cooking.</p>
+       <div class="row-btns" style="justify-content:center"><button class="btn" data-go="favs">Open favorites</button><button class="btn ghost" data-all="1">Show all meals</button></div>`
+    : `<div class="big">🍽️</div><h3>No meals match</h3><p>Try a different filter.</p><button class="btn" data-all="1">Show all meals</button>`;
+  e.querySelector("[data-go]")?.addEventListener("click", () => showView("favs"));
+  e.querySelector("[data-all]")?.addEventListener("click", () => { prefs.type = "All"; prefs.day = "all"; applyFilters(); });
+  stack.appendChild(e);
+}
+function topCard(){ return stack.querySelector(".card.pos-0:not(.leaving)"); }
+
+/* ---------- actions ---------- */
+function act(kind){
+  if (busy || !deck.length) return;
+  const id = deck[0], el = topCard();
+  busy = true;
+  deck.shift();
+  if (kind === "save"){ favs = [id, ...favs.filter(x => x !== id)]; toast("❤️ Saved to favorites"); }
+  else if (!skipped.includes(id)) skipped.push(id);
+  history.push({id, kind});
+  if (history.length > 30) history.shift();
+  persist();
+  if (el){
+    el.classList.add("leaving");
+    el.querySelector(".stamp." + kind).style.opacity = 1;
+    const dir = kind === "save" ? 1 : -1;
+    el.style.transition = "transform .4s cubic-bezier(.4,.1,.6,1), opacity .4s";
+    el.style.transform = `translateX(${dir * 150}%) rotate(${dir * 22}deg)`;
+    el.style.opacity = 0;
+    setTimeout(() => el.remove(), 420);
+  }
+  ensureDeck();
+  renderStack();
+  updateBadge();
+  setTimeout(() => busy = false, 260);
+}
+function undo(){
+  const h = history.pop();
+  if (!h || busy) return;
+  if (h.kind === "save") favs = favs.filter(x => x !== h.id); else skipped = skipped.filter(x => x !== h.id);
+  deck = [h.id, ...deck.filter(x => x !== h.id)];
+  persist(); renderStack(); updateBadge();
+  toast("↩️ Brought it back");
+}
+function flip(){ const el = topCard(); if (el) el.classList.toggle("flipped"); }
+
+/* ---------- swipe / drag ---------- */
+function attachDrag(el){
+  let sx = 0, sy = 0, dx = 0, down = false, moved = false, pid = null;
+  const stamps = () => [el.querySelector(".stamp.save"), el.querySelector(".stamp.skip")];
+  const resetStamps = () => stamps().forEach(s => s.style.opacity = 0);
+  el.addEventListener("pointerdown", e => {
+    if (!el.classList.contains("pos-0") || el.classList.contains("leaving") || busy) return;
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    down = true; moved = false; dx = 0; sx = e.clientX; sy = e.clientY; pid = e.pointerId;
+  });
+  el.addEventListener("pointermove", e => {
+    if (!down || e.pointerId !== pid) return;
+    dx = e.clientX - sx; const dy = e.clientY - sy;
+    if (!moved && Math.abs(dx) > 10 && Math.abs(dx) > Math.abs(dy) * 1.2){
+      moved = true; el.style.transition = "none";
+      try { el.setPointerCapture(pid); } catch(_){}
+    }
+    if (moved){
+      el.style.transform = `translateX(${dx}px) rotate(${dx / 20}deg)`;
+      const [sv, sk] = stamps();
+      sv.style.opacity = Math.max(0, Math.min(1, dx / 110));
+      sk.style.opacity = Math.max(0, Math.min(1, -dx / 110));
+    }
+  });
+  const end = (e, cancelled) => {
+    if (!down) return; down = false;
+    if (moved){
+      el.style.transition = "";
+      if (!cancelled && dx > 110) { el.style.transform = `translateX(${dx}px) rotate(${dx/20}deg)`; act("save"); }
+      else if (!cancelled && dx < -110) { el.style.transform = `translateX(${dx}px) rotate(${dx/20}deg)`; act("skip"); }
+      else { el.style.transform = ""; resetStamps(); }
+    } else if (!cancelled && Math.abs(e.clientX - sx) < 8 && Math.abs(e.clientY - sy) < 8){
+      flip();
+    }
+  };
+  el.addEventListener("pointerup", e => end(e, false));
+  el.addEventListener("pointercancel", e => end(e, true));
+}
+
+/* ---------- filters ---------- */
+function renderControls(){
+  document.querySelectorAll("#daySeg button").forEach(b => b.classList.toggle("on", b.dataset.day === prefs.day));
+  $("#typeChips").innerHTML = TYPES.map(t => `<button class="chip ${prefs.type === t ? "on" : ""}" data-type="${t}">${t === "All" ? "All meals" : t}</button>`).join("");
+}
+function applyFilters(){ persist(); history = []; renderControls(); buildDeck(); renderStack(true); }
+$("#daySeg").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; prefs.day = b.dataset.day; applyFilters(); });
+$("#typeChips").addEventListener("click", e => { const b = e.target.closest(".chip"); if (!b) return; prefs.type = b.dataset.type; applyFilters(); });
+$("#skipBtn").onclick = () => act("skip");
+$("#saveBtn").onclick = () => act("save");
+$("#flipBtn").onclick = flip;
+$("#undoBtn").onclick = undo;
+
+/* ---------- favorites ---------- */
+function updateBadge(){ $("#favBadge").textContent = favs.length || ""; }
+function renderFavs(){
+  const types = TYPES.filter(t => t === "All" || favs.some(id => byId[id].type === t));
+  if (!types.includes(favType)) favType = "All";
+  $("#favChips").innerHTML = favs.length ? types.map(t => `<button class="chip ${favType === t ? "on" : ""}" data-type="${t}">${t === "All" ? `All (${favs.length})` : t}</button>`).join("") : "";
+  const list = favs.map(id => byId[id]).filter(m => favType === "All" || m.type === favType);
+  $("#favSub").textContent = favs.length ? "Meals you've saved. Tap one to open the recipe." : "";
+  $("#favGroc").style.display = favs.length ? "" : "none";
+  $("#favList").innerHTML = favs.length ? list.map(m => `
+    <div class="fav" style="--tc:${TYPE_COLOR[m.type]}" data-id="${m.id}">
+      <button class="thumb" data-open="${m.id}" aria-label="Open ${esc(m.name)}">${m.emoji}</button>
+      <button class="info" data-open="${m.id}"><b>${esc(m.name)}</b><small>${m.type} · ${m.kcal} kcal · ${m.p}g protein · ⏱ ${m.time} min</small></button>
+      <button class="icon-btn" data-remove="${m.id}" title="Remove" aria-label="Remove ${esc(m.name)} from favorites">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg></button>
+    </div>`).join("")
+    : `<div class="empty" style="position:relative;inset:auto;min-height:320px"><div class="big">💛</div><h3>No favorites yet</h3><p>Swipe right or tap the heart on any meal card to save it here.</p><button class="btn" data-go="deck">Browse meals</button></div>`;
+}
+$("#favChips").addEventListener("click", e => { const b = e.target.closest(".chip"); if (!b) return; favType = b.dataset.type; renderFavs(); });
+$("#favList").addEventListener("click", e => {
+  const o = e.target.closest("[data-open]"), r = e.target.closest("[data-remove]"), g = e.target.closest("[data-go]");
+  if (g) return showView("deck");
+  if (r){
+    const id = r.dataset.remove;
+    favs = favs.filter(x => x !== id); persist(); updateBadge();
+    if (matches(byId[id]) && !deck.includes(id)) { deck.push(id); renderStack(); }
+    renderFavs(); toast("Removed from favorites");
+  } else if (o) openModal(byId[o.dataset.open]);
+});
+
+
+/* ---------- grocery list ---------- */
+const SECTIONS = {P:"Produce",M:"Meat & Seafood",D:"Dairy & Eggs",A:"Pantry",S:"Spices",F:"Frozen",B:"Bakery",O:"Other"};
+const SEC_ORDER = ["P","M","D","A","S","F","B","O"];
+const SEC_ICON = {P:"🥬",M:"🥩",D:"🥚",A:"🥫",S:"🧂",F:"🧊",B:"🍞",O:"🛒"};
+const STAPLES = new Set(["Olive oil","Cooking spray","Hot sauce","Sriracha","Baking powder","Vanilla extract","Cornstarch"]);
+const isStaple = it => it.sec === "S" || STAPLES.has(it.name);
+const VOL = {tsp:1, tbsp:3, cup:48};                       // in teaspoons
+const WT  = {oz:1, lb:16, g:1/28.3495, kg:35.274};          // in ounces
+const PLURAL = {slice:"slices",clove:"cloves",head:"heads",stalk:"stalks",scoop:"scoops",sheet:"sheets",strip:"strips",bunch:"bunches"};
+let groc = Object.assign({off:[], serv:{}, checked:[], cleared:[], hideStaples:true, mealsOpen:true}, LS.get("mealdeck.grocery", {}));
+const saveGroc = () => LS.set("mealdeck.grocery", groc);
+const servingsFor = id => groc.serv[id] || byId[id].batch || 1;
+const selectedMeals = () => favs.filter(id => !groc.off.includes(id));
+
+function fmtNum(x, fracs){
+  const FR = {0:"",0.125:"⅛",0.25:"¼",0.333:"⅓",0.5:"½",0.667:"⅔",0.75:"¾"};
+  let w = Math.floor(x), r = x - w, best = 0;
+  [...fracs, 1].forEach(f => { if (Math.abs(r - f) < Math.abs(r - best)) best = f; });
+  if (best === 1){ w += 1; best = 0; }
+  if (w === 0 && best === 0) best = fracs.find(f => f > 0);   // never show "0"
+  const key = Object.keys(FR).find(k => Math.abs(k - best) < 0.01);
+  return (w ? String(w) : "") + FR[key];
+}
+function fmtVol(t){
+  if (t >= 23.9){ const c = t / 48; return `${fmtNum(c, [0,.125,.25,.333,.5,.667,.75])} ${c > 1.01 ? "cups" : "cup"}`; }
+  if (t >= 2.99) return `${fmtNum(t / 3, [0,.333,.5,.667])} tbsp`;
+  return `${fmtNum(t, [0,.25,.333,.5,.667,.75])} tsp`;
+}
+function fmtWt(oz){
+  if (oz >= 16){ const lb = oz / 16, s = `${fmtNum(lb, [0,.25,.5,.75])} lb`; return Math.abs(Math.round(lb * 4) / 4 - lb) > 0.01 ? `${s} (${+oz.toFixed(1)} oz)` : s; }
+  return `${fmtNum(oz, [0,.5])} oz`;
+}
+function fmtCount(n, u){
+  const q = Math.ceil(n * 4 - 1e-6) / 4;                 // round counts up to the nearest ¼ for shopping
+  const s = fmtNum(q, [0,.25,.5,.75]);
+  return u ? `${s} ${q > 1 ? (PLURAL[u] || u + "s") : u}` : s;
+}
+function fmtItem(it){
+  const parts = [];
+  if (it.wt) parts.push(fmtWt(it.wt));
+  if (it.vol) parts.push(fmtVol(it.vol));
+  Object.entries(it.counts).forEach(([u, n]) => parts.push(fmtCount(n, u)));
+  return parts.length ? parts.join(" + ") : "as needed";
+}
+function buildGrocery(){
+  const items = {};
+  selectedMeals().forEach(id => {
+    const m = byId[id], k = servingsFor(id);
+    m.ing.forEach(line => line.slice(1).forEach(([q, u, n, s]) => {
+      const it = items[n] || (items[n] = {name:n, sec:s, vol:0, wt:0, counts:{}, meals:[]});
+      if (!it.meals.includes(id)) it.meals.push(id);
+      if (q == null) return;
+      const amt = q * k;
+      if (VOL[u]) it.vol += amt * VOL[u];
+      else if (WT[u]) it.wt += amt * WT[u];
+      else it.counts[u] = (it.counts[u] || 0) + amt;
+    }));
+  });
+  return Object.values(items).map(it => Object.assign(it, {qty: fmtItem(it), staple: isStaple(it)}));
+}
+function visibleItems(){
+  return buildGrocery().filter(it => !(groc.hideStaples && it.staple) && !groc.cleared.includes(it.name));
+}
+const shortName = id => byId[id].name.replace(/^(Better-Than-Takeout|Lightened|Light|Hearty|Loaded|Savory|Crunchy|Sheet-Pan|Slow-Cooker|High-Protein|Open-Faced)\s+/, "");
+
+function renderGrocery(){
+  const body = $("#grocBody");
+  if (!favs.length){
+    body.innerHTML = `<div class="empty" style="position:relative;inset:auto;min-height:320px"><div class="big">🛒</div><h3>Nothing to shop for yet</h3>
+      <p>Save meals you like (swipe right or tap ♥), and they'll show up here as a grocery list sorted by store section.</p><button class="btn" data-go="deck">Browse meals</button></div>`;
+    body.querySelector("[data-go]").onclick = () => showView("deck");
+    return;
+  }
+  const sel = selectedMeals(), all = buildGrocery();
+  const items = all.filter(it => !(groc.hideStaples && it.staple) && !groc.cleared.includes(it.name));
+  const nStaples = all.filter(it => it.staple && !groc.cleared.includes(it.name)).length;
+  const nCleared = all.filter(it => groc.cleared.includes(it.name)).length;
+  const done = items.filter(it => groc.checked.includes(it.name)).length;
+  const mealRows = favs.map(id => { const m = byId[id], off = groc.off.includes(id);
+    return `<div class="gmeal ${off ? "off" : ""}" data-meal="${id}">
+      <button class="gm-check" data-toggle-meal="${id}" aria-label="${off ? "Include" : "Exclude"} ${esc(m.name)}">${off ? "" : "✓"}</button>
+      <button class="gm-name" data-toggle-meal="${id}"><span style="font-size:22px">${m.emoji}</span><span>${esc(m.name)}<small>${m.type}${m.batch ? ` · batch of ${m.batch}` : ""}</small></span></button>
+      <div class="stepper" aria-label="Servings"><button data-step="-1" data-id="${id}" aria-label="Fewer servings">−</button><output>${servingsFor(id)}×</output><button data-step="1" data-id="${id}" aria-label="More servings">+</button></div>
+    </div>`; }).join("");
+  const secs = SEC_ORDER.map(sc => {
+    const list = items.filter(it => it.sec === sc).sort((a, b) =>
+      (groc.checked.includes(a.name) - groc.checked.includes(b.name)) || a.name.localeCompare(b.name));
+    if (!list.length) return "";
+    const left = list.filter(it => !groc.checked.includes(it.name)).length;
+    return `<div class="gsec"><h4>${SEC_ICON[sc]} ${SECTIONS[sc]}<span>${left ? left + " left" : "✓ done"}</span></h4>
+      ${list.map(it => `<button class="gitem ${groc.checked.includes(it.name) ? "done" : ""}" data-item="${esc(it.name)}">
+        <span class="circ">✓</span><span class="gt"><span class="gn"><span>${esc(it.name)}</span><span class="gq">${esc(it.qty)}</span></span>
+        <span class="gfor">For: ${it.meals.map(id => esc(shortName(id)) + (servingsFor(id) > 1 ? ` (×${servingsFor(id)})` : "")).join(" · ")}</span></span></button>`).join("")}</div>`;
+  }).join("");
+  body.innerHTML = `
+    <div class="panel">
+      <button class="gpanel-head" id="gMealsHead"><b>Meals on this list</b><span>${sel.length} of ${favs.length} · ${groc.mealsOpen ? "Hide ▲" : "Edit ▼"}</span></button>
+      ${groc.mealsOpen ? `<div class="gmeals">${mealRows}</div>` : ""}
+    </div>
+    <div class="panel" style="padding:14px 16px">
+      <button class="switch-row" id="gStaples"><span>Hide pantry staples<small>Salt, pepper, spices, oil, and cooking spray${nStaples ? ` (${nStaples} item${nStaples > 1 ? "s" : ""})` : ""}</small></span><span class="switch ${groc.hideStaples ? "on" : ""}"></span></button>
+    </div>
+    <div class="gtop">
+      <button class="btn" id="gCopy">📋 Copy list</button>
+      <button class="btn" id="gShare" style="background:var(--sage);box-shadow:0 8px 18px -10px rgba(79,125,92,.8)">📤 Share</button>
+    </div>
+    <div class="gtools">
+      <button class="btn ghost" id="gClear">Clear checked</button>
+      <button class="btn ghost" id="gReset">Reset list</button>
+    </div>
+    ${items.length ? `<div class="gprog"><span>${done} of ${items.length} checked</span><span class="track"><i style="width:${items.length ? done / items.length * 100 : 0}%"></i></span></div>` : ""}
+    ${sel.length ? (secs || `<p class="gnote">Everything is checked off and cleared. 🎉</p>`) : `<p class="gnote">Select at least one meal above to build your list.</p>`}
+    ${nCleared ? `<p class="gnote">${nCleared} checked item${nCleared > 1 ? "s" : ""} cleared. <button class="linkish" id="gRestore">Restore</button></p>` : ""}
+    <p class="gnote">Amounts are combined across meals and rounded up to the nearest easy amount. Rice, quinoa, and other grains marked "(cooked)" are cooked amounts, so buy about ⅓ as much dry. Meat and fish weights are as listed in each recipe.</p>`;
+}
+function grocText(){
+  const items = visibleItems().filter(it => !groc.checked.includes(it.name));
+  const lines = ["🛒 Meal Deck grocery list", "For: " + selectedMeals().map(id => byId[id].name + (servingsFor(id) > 1 ? ` ×${servingsFor(id)}` : "")).join(", "), ""];
+  SEC_ORDER.forEach(sc => {
+    const list = items.filter(it => it.sec === sc).sort((a, b) => a.name.localeCompare(b.name));
+    if (!list.length) return;
+    lines.push(SECTIONS[sc].toUpperCase());
+    list.forEach(it => lines.push(`☐ ${it.name}: ${it.qty}`));
+    lines.push("");
+  });
+  if (!items.length) lines.push("(Everything is checked off!)");
+  return lines.join("\n").trim();
+}
+async function copyText(t){
+  try { await navigator.clipboard.writeText(t); return true; }
+  catch(e){
+    const ta = document.createElement("textarea"); ta.value = t; ta.setAttribute("readonly", "");
+    ta.style.cssText = "position:fixed;top:0;left:0;opacity:0"; document.body.appendChild(ta); ta.select();
+    let ok = false; try { ok = document.execCommand("copy"); } catch(_){}
+    ta.remove(); return ok;
+  }
+}
+$("#grocBody").addEventListener("click", async e => {
+  const t = e.target;
+  const tm = t.closest("[data-toggle-meal]"), st = t.closest("[data-step]"), gi = t.closest("[data-item]");
+  if (tm){ const id = tm.dataset.toggleMeal; groc.off = groc.off.includes(id) ? groc.off.filter(x => x !== id) : [...groc.off, id]; }
+  else if (st){ const id = st.dataset.id; groc.serv[id] = Math.max(1, Math.min(20, servingsFor(id) + +st.dataset.step)); }
+  else if (gi){ const n = gi.dataset.item; groc.checked = groc.checked.includes(n) ? groc.checked.filter(x => x !== n) : [...groc.checked, n]; }
+  else if (t.closest("#gMealsHead")) groc.mealsOpen = !groc.mealsOpen;
+  else if (t.closest("#gStaples")) groc.hideStaples = !groc.hideStaples;
+  else if (t.closest("#gClear")){
+    const vis = visibleItems().map(it => it.name), c = groc.checked.filter(n => vis.includes(n));
+    if (!c.length) return toast("Nothing checked yet");
+    groc.cleared = [...new Set([...groc.cleared, ...c])]; groc.checked = groc.checked.filter(n => !c.includes(n));
+    toast(`🧹 Cleared ${c.length} checked item${c.length > 1 ? "s" : ""}`);
+  }
+  else if (t.closest("#gRestore")){ groc.cleared = []; }
+  else if (t.closest("#gReset")){
+    if (!confirm("Reset the grocery list? This unchecks everything, brings back cleared items, and includes all favorites at default servings.")) return;
+    Object.assign(groc, {off:[], serv:{}, checked:[], cleared:[]}); toast("🔄 Grocery list reset");
+  }
+  else if (t.closest("#gCopy")){ const ok = await copyText(grocText()); toast(ok ? "📋 List copied to clipboard" : "Couldn't copy. Try Share instead."); return; }
+  else if (t.closest("#gShare")){
+    const text = grocText();
+    if (navigator.share){ try { await navigator.share({title:"Grocery list", text}); } catch(err){ if (err.name !== "AbortError") { const ok = await copyText(text); toast(ok ? "📋 Copied to clipboard instead" : "Couldn't share"); } } }
+    else { const ok = await copyText(text); toast(ok ? "📋 Sharing isn't available here, so the list was copied" : "Couldn't copy"); }
+    return;
+  }
+  else return;
+  const y = $("#grocScroll").scrollTop; saveGroc(); renderGrocery(); $("#grocScroll").scrollTop = y;
+});
+
+$("#favGroc").onclick = () => showView("grocery");
+
+/* ---------- modal ---------- */
+function openModal(m){
+  const s = $("#sheet");
+  s.style.setProperty("--tc", TYPE_COLOR[m.type]);
+  s.innerHTML = `<div class="hero" style="position:relative"><span class="pill type">${m.type}</span><span class="emoji">${m.emoji}</span>
+      <button class="close" aria-label="Close">✕</button><span class="pill day">${dayLabel(m.day)}</span></div>
+    <div class="content">
+      <h2 class="name">${esc(m.name)}</h2>
+      <p class="why" style="margin:6px 0 12px">${esc(m.why)}</p>
+      ${macroBlock(m)}
+      <div style="margin:10px 0 2px">${goalFit(m)}</div>
+      <div style="margin:10px 0">${tagHtml(m)}</div>
+      <p class="note">⏱ About ${m.time} minutes${m.batch ? ` · Meal prep: makes ${m.batch} servings` : ""}</p>
+      ${recipeHtml(m)}
+      <div class="row-btns" style="margin-top:16px">
+        <button class="btn ghost" data-remove-modal="${m.id}">${favs.includes(m.id) ? "Remove from favorites" : "Close"}</button>
+      </div>
+    </div>`;
+  s.querySelector(".close").onclick = closeModal;
+  s.querySelector("[data-remove-modal]").onclick = () => {
+    if (favs.includes(m.id)){ favs = favs.filter(x => x !== m.id); persist(); updateBadge(); if (matches(m) && !deck.includes(m.id)) deck.push(m.id); renderFavs(); renderStack(); toast("Removed from favorites"); }
+    closeModal();
+  };
+  $("#modal").classList.add("open"); $("#modal").setAttribute("aria-hidden","false");
+}
+function closeModal(){ $("#modal").classList.remove("open"); $("#modal").setAttribute("aria-hidden","true"); }
+$("#modal").addEventListener("click", e => { if (e.target.id === "modal") closeModal(); });
+
+/* ---------- goals ---------- */
+function renderGoals(){
+  $("#wIn").value = goals.weight; $("#gIn").value = goals.goal;
+  renderGoalStats();
+  const sk = skipped.length;
+  $("#dataNote").textContent = `${MEALS.length} meals in the cookbook · ${favs.length} saved · ${sk} skipped. Everything is stored only in this browser.`;
+}
+function renderGoalStats(){
+  const g = goalNumbers();
+  $("#goalStats").innerHTML = g ? `
+    <div class="stat"><span>Daily protein target (est.)</span><b class="hl">${g.pLo}–${g.pHi} g</b></div>
+    <div class="stat"><span>Per meal, if you eat 4 times a day</span><b>${Math.round(g.pLo/4)}–${Math.round(g.pHi/4)} g</b></div>
+    <div class="stat"><span>Rough maintenance calories</span><b>${g.mLo.toLocaleString()}–${g.mHi.toLocaleString()}</b></div>
+    <p class="note" style="margin-top:6px">Protein is based on about 0.8–1 g per lb of ${g.base === g.w ? "body" : "goal"} weight. For recomposition, a common approach is to eat near maintenance on training days and about 200–400 kcal below it on rest days. Adjust based on how your weight and strength trend over 2–3 weeks.</p>`
+    : `<p class="note">Enter your weight to see an estimated daily protein target and calorie range.</p>`;
+}
+["#wIn","#gIn"].forEach(sel => $(sel).addEventListener("input", () => {
+  goals.weight = $("#wIn").value; goals.goal = $("#gIn").value;
+  LS.set("mealdeck.goals", goals); renderGoalStats();
+  stack.querySelectorAll(".card").forEach(c => c.remove()); renderStack();
+}));
+$("#resetSkipped").onclick = () => { const n = skipped.length; skipped = []; persist(); buildDeck(); renderStack(true); renderGoals(); toast(n ? `🔄 ${n} skipped meal${n>1?"s":""} back in the deck` : "No skipped meals to bring back"); };
+$("#clearFavs").onclick = () => { if (!favs.length) return toast("No favorites to clear"); if (!confirm("Remove all saved favorites?")) return; favs = []; persist(); updateBadge(); buildDeck(); renderStack(true); renderGoals(); toast("Favorites cleared"); };
+
+/* ---------- views & keys ---------- */
+let currentView = "deck";
+function showView(v){
+  currentView = v;
+  document.querySelectorAll(".view").forEach(x => x.classList.toggle("active", x.id === "view-" + v));
+  document.querySelectorAll("nav button").forEach(b => b.classList.toggle("on", b.dataset.view === v));
+  if (v === "favs") renderFavs();
+  if (v === "goals") renderGoals();
+  if (v === "grocery") renderGrocery();
+  $("#counter").style.visibility = v === "deck" ? "visible" : "hidden";
+}
+document.querySelector("nav").addEventListener("click", e => { const b = e.target.closest("button"); if (b) showView(b.dataset.view); });
+document.addEventListener("keydown", e => {
+  if ($("#modal").classList.contains("open")){ if (e.key === "Escape") closeModal(); return; }
+  if (currentView !== "deck" || /INPUT|TEXTAREA/.test(document.activeElement.tagName)) return;
+  if (e.key === "ArrowLeft"){ e.preventDefault(); act("skip"); }
+  else if (e.key === "ArrowRight"){ e.preventDefault(); act("save"); }
+  else if (e.key === " " || e.key === "Enter"){ if (document.activeElement.tagName === "BUTTON" && e.key === "Enter") return; e.preventDefault(); flip(); }
+  else if (e.key.toLowerCase() === "u") undo();
+});
+
+let toastT;
+function toast(msg){ const t = $("#toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("show"), 2200); }
+
+/* ---------- init ---------- */
+renderControls(); buildDeck(); renderStack(true); updateBadge();
+
+/* ---------- offline / install (only when served over http(s); harmless when opened as a file) ---------- */
+if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
+  window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+}
+</script>
+</body>
+</html>
