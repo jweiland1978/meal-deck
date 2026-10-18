@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#FBF6EF">
-<meta name="description" content="Swipeable high-protein meal cards with favorites and a grocery list.">
+<meta name="description" content="High-protein meal cards, a weekly meal plan, a protein tracker, a meal builder, and a grocery list.">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Meal Deck">
@@ -226,13 +226,162 @@ nav button.on{color:var(--accent)}
 @media (max-width:370px){.seg button{font-size:12px;padding:9px 4px}.est span:last-child{display:none}}
 @media (max-height:700px){.hero{min-height:96px}.hero .emoji{font-size:48px}.why{font-size:13px}.fab{width:54px;height:54px}.front-body{gap:8px;padding:12px 16px 10px}}
 @media (prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation-duration:.01ms!important}}
+
+/* ===== v2 additions ===== */
+.hdr-r{display:flex;align-items:center;gap:6px}
+.genbtn{font-size:12px;font-weight:700;color:#fff;background:linear-gradient(135deg,var(--accent),#F2A93B);padding:7px 11px;border-radius:999px;box-shadow:0 6px 14px -8px rgba(217,87,58,.8);white-space:nowrap}
+.sheet{position:relative}
+.sheet-pad{padding-top:22px!important}
+.sheet-title{font-family:var(--serif);font-size:22px;margin:0 44px 10px 0}
+.sheet .content>.close{background:#F4ECE2}
+.chip.ing{border-style:dashed}
+.chip.on-ing{background:var(--sage-soft);border-color:var(--sage);color:var(--sage)}
+#ingPanel{padding:4px 2px 2px}
+.ingform{display:flex;gap:8px}
+.ingform input{flex:1;min-width:0;padding:10px 12px;border:1.5px solid var(--line);border-radius:12px;background:#FFFCF8;font-size:16px;outline:none}
+.ingform input:focus{border-color:var(--sage)}
+.ingform .btn{padding:10px 14px;background:var(--sage);box-shadow:none}
+.incl{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding-top:8px}
+.incl .chip{background:var(--sage);border-color:var(--sage);padding:5px 11px}
+.ingchips{padding-top:8px}
+.ingchips .chip{padding:5px 11px;font-size:12.5px}
+.wrapchips{display:flex;flex-wrap:wrap;gap:6px}
+.wrapchips .chip{padding:6px 11px;font-size:12.5px}
+.tag.t-gen{background:#FDE8F0;color:#A0336A}
+.pill.cooked{right:14px;top:auto;bottom:12px;background:rgba(255,255,255,.92)}
+.actrow{display:flex;gap:6px;margin:4px 0 10px}
+.act{flex:1;padding:9px 4px;border-radius:12px;background:#F6EEE6;font-size:12.5px;font-weight:700;white-space:nowrap}
+.act:active{background:#EADFD3}
+.rbadge{font-size:12.5px;font-weight:600;color:#A86A06;margin:-2px 0 8px}
+.scaler{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;flex-wrap:wrap}
+.switch-row.mini{width:auto;margin-left:auto;gap:8px;font-size:12.5px}
+.switch-row.mini .switch{width:40px;height:24px}.switch-row.mini .switch::after{width:18px;height:18px}.switch-row.mini .switch.on::after{left:19px}
+.scal-note{font-size:12px;color:var(--muted);margin:8px 0 0;line-height:1.5}
+.scal-note b{color:var(--ink)}
+.batchbox{margin-top:12px;background:#F0F6F1;border-radius:16px;padding:4px 14px 14px}
+.batchbox h4{color:var(--sage)!important}
+.batchbox ul li{font-size:13px!important}
+.batchbox ul li::before{background:var(--sage)!important}
+.btn.sm{padding:8px 12px;font-size:12.5px}
+.seg.small button{font-size:12.5px;padding:8px 4px}
+.glabel{display:block;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin:12px 0 6px}
+/* plan */
+.plan-head{display:flex;align-items:center;justify-content:space-between}
+.pset{padding:14px 16px}
+.pset-body{margin-top:10px}
+.pset-body label{margin-top:6px}
+.daychips{display:flex;gap:5px;margin-bottom:10px}
+.daychips .chip{flex:1;padding:7px 0;font-size:12px;text-align:center}
+.dstrip{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin:0 0 10px}
+.dpill{display:flex;flex-direction:column;align-items:center;gap:1px;padding:7px 0 9px;border-radius:14px;background:var(--surface);border:1.5px solid var(--line);font-size:12px;position:relative;overflow:hidden}
+.dpill span{font-size:13px}
+.dpill i{position:absolute;left:0;bottom:0;height:3px;width:var(--w);background:var(--sage)}
+.dpill.today b{color:var(--accent)}
+.dpill.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.dpill.on.today b{color:#FFC7B5}
+.dayc{background:var(--surface);border-radius:20px;padding:14px 14px 8px;margin-bottom:12px;box-shadow:0 6px 16px -12px rgba(70,40,20,.5)}
+.dayc-head h3{font-family:var(--serif);font-size:21px}
+.dtype{display:inline-block;font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:999px;margin-top:4px}
+.dtype.t{background:#FFF0D6;color:#A86A06}.dtype.r{background:#E6EEF8;color:#3C6390}
+.totals{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0 6px}
+.totals>div span{font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+.totals>div b{display:block;font-size:19px;margin:1px 0 4px}
+.totals b small{font-size:12px;color:var(--muted);font-weight:600}
+.tsub{grid-column:1/-1;font-size:11.5px;color:var(--muted)}
+.ptrack{display:block;height:7px;border-radius:7px;background:#EDE3D8;overflow:hidden}
+.ptrack i{display:block;height:100%;border-radius:7px;background:var(--sage);transition:width .3s}
+.ptrack.k i{background:var(--breakfast)}
+.slot{display:flex;align-items:center;gap:8px;padding:10px 0;border-top:1px dashed var(--line);position:relative}
+.slot-type{position:absolute;top:6px;left:50px;font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--tc,var(--muted))}
+.slot-main{flex:1;min-width:0;display:flex;align-items:center;gap:10px;text-align:left}
+.slot-main b{display:block;font-size:14px;line-height:1.25;margin-top:9px}
+.slot-main small{font-size:11.5px;color:var(--muted)}
+.slot-main em{font-style:normal;font-weight:800;color:var(--accent)}
+.slot-emoji{width:42px;height:42px;flex:none;border-radius:12px;display:grid;place-items:center;font-size:22px;background:linear-gradient(140deg,var(--tc),color-mix(in srgb,var(--tc) 50%,#fff))}
+.slot-btns{display:flex;gap:2px;flex:none}
+.sbtn{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;font-size:14px;background:#F6EEE6}
+.sbtn.on{background:#FFE9B8}
+.slot.locked .slot-emoji{box-shadow:0 0 0 2px #E7B44B}
+.addons{display:flex;flex-wrap:wrap;gap:6px;padding:10px 0 6px;border-top:1px dashed var(--line);align-items:center}
+.addon-h{font-size:11.5px;font-weight:700;color:var(--muted);width:100%}
+.addon{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;background:#FFF5E6;color:#8A5A0A;border-radius:999px;padding:5px 6px 5px 11px}
+.addon small{font-weight:500;opacity:.8}
+.addon button{width:20px;height:20px;border-radius:50%;font-size:10px;background:rgba(0,0,0,.06)}
+.plan-note{font-size:12.5px;font-weight:700;color:var(--accent);margin-bottom:6px}
+/* tracker */
+.trk{display:flex;align-items:center;gap:16px}
+.ringwrap{position:relative;width:128px;height:128px;flex:none}
+.ring{width:128px;height:128px}
+.ring circle{fill:none;stroke-width:12}
+.ring-bg{stroke:#EFE6DB}
+.ring-fg{stroke:var(--accent);stroke-linecap:round;transition:stroke-dashoffset .6s}
+.ring-fg.done{stroke:var(--sage)}
+.ringtxt{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.ringtxt b{font-family:var(--serif);font-size:30px;line-height:1}
+.ringtxt span{font-size:11px;color:var(--muted);font-weight:600;max-width:80px;line-height:1.25;margin-top:3px}
+.trk-side{flex:1;min-width:0}
+.trk-left{font-size:15px;margin-bottom:10px}
+.trk-left b{color:var(--accent)}
+.kline{display:flex;justify-content:space-between;align-items:baseline;font-size:12px;color:var(--muted);font-weight:600;margin-bottom:5px}
+.kline b{font-size:15px;color:var(--ink)}.kline small{color:var(--muted);font-size:11.5px}
+.dtag{display:block;font-size:11px;color:var(--muted);margin-top:6px}
+.qform{display:flex;flex-direction:column;gap:8px}
+.qform>input{padding:11px 12px;border:1.5px solid var(--line);border-radius:12px;background:#FFFCF8;font-size:16px;outline:none}
+.qnums{display:flex;gap:8px}
+.field.sm{flex:1;margin:0}.field.sm input{padding:10px;min-width:0}.field.sm span{font-size:11.5px;white-space:nowrap}
+.qrow{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px dashed var(--line)}
+.panel label+.qrow{border-top:0}
+.qrow.done .qn{opacity:.55}
+.qe{font-size:22px;width:30px;text-align:center;flex:none}
+.qn{flex:1;min-width:0}
+.qn b{display:block;font-size:13.5px;line-height:1.25}
+.qn small{font-size:11.5px;color:var(--muted)}
+.icon-btn.sm{width:30px;height:30px;font-size:13px}
+.hist{position:relative;display:grid;grid-template-columns:repeat(7,1fr);gap:6px;height:130px;padding-top:16px;align-items:end}
+.hbar{position:relative;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;padding-bottom:18px}
+.hbar i{display:block;width:70%;max-width:30px;border-radius:7px 7px 3px 3px;background:#E9D9C8;min-height:2px}
+.hbar.hit i{background:var(--sage)}
+.hbar.today i{outline:2px solid var(--accent);outline-offset:1px}
+.hbar small{position:absolute;bottom:0;font-size:10.5px;color:var(--muted);font-weight:600}
+.hv{font-size:10px;font-weight:700;color:var(--muted);margin-bottom:2px}
+.tline{position:absolute;left:0;right:0;bottom:calc(18px + (100% - 34px) * var(--tl) / 100%);border-top:1.5px dashed var(--accent);opacity:.6;pointer-events:none}
+.tline em{position:absolute;right:0;top:-15px;font-size:9.5px;font-style:normal;font-weight:700;color:var(--accent)}
+/* ate / cooked sheets */
+.ate-meal{display:flex;align-items:center;gap:12px;background:#FAF5EF;border-radius:16px;padding:12px;margin-bottom:14px}
+.ate-meal b{display:block;font-size:15px;line-height:1.25}.ate-meal small{color:var(--muted);font-size:12px}
+.emoji-lg{font-size:34px}
+.ate-sum{text-align:center;margin:14px 0;font-size:15px}
+.ate-sum small{color:var(--muted)}
+.thumbs{display:flex;gap:8px;margin-bottom:12px}
+.thumb{flex:1;padding:12px;border-radius:14px;border:1.5px solid var(--line);font-weight:700;font-size:14px}
+.thumb.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.stars{display:flex;justify-content:center;gap:6px;margin-bottom:8px}
+.star{font-size:34px;color:#E2D6C9;line-height:1;padding:2px}
+.star.on{color:#F2A93B}
+/* generator */
+.genres{border-radius:20px;overflow:hidden;border:1px solid var(--line);margin-top:12px}
+.genhero{position:relative;height:120px;display:flex;align-items:center;justify-content:center;background:linear-gradient(140deg,var(--tc),color-mix(in srgb,var(--tc) 55%,#fff))}
+.genhero .emoji{font-size:56px;filter:drop-shadow(0 8px 12px rgba(0,0,0,.18))}
+.genbody{padding:14px 16px}
+.genbody .name{font-size:22px;margin-bottom:6px}
+.genbody .why{margin-bottom:10px}
+.genbody .recipe ul li,.genbody .recipe ol li{font-size:13.5px}
+/* me */
+.me-top{padding:6px 16px 4px}
+.me-top .seg{margin-top:4px}
+@media (max-width:370px){.genbtn{padding:6px 9px;font-size:11px}.brand small{display:none}}
+.card.flipped .front,.card:not(.flipped) .back{pointer-events:none}
+.brand{min-width:0}.brand>div{min-width:0}
+.brand small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.counter{white-space:nowrap}
+header{gap:8px}
 </style>
 </head>
 <body>
 <div class="app">
   <header>
     <div class="brand"><div class="logo">🍽️</div><div><h1>Meal Deck</h1><small>High-protein ideas for lean gains</small></div></div>
-    <div class="counter" id="counter">–</div>
+    <div class="hdr-r" id="hdrDeck"><button class="genbtn" id="genBtn" title="Build me a new meal">✨ New meal</button><div class="counter" id="counter">–</div></div>
   </header>
   <main>
     <!-- DECK -->
@@ -244,6 +393,7 @@ nav button.on{color:var(--accent)}
           <button data-day="all">All</button>
         </div>
         <div class="chips" id="typeChips"></div>
+        <div id="ingPanel" hidden></div>
       </div>
       <div class="stack-wrap" id="stack" aria-live="polite"></div>
       <div class="actions">
@@ -254,65 +404,38 @@ nav button.on{color:var(--accent)}
       </div>
     </section>
 
-    <!-- FAVORITES -->
-    <section class="view" id="view-favs">
-      <div class="scroll">
-        <h2 class="section-title">Favorites</h2>
-        <p class="section-sub" id="favSub">Meals you've saved. Tap one to open the recipe.</p>
-        <button class="btn fav-cta" id="favGroc" style="display:none">🛒 Make a grocery list from these</button>
-        <div class="fav-filter chips" id="favChips"></div>
-        <div id="favList"></div>
-      </div>
+    <!-- PLAN -->
+    <section class="view" id="view-plan">
+      <div class="scroll" id="planScroll"><div id="planBody"></div></div>
     </section>
 
     <!-- GROCERY -->
     <section class="view" id="view-grocery">
       <div class="scroll" id="grocScroll">
         <h2 class="section-title">Grocery list</h2>
-        <p class="section-sub">Made from your saved meals. Tap an item to check it off.</p>
+        <p class="section-sub">Made from your saved meals, your weekly plan, and recipes you add. Tap an item to check it off.</p>
         <div id="grocBody"></div>
       </div>
     </section>
 
-    <!-- GOALS -->
-    <section class="view" id="view-goals">
-      <div class="scroll">
-        <h2 class="section-title">My goals</h2>
-        <p class="section-sub">Build lean muscle and lose body fat. Lift 3× a week.</p>
-        <div class="panel">
-          <label for="wIn">Current body weight</label>
-          <div class="field"><input id="wIn" type="number" inputmode="decimal" min="80" max="500" placeholder="e.g. 195"><span>lbs</span></div>
-          <label for="gIn">Goal body weight <span style="color:var(--muted);font-weight:500">(optional)</span></label>
-          <div class="field"><input id="gIn" type="number" inputmode="decimal" min="80" max="500" placeholder="e.g. 185"><span>lbs</span></div>
-          <div id="goalStats"></div>
-        </div>
-        <div class="panel">
-          <label>How the deck fits your goals</label>
-          <p class="note">Main meals aim for about 35–50 g of protein and snacks for 15–30 g. They focus on whole foods and veggies. <b>Training day</b> mode leans toward meals with more carbs to fuel and refuel your lifts. <b>Rest day</b> mode leans lower-carb. Macro numbers are rough estimates for the listed portions and will vary by brand and how you measure.</p>
-        </div>
-        <div class="panel">
-          <label>Deck data</label>
-          <p class="note" id="dataNote" style="margin-bottom:12px"></p>
-          <div class="row-btns">
-            <button class="btn ghost" id="resetSkipped">Bring back skipped</button>
-            <button class="btn ghost" id="clearFavs">Clear favorites</button>
-          </div>
-        </div>
-        <p class="disclaimer">ℹ️ These are general estimates for meal planning, not medical or nutrition advice. If you have health conditions or take medications, check with your doctor or a registered dietitian before changing your diet.</p>
+    <!-- ME -->
+    <section class="view" id="view-me">
+      <div class="me-top">
+        <div class="seg" id="meSeg"><button data-me="tracker" class="on">📈 Tracker</button><button data-me="favs">♥ Favorites</button><button data-me="goals">🎯 Goals</button></div>
       </div>
+      <div class="scroll" id="meScroll" style="padding-top:12px"><div id="meBody"></div></div>
     </section>
   </main>
   <nav>
     <button data-view="deck" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="3"/><path d="M2 7v10M22 7v10" stroke-linecap="round"/></svg>Deck</button>
-    <button data-view="favs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 20s-7-4.3-9-8.6C1.6 8.2 3.5 5 6.8 5c2 0 3.4 1 4.2 2.3h2C13.8 6 15.2 5 17.2 5c3.3 0 5.2 3.2 3.8 6.4C19 15.7 12 20 12 20z"/></svg>Favorites<span class="badge" id="favBadge"></span></button>
+    <button data-view="plan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4M7.5 14h3M13.5 14h3M7.5 17.5h3"/></svg>Plan</button>
     <button data-view="grocery"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h2.2l2.3 11h10.8l2-8H6.6"/><circle cx="9.5" cy="19.5" r="1.4"/><circle cx="17" cy="19.5" r="1.4"/></svg>Grocery</button>
-    <button data-view="goals"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg>My goals</button>
+    <button data-view="me"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.2-4 4.3-6 8-6s6.8 2 8 6"/></svg>Me<span class="badge" id="favBadge" title="Favorites"></span></button>
   </nav>
 </div>
 
 <div class="modal" id="modal" aria-hidden="true"><div class="sheet" id="sheet" role="dialog" aria-modal="true"></div></div>
 <div class="toast" id="toast"></div>
-
 <script>
 /* ===================== MEAL DATA =====================
  * Add a meal by copying any object below. Fields:
@@ -639,71 +762,587 @@ const MEALS = [
  ing:[["¾ cup liquid egg whites",[0.75,"cup","Liquid egg whites","D"]],["Handful of spinach + diced tomato",[1,"oz","Baby spinach","P"],[0.5,"","Tomato","P"]],["2 tbsp crumbled feta",[0.5,"oz","Feta, crumbled","D"]],["Salt, pepper, hot sauce",[null,"","Salt","S"],[null,"","Black pepper","S"],[null,"","Hot sauce","A"]]],
  steps:["Spray a large mug and add egg whites, veggies, and seasoning.","Microwave 60 seconds, stir, then 30–45 seconds more until set.","Top with feta."]}
 ];
+/* ===================== NUTRITION DATABASE =====================
+ * Used to compute macros for the extended library and the meal generator.
+ * key: [canonical name, store section, base unit, kcal, protein, carbs, fat]  (values per 1 base unit)
+ * Weights are raw unless the name says cooked. Units convert: tsp/tbsp/cup, oz/lb/g/kg.
+ */
+const FOOD = {
+  chk:["Chicken breast, boneless skinless","M","oz",34,6.5,0,0.75], thigh:["Chicken thighs, boneless skinless","M","oz",40,5.5,0,1.9],
+  tur:["Ground turkey, 93% lean","M","oz",42,5.3,0,2.3], beef:["Lean ground beef, 93%","M","oz",43,5.9,0,2],
+  sir:["Top sirloin steak","M","oz",40,6.2,0,1.6], flank:["Flank steak","M","oz",44,6,0,2.2], pork:["Pork tenderloin","M","oz",34,5.9,0,1],
+  sal:["Sockeye salmon","M","oz",38,6.3,0,1.4], cod:["Cod fillet","M","oz",23,5,0,0.2], tilapia:["Tilapia fillet","M","oz",27,5.7,0,0.5],
+  shr:["Shrimp","M","oz",24,5.7,0.1,0.3], sm:["Smoked salmon","M","oz",33,5.2,0,1.2], deli:["Deli turkey breast, low-sodium","M","oz",30,5.5,1,0.5],
+  ham:["Lean ham","M","oz",35,5.5,0.5,1.2], tbacon:["Turkey bacon","M","strip",30,2,0.3,2.2], tsaus:["Turkey breakfast sausage, lean","M","oz",40,5,0.3,2],
+  tofu:["Extra-firm tofu","P","oz",26,2.9,0.6,1.4], tuna:["Tuna in water (can/pouch)","A","oz",30,6.5,0,0.3], jerky:["Beef jerky, lean","A","oz",75,11,4,1.5],
+  egg:["Eggs, large","D","",72,6.3,0.4,4.8], ew:["Liquid egg whites","D","cup",120,26,2,0.4], yog:["Greek yogurt, plain nonfat","D","cup",133,23,8,0.7],
+  cc:["Cottage cheese, low-fat","D","cup",163,28,6,2.3], milk:["Skim milk","D","cup",85,8.3,12,0.2], am:["Unsweetened almond milk","D","cup",35,1,1.5,2.5],
+  soym:["Unsweetened soy milk","D","cup",80,7,4,4], feta:["Feta, crumbled","D","oz",75,4,1.2,6], parm:["Parmesan, grated","D","tbsp",22,2,0.2,1.4],
+  shc:["Reduced-fat shredded cheese","D","cup",310,28,4,20], moz:["Part-skim mozzarella, shredded","D","cup",288,28,3,18], str:["Light string cheese","D","",50,6,1,2.5],
+  swiss:["Reduced-fat Swiss, sliced","D","slice",55,6,1,3], ched:["Reduced-fat cheddar, sliced","D","slice",58,5,0.5,4], butter:["Butter","D","tsp",34,0,0,3.8],
+  ccl:["Light cream cheese","D","tbsp",30,1,1,2.5], ric:["Part-skim ricotta","D","cup",340,28,13,19], whey:["Whey protein powder","A","scoop",120,24,3,1.5],
+  tz:["Tzatziki","O","cup",195,12,12,10.4], hum:["Hummus","O","tbsp",27,1.2,2.2,1.5], pesto:["Basil pesto","O","tbsp",80,1.5,1,8], chimi:["Chimichurri","O","tbsp",60,0,0.5,6.5],
+  ber:["Berries, fresh","P","cup",75,1,17,0.5], fber:["Frozen mixed berries","F","cup",75,1,17,0.5], rasp:["Raspberries","P","cup",70,1.5,15,0.8], straw:["Strawberries","P","cup",57,1.1,12.7,0.5],
+  ban:["Banana","P","",110,1.3,27,0.4], apple:["Apple","P","",100,0.5,25,0.3], pine:["Pineapple chunks","P","cup",88,0.9,21.6,0.2], mango:["Mango","P","cup",105,1.4,25,0.6],
+  avo:["Avocado","P","",250,3,13,22], spin:["Baby spinach","P","oz",8,0.8,1,0.1], greens:["Mixed salad greens","P","oz",6,0.5,1,0.1], arug:["Arugula","P","oz",7,0.7,1,0.2],
+  rom:["Romaine lettuce","P","head",115,7.7,20.6,1.9], bl:["Butter lettuce","P","head",24,2.2,3.6,0.4], broc:["Broccoli florets","P","cup",33,2.5,6,0.3],
+  cauli:["Cauliflower florets","P","cup",27,2,5,0.3], bp:["Bell pepper","P","",36,1.2,7,0.4], on:["Onion","P","",45,1.2,10.3,0.1], ron:["Red onion","P","",45,1.2,10.3,0.1],
+  cuke:["Cucumber","P","",50,2,11,0.3], tom:["Tomato","P","",23,1.1,4.8,0.2], ct:["Cherry tomatoes","P","cup",29,1.3,5.8,0.3], zuc:["Zucchini","P","",36,2.4,6.2,0.6],
+  car:["Carrots","P","",27,0.6,6,0.1], bcar:["Baby carrots","P","cup",50,0.8,12,0.2], cel:["Celery","P","stalk",6,0.3,1.2,0.1], asp:["Asparagus","P","bunch",100,10,17,0.5],
+  gb:["Green beans","P","cup",34,1.8,7,0.2], brus:["Brussels sprouts","P","cup",42,3,8,0.3], snap:["Snap peas","P","cup",27,1.8,4.8,0.1], mush:["Mushrooms","P","cup",17,2.2,2.3,0.2],
+  slaw:["Coleslaw mix (cabbage & carrot)","P","cup",20,1,4,0.1], bok:["Baby bok choy","P","cup",9,1,1.5,0.1], squash:["Spaghetti squash (cooked)","P","cup",44,1,10,0.4],
+  swp:["Sweet potato","P","oz",24,0.45,5.7,0], pot:["Baby potatoes","P","oz",22,0.6,4.9,0], pico:["Pico de gallo","P","cup",43,1.5,9,0.2],
+  lem:["Lemon","P","",18,0.3,4.5,0], lime:["Lime","P","",16,0.2,4,0], gar:["Garlic","P","clove",4.5,0.2,1,0],
+  ging:["Fresh ginger","P","",0,0,0,0], cil:["Cilantro","P","",0,0,0,0], dill:["Dill","P","",0,0,0,0], basil:["Basil","P","",0,0,0,0], scal:["Scallions","P","",0,0,0,0], pars:["Parsley","P","",0,0,0,0],
+  cauliR:["Riced cauliflower (frozen)","F","cup",28,2,5,0.3], eda:["Edamame, shelled (frozen)","F","cup",190,17,14,8], peas:["Peas (frozen)","F","cup",117,7.9,21,0.6],
+  corn:["Corn (frozen)","F","cup",132,4.5,27,1.5], sfv:["Stir-fry vegetable mix (frozen)","F","cup",36,2,7,0.2],
+  brice:["Brown rice (cooked)","A","cup",218,4.5,46,1.6], jrice:["Jasmine rice (cooked)","A","cup",205,4.3,45,0.4], basm:["Basmati rice (cooked)","A","cup",205,4.3,45,0.4],
+  quin:["Quinoa (cooked)","A","cup",222,8,39,3.6], farro:["Farro (cooked)","A","cup",225,8,47,1.4], wrice:["Wild rice (cooked)","A","cup",168,6.5,35,0.6],
+  cous:["Whole-wheat couscous (cooked)","A","cup",175,6,37,0.3], oats:["Rolled oats","A","cup",300,10,54,5], wwp:["Whole-wheat pasta (dry)","A","oz",102,4,21,0.5],
+  cpp:["Chickpea or lentil pasta (dry)","A","oz",97,5.5,16,1.5], soba:["Soba noodles (dry)","A","oz",100,4,21,0.2],
+  bb:["Black beans, canned","A","cup",220,14,40,0.8], kb:["Kidney beans, canned","A","cup",215,13.5,38,0.8], pb_:["Pinto beans, canned","A","cup",215,13.5,38,0.8],
+  wb:["Cannellini beans, canned","A","cup",215,13.5,38,0.8], chp:["Chickpeas, canned","A","cup",250,13,40,4], lent:["Lentils (cooked)","A","cup",232,18,40,0.8],
+  rchp:["Roasted chickpeas","A","cup",385,18,50,12], mar:["Marinara sauce, low-sugar","A","cup",100,3,16,3], crt:["Crushed tomatoes, canned","A","cup",88,4,18,0.6],
+  coco:["Light coconut milk","A","cup",145,1,4,13.5], broth:["Low-sodium chicken broth","A","cup",15,2,1,0.5], salsa:["Salsa","A","cup",72,3,14,0.4],
+  oil:["Olive oil","A","tbsp",120,0,0,14], sesoil:["Sesame oil","A","tbsp",120,0,0,14], spray:["Cooking spray","A","",0,0,0,0],
+  pb:["Peanut butter","A","tbsp",96,3.5,3.5,8], pb2:["Powdered peanut butter","A","tbsp",25,3,2,0.75], almonds:["Almonds","A","",7,0.25,0.25,0.6],
+  walnut:["Walnuts, chopped","A","tbsp",49,1.1,1,4.8], chia:["Chia seeds","A","tbsp",58,2,5,3.7], honey:["Honey","A","tsp",21,0,5.7,0], maple:["Maple syrup","A","tsp",17,0,4.5,0],
+  soy:["Low-sodium soy sauce","A","tbsp",9,1,1,0], teri:["Teriyaki sauce","A","tbsp",15,1,3,0], bbq:["BBQ sauce, low-sugar","A","tbsp",15,0,3.5,0],
+  miso:["White miso paste","A","tbsp",34,2,4.3,1], cock:["Cocktail sauce","A","tbsp",20,0.2,4.5,0], sesdr:["Sesame-ginger dressing","A","tbsp",50,0,3,4],
+  vin:["Light vinaigrette","A","tbsp",20,0,1.5,1.5], dij:["Dijon mustard","A","tsp",5,0.3,0.3,0.3], olv:["Kalamata olives","A","",8,0,0.3,0.75], cap:["Capers","A","tsp",1,0,0.2,0],
+  rice_cake:["Rice cakes","A","",35,0.7,7.3,0.3], crack:["Whole-grain crackers","A","",15,0.4,2.5,0.5], crumbs:["Whole-wheat breadcrumbs","A","tbsp",27,1,5,0.4],
+  cocoa:["Unsweetened cocoa powder","A","tsp",5,0.3,0.9,0.2], gran:["Low-sugar granola","A","cup",440,10,64,16], sri:["Sriracha","A","",0,0,0,0], hot:["Hot sauce","A","",0,0,0,0],
+  sesame:["Sesame seeds","A","",0,0,0,0], vanilla:["Vanilla extract","A","tsp",0,0,0,0],
+  bread:["Sprouted whole-grain bread","B","slice",80,5,15,0.5], emuf:["Whole-wheat English muffin","B","",134,6,26,1.2], tort:["High-fiber tortillas","B","",115,5,18,3],
+  pita:["Whole-wheat pita","B","",172,6,35,1.7], ctort:["Corn tortillas, small","B","",54,1.4,11,0.7],
+  salt:["Salt","S","",0,0,0,0], pep:["Black pepper","S","",0,0,0,0], cin:["Cinnamon","S","",0,0,0,0], cum:["Cumin","S","",0,0,0,0], chili:["Chili powder","S","",0,0,0,0],
+  pap:["Paprika","S","",0,0,0,0], spap:["Smoked paprika","S","",0,0,0,0], oreg:["Oregano","S","",0,0,0,0], ital:["Italian seasoning","S","",0,0,0,0], thyme:["Thyme","S","",0,0,0,0],
+  garp:["Garlic powder","S","",0,0,0,0], curry:["Curry powder","S","",0,0,0,0], garam:["Garam masala","S","",0,0,0,0], cajun:["Cajun seasoning","S","",0,0,0,0],
+  flakes:["Chili flakes","S","",0,0,0,0], ebs:["Everything-bagel seasoning","S","",0,0,0,0], taco:["Taco seasoning","S","",0,0,0,0], lpep:["Lemon pepper seasoning","S","",0,0,0,0]
+};
+
+/* ===================== EXTENDED LIBRARY (macros computed from FOOD) =====================
+ * ing entries: [foodKey, qty, unit?, note?]  (unit defaults to the food's base unit; omit qty for "as needed")
+ * kcal/p/c/f are calculated from FOOD at load time, so portions and macros always agree.
+ */
+const MEALS2 = [
+// ---------- BREAKFAST ----------
+{id:"n01",type:"Breakfast",emoji:"🌯",name:"Spinach Feta Egg White Wrap",why:"Mostly egg whites, so it's light on calories and high in protein. Wrapped and ready in 10 minutes.",time:10,day:"any",tags:["portable","vegetarian"],
+ ing:[["tort",1],["ew",1,"cup"],["egg",1],["spin",1,"oz"],["feta",0.75,"oz"],["ct",0.25,"cup","halved"],["spray"]],
+ steps:["Wilt spinach in a sprayed pan for 1 minute.","Add egg whites and the egg and scramble until just set.","Pile onto the warm tortilla with feta and tomatoes, then roll it up."]},
+{id:"n02",type:"Breakfast",emoji:"🫐",name:"Blueberry Cottage Cheese Crunch Bowl",why:"Cottage cheese and yogurt give two kinds of protein, with a little granola for crunch.",time:3,day:"any",tags:["no cook","vegetarian"],
+ ing:[["cc",1,"cup"],["yog",0.5,"cup"],["ber",0.75,"cup","blueberries"],["gran",0.25,"cup"],["cin"]],
+ steps:["Stir the yogurt into the cottage cheese for a creamier texture.","Top with blueberries, granola, and cinnamon."]},
+{id:"n03",type:"Breakfast",emoji:"🍏",name:"Apple Pie Protein Oats",why:"Warm oats with apple and cinnamon to fuel a lifting morning, with whey and milk for protein.",time:8,day:"train",tags:["high fiber","vegetarian"],
+ ing:[["oats",0.5,"cup"],["milk",1,"cup"],["whey",1],["apple",0.5,"","diced"],["walnut",1,"tbsp"],["cin"]],
+ steps:["Simmer oats, milk, and diced apple for 4 minutes.","Take off the heat and stir in whey and cinnamon.","Top with walnuts."]},
+{id:"n04",type:"Breakfast",emoji:"🌮",name:"Spiced Turkey & Egg Breakfast Tacos",why:"Seasoned turkey plus eggs make a savory taco breakfast with about 38 g of protein.",time:15,day:"any",tags:["quick-cook"],
+ ing:[["tur",3,"oz"],["egg",2],["ew",0.25,"cup"],["ctort",2],["salsa",2,"tbsp"],["avo",0.125,"","sliced"],["cum"],["spap"]],
+ steps:["Brown turkey with cumin and smoked paprika, 5 minutes.","Add eggs and egg whites and scramble until set.","Warm tortillas, fill, and top with salsa and avocado."]},
+{id:"n05",type:"Breakfast",emoji:"🥧",name:"Mediterranean Veggie Frittata",batch:4,why:"Bake it once and slice it into 4 low-carb breakfasts for rest days.",time:30,day:"rest",tags:["meal-prep friendly","vegetarian"],
+ ing:[["egg",2],["ew",0.75,"cup"],["zuc",0.25,"","diced"],["bp",0.25,"","diced"],["spin",1,"oz"],["feta",0.5,"oz"],["oreg"],["spray"]],
+ steps:["Heat oven to 375°F and spray a baking dish (scale the amounts up for the batch).","Sauté zucchini, pepper, and spinach for 4 minutes.","Whisk eggs, whites, and oregano, pour over the veggies, and top with feta.","Bake 20–25 minutes until set. Slice into portions. Keeps 4 days."]},
+{id:"n06",type:"Breakfast",emoji:"🐟",name:"Smoked Salmon Egg English Muffin",why:"Smoked salmon adds omega-3s, and the extra egg whites push protein past 40 g.",time:10,day:"any",tags:["omega-3"],
+ ing:[["emuf",1],["ccl",1,"tbsp"],["sm",3,"oz"],["egg",1],["ew",0.5,"cup"],["dill"]],
+ steps:["Toast the muffin and spread with cream cheese.","Scramble the egg with the egg whites.","Layer the eggs and smoked salmon, then top with dill."]},
+{id:"n07",type:"Breakfast",emoji:"🥞",name:"Banana Oat Protein Pancakes",why:"Blender pancakes with whey and oats. Lots of carbs and protein before a lift.",time:15,day:"train",tags:["vegetarian"],
+ ing:[["oats",0.5,"cup"],["whey",1],["egg",1],["ew",0.25,"cup"],["ban",0.5],["ber",0.5,"cup"],["maple",1,"tsp"],["spray"]],
+ steps:["Blend oats, whey, egg, egg whites, and banana until smooth.","Cook small pancakes on a sprayed pan, 2 minutes per side.","Top with berries and maple."]},
+{id:"n08",type:"Breakfast",emoji:"🌶️",name:"Southwest Tofu Scramble",why:"A plant-based scramble. Tofu and beans give 37 g of protein and lots of fiber.",time:15,day:"any",tags:["vegetarian","high fiber"],
+ ing:[["tofu",11,"oz","crumbled"],["bb",0.25,"cup"],["bp",0.5,"","diced"],["on",0.25,"","diced"],["spin",1,"oz"],["salsa",2,"tbsp"],["cum"],["chili"],["spray"]],
+ steps:["Press tofu with a towel and crumble it.","Sauté onion and pepper 3 minutes, then add tofu and spices and cook 5 minutes.","Stir in beans and spinach until hot, and top with salsa."]},
+{id:"n09",type:"Breakfast",emoji:"🥜",name:"PB Crunch Greek Yogurt Bowl",why:"Powdered peanut butter gives the flavor with a fraction of the fat.",time:3,day:"any",tags:["no cook","vegetarian"],
+ ing:[["yog",1.5,"cup"],["pb2",2,"tbsp"],["ban",0.5,"","sliced"],["gran",0.125,"cup"]],
+ steps:["Stir powdered peanut butter into the yogurt.","Top with banana and granola."]},
+{id:"n10",type:"Breakfast",emoji:"🥪",name:"Ham, Egg & Swiss Breakfast Sandwich",why:"A drive-thru classic made lean: 40+ g of protein in a handheld sandwich.",time:10,day:"any",tags:["portable"],
+ ing:[["emuf",1],["egg",1],["ew",0.5,"cup"],["ham",2,"oz"],["swiss",1],["spray"]],
+ steps:["Cook the egg and egg whites in a sprayed ramekin or small pan.","Warm the ham in the same pan.","Stack the egg, ham, and Swiss on the toasted muffin."]},
+{id:"n11",type:"Breakfast",emoji:"🥣",name:"Savory Parmesan Oats with Eggs",why:"Oats cooked in broth and topped with eggs. A savory change from sweet oatmeal.",time:12,day:"any",tags:["high fiber"],
+ ing:[["oats",0.5,"cup"],["broth",1,"cup"],["egg",2],["ew",0.5,"cup"],["spin",1,"oz"],["parm",1,"tbsp"],["pep"]],
+ steps:["Simmer oats in broth for 4–5 minutes and stir in spinach.","Scramble or fry the eggs with the egg whites.","Top the oats with eggs, parmesan, and black pepper."]},
+{id:"n12",type:"Breakfast",emoji:"🍠",name:"Turkey Sausage & Sweet Potato Bowl",why:"Sweet potato carbs and lean sausage. A hearty pre-workout breakfast.",time:20,day:"train",tags:["meal-prep friendly"],
+ ing:[["tsaus",3,"oz"],["swp",5,"oz","diced"],["egg",2],["ew",0.25,"cup"],["spin",1,"oz"],["spray"]],
+ steps:["Microwave diced sweet potato 4 minutes, then crisp it in a pan.","Brown the sausage alongside.","Add spinach, then scramble in eggs and egg whites."]},
+{id:"n13",type:"Breakfast",emoji:"🍫",name:"Chocolate Overnight Protein Oats",batch:3,why:"Tastes like dessert and has 40+ g of protein. Make 3 jars at once.",time:5,day:"train",tags:["meal-prep friendly","no cook","vegetarian"],
+ ing:[["oats",0.5,"cup"],["whey",1,"scoop","chocolate"],["yog",0.5,"cup"],["am",0.75,"cup"],["cocoa",2,"tsp"],["ban",0.5,"","sliced"]],
+ steps:["Mix oats, whey, and cocoa in a jar.","Stir in yogurt and almond milk.","Refrigerate overnight, then top with banana. Keeps 3 days."]},
+{id:"n14",type:"Breakfast",emoji:"🍅",name:"Caprese Egg Bake",why:"Tomato, basil, and mozzarella in a low-carb, high-protein bake for rest days.",time:20,day:"rest",tags:["vegetarian"],
+ ing:[["egg",2],["ew",0.75,"cup"],["moz",0.25,"cup"],["ct",0.5,"cup","halved"],["spin",1,"oz"],["basil"],["spray"]],
+ steps:["Heat oven to 400°F and spray a small baking dish.","Add spinach and tomatoes, then pour in whisked eggs and whites.","Top with mozzarella and bake 15 minutes. Finish with basil."]},
+{id:"n15",type:"Breakfast",emoji:"🍞",name:"Cottage Cheese Toast with Tomato & Eggs",why:"Cottage cheese works like ricotta on toast. Add two eggs for a complete breakfast.",time:10,day:"any",tags:["vegetarian"],
+ ing:[["bread",2],["cc",0.5,"cup"],["egg",2],["tom",1,"","sliced"],["ebs"]],
+ steps:["Toast the bread and spread with cottage cheese.","Layer tomato slices on top.","Top with fried or jammy eggs and everything seasoning."]},
+// ---------- LUNCH ----------
+{id:"n16",type:"Lunch",emoji:"🌿",name:"Chicken Pesto Quinoa Salad",batch:4,why:"A make-ahead salad that holds up for 4 days in the fridge.",time:25,day:"any",tags:["meal-prep friendly"],
+ ing:[["chk",5,"oz"],["quin",0.5,"cup"],["ct",0.5,"cup","halved"],["spin",1,"oz"],["pesto",1,"tbsp"],["parm",1,"tbsp"],["lem",0.25]],
+ steps:["Season and grill or bake the chicken (425°F, 18–20 minutes), then dice.","Toss quinoa with pesto, lemon, and parmesan.","Fold in chicken, tomatoes, and spinach, then portion into containers."]},
+{id:"n17",type:"Lunch",emoji:"🔥",name:"Buffalo Chicken Lettuce Wraps",why:"Spicy, crunchy, and low-carb, with a yogurt ranch for extra protein.",time:20,day:"rest",tags:["quick-cook"],
+ ing:[["chk",6,"oz"],["hot",null,"","buffalo-style"],["yog",0.25,"cup","+ dill & garlic as ranch"],["cel",2,"stalk","sliced"],["car",1,"","shredded"],["bl",0.5],["avo",0.25]],
+ steps:["Cook the chicken, shred it, and toss with hot sauce.","Stir dill and garlic into the yogurt for a quick ranch.","Fill lettuce cups with chicken, celery, carrot, and avocado, then drizzle with ranch."]},
+{id:"n18",type:"Lunch",emoji:"🥑",name:"Turkey Avocado Club Wrap",why:"Club sandwich flavor in a fiber-rich wrap you can pack in 5 minutes.",time:7,day:"any",tags:["portable","no cook"],
+ ing:[["tort",1],["deli",5,"oz"],["tbacon",1],["avo",0.25],["tom",0.5,"","sliced"],["rom",0.1,"","leaves"]],
+ steps:["Crisp the turkey bacon (or use pre-cooked).","Smash avocado on the tortilla.","Layer turkey, bacon, tomato, and lettuce, then roll and slice."]},
+{id:"n19",type:"Lunch",emoji:"🫒",name:"Mediterranean Tuna Chickpea Bowl",why:"Pantry tuna and chickpeas with crunchy veggies. No cooking needed.",time:10,day:"any",tags:["no cook","high fiber","omega-3"],
+ ing:[["tuna",5,"oz"],["chp",0.33,"cup"],["cuke",0.5,"","diced"],["ct",0.5,"cup"],["ron",0.125,"","minced"],["feta",0.5,"oz"],["oil",2,"tsp"],["lem",0.5],["oreg"]],
+ steps:["Whisk oil, lemon, and oregano in a bowl.","Add chickpeas, cucumber, tomatoes, and onion, then toss.","Top with flaked tuna and feta."]},
+{id:"n20",type:"Lunch",emoji:"🍱",name:"Teriyaki Salmon Rice Bowl",why:"Salmon gives omega-3s and rice gives carbs for a training day.",time:20,day:"train",tags:["omega-3"],
+ ing:[["sal",5,"oz"],["brice",0.75,"cup"],["eda",0.25,"cup"],["cuke",0.25,"","sliced"],["car",0.5,"","shredded"],["teri",1,"tbsp"],["scal"]],
+ steps:["Brush salmon with teriyaki and bake at 400°F for 12 minutes.","Warm rice and edamame.","Build the bowl and top with cucumber, carrot, and scallions."]},
+{id:"n21",type:"Lunch",emoji:"🫑",name:"Chicken Fajita Salad",why:"Fajita veggies and beans over crisp romaine with 44 g of protein.",time:20,day:"any",tags:["high fiber"],
+ ing:[["chk",5,"oz","sliced"],["rom",0.33],["bp",1,"","sliced"],["on",0.5,"","sliced"],["bb",0.25,"cup"],["salsa",3,"tbsp"],["yog",0.125,"cup"],["avo",0.25],["oil",1,"tsp"],["chili"],["cum"]],
+ steps:["Toss chicken, peppers, and onion with oil and spices.","Sear in a hot skillet 8–10 minutes.","Pile over chopped romaine with beans and avocado.","Top with salsa and yogurt."]},
+{id:"n22",type:"Lunch",emoji:"🦐",name:"Cajun Shrimp Quinoa Bowl",why:"Shrimp is very lean protein. Quinoa, corn, and beans add steady carbs.",time:15,day:"train",tags:["quick-cook","high fiber"],
+ ing:[["shr",7,"oz"],["quin",0.5,"cup"],["corn",0.25,"cup"],["bp",0.5,"","diced"],["bb",0.25,"cup"],["lime",0.5],["oil",1,"tsp"],["cajun"]],
+ steps:["Toss shrimp with Cajun seasoning.","Sear in oil 2 minutes per side.","Warm quinoa, corn, peppers, and beans.","Top with shrimp and a squeeze of lime."]},
+{id:"n23",type:"Lunch",emoji:"🥙",name:"Greek Turkey Meatball Pita",why:"Herby turkey meatballs with tzatziki. Make extra meatballs for later in the week.",time:25,day:"train",tags:["meal-prep friendly"],
+ ing:[["tur",5,"oz"],["crumbs",1,"tbsp"],["pita",1],["tz",0.25,"cup"],["cuke",0.25,"","sliced"],["tom",0.5,"","diced"],["ron",0.125,"","sliced"],["oreg"],["garp"]],
+ steps:["Mix turkey, breadcrumbs, oregano, and garlic powder, then roll into 6 balls.","Bake at 400°F for 15 minutes.","Stuff the warm pita with meatballs, veggies, and tzatziki."]},
+{id:"n24",type:"Lunch",emoji:"🍲",name:"Black Bean Chicken Soup",batch:4,why:"A hearty, high-fiber soup that freezes well. Make it once and you have 4 lunches.",time:30,day:"any",tags:["meal-prep friendly","freezer friendly","high fiber"],
+ ing:[["chk",4,"oz"],["bb",0.5,"cup"],["crt",0.5,"cup"],["on",0.25,"","diced"],["bp",0.25,"","diced"],["broth",1.5,"cup"],["yog",0.125,"cup"],["lime",0.25],["cum"]],
+ steps:["Sauté onion and pepper 4 minutes with cumin.","Add broth, tomatoes, beans, and whole chicken breasts, then simmer 20 minutes.","Shred the chicken back into the pot.","Serve with yogurt and lime. Freezes for 3 months."]},
+{id:"n25",type:"Lunch",emoji:"🥩",name:"Steak & Egg Power Salad",why:"Steak and egg over greens: lots of protein and iron with few carbs.",time:20,day:"rest",tags:["quick-cook"],
+ ing:[["sir",5,"oz"],["greens",2,"oz"],["ct",0.5,"cup"],["ron",0.125,"","sliced"],["feta",0.5,"oz"],["egg",1,"","hard-boiled"],["vin",2,"tbsp"]],
+ steps:["Season and sear the steak 3–4 minutes per side, then rest 5 minutes.","Toss greens, tomatoes, and onion with vinaigrette.","Top with sliced steak, the halved egg, and feta."]},
+{id:"n26",type:"Lunch",emoji:"🥜",name:"Tofu Peanut Soba Salad",why:"A plant-protein noodle salad. Tofu plus edamame gets you close to 40 g.",time:20,day:"train",tags:["vegetarian","meal-prep friendly"],
+ ing:[["tofu",8,"oz","cubed"],["soba",1.5,"oz"],["eda",0.33,"cup"],["slaw",1,"cup"],["pb2",1,"tbsp"],["soy",1,"tbsp"],["lime",0.5],["sri"]],
+ steps:["Crisp the tofu in a nonstick pan or air fryer, about 12 minutes.","Cook the soba and rinse it cold.","Whisk powdered peanut butter, soy, lime, sriracha, and water into a sauce.","Toss everything together."]},
+{id:"n27",type:"Lunch",emoji:"🧆",name:"Chicken Shawarma Rice Bowl",why:"Warm-spiced chicken with tzatziki and rice. Satisfying and balanced.",time:25,day:"train",tags:["meal-prep friendly"],
+ ing:[["chk",5,"oz"],["brice",0.75,"cup"],["cuke",0.5,"","diced"],["tom",0.5,"","diced"],["ron",0.125,"","sliced"],["tz",0.25,"cup"],["cum"],["pap"],["garp"],["lem",0.25]],
+ steps:["Rub chicken with cumin, paprika, garlic powder, and lemon.","Roast at 425°F for 18–20 minutes, then slice.","Build the bowl with rice, chicken, veggies, and tzatziki."]},
+{id:"n28",type:"Lunch",emoji:"🥗",name:"Sesame Ginger Chicken Slaw",why:"Crunchy, low-carb, and packed with protein. It stays crisp for days.",time:15,day:"rest",tags:["meal-prep friendly"],
+ ing:[["chk",5,"oz","shredded"],["slaw",2,"cup"],["eda",0.25,"cup"],["almonds",10,"","sliced"],["sesdr",1.5,"tbsp"],["scal"]],
+ steps:["Cook and shred the chicken (or use rotisserie breast meat).","Toss slaw and edamame with the dressing.","Top with chicken, almonds, and scallions."]},
+{id:"n29",type:"Lunch",emoji:"🧀",name:"Chicken & Spinach Quesadilla",why:"Melty and quick, using a high-fiber tortilla and part-skim cheese.",time:10,day:"any",tags:["quick-cook"],
+ ing:[["tort",1],["chk",4,"oz","cooked, chopped"],["moz",0.25,"cup"],["spin",1,"oz"],["bp",0.25,"","diced"],["salsa",3,"tbsp"],["spray"]],
+ steps:["Fill half the tortilla with chicken, spinach, pepper, and cheese.","Fold and cook in a sprayed pan 2–3 minutes per side.","Slice and dip in salsa."]},
+{id:"n30",type:"Lunch",emoji:"🍠",name:"Turkey Taco Stuffed Sweet Potato",why:"A loaded baked potato for training days, with lean taco turkey on top.",time:20,day:"train",tags:["meal-prep friendly"],
+ ing:[["swp",7,"oz"],["tur",5,"oz"],["salsa",3,"tbsp"],["yog",0.125,"cup"],["shc",0.125,"cup"],["taco"],["scal"]],
+ steps:["Prick the sweet potato and microwave 6–8 minutes until soft.","Brown turkey with taco seasoning and a splash of water.","Split the potato, then fill with turkey, cheese, salsa, and yogurt."]},
+// ---------- DINNER ----------
+{id:"n31",type:"Dinner",emoji:"🍯",name:"Honey Garlic Chicken Thighs & Rice",why:"Juicy thighs in a sticky glaze, with rice to refuel after training.",time:30,day:"train",tags:["one pan"],
+ ing:[["thigh",6,"oz"],["jrice",0.5,"cup"],["gb",1,"cup"],["honey",2,"tsp"],["soy",1,"tbsp"],["gar",2,"","minced"]],
+ steps:["Sear thighs 5 minutes per side.","Whisk honey, soy, and garlic, pour it over, and simmer until sticky and the chicken reaches 175°F.","Steam the green beans and serve with rice."]},
+{id:"n32",type:"Dinner",emoji:"🍋",name:"Lemon Pepper Tilapia with Potatoes & Asparagus",why:"Mild, flaky fish that's very lean, with roasted potatoes for carbs.",time:30,day:"train",tags:["one pan"],
+ ing:[["tilapia",7,"oz"],["pot",6,"oz","halved"],["asp",0.5],["oil",2,"tsp"],["lem",0.5],["lpep"]],
+ steps:["Roast potatoes with half the oil at 425°F for 15 minutes.","Add asparagus and tilapia to the pan with the rest of the oil and lemon pepper.","Roast 10–12 minutes more and finish with lemon."]},
+{id:"n33",type:"Dinner",emoji:"🍝",name:"Turkey Zucchini Lasagna Skillet",why:"All the lasagna flavor with zucchini in place of noodles. Low-carb and very filling.",time:25,day:"rest",tags:["one pan","meal-prep friendly"],
+ ing:[["tur",5,"oz"],["zuc",1.5,"","sliced into rounds"],["mar",0.5,"cup"],["ric",0.25,"cup"],["moz",0.125,"cup"],["ital"],["basil"]],
+ steps:["Brown turkey with Italian seasoning.","Add zucchini and marinara and simmer 8 minutes.","Dollop with ricotta and sprinkle mozzarella, then cover until melted.","Top with basil."]},
+{id:"n34",type:"Dinner",emoji:"🍛",name:"Sheet-Pan Chicken Tikka & Cauliflower",why:"Yogurt-marinated chicken roasted with cauliflower, served over a small portion of basmati.",time:30,day:"train",tags:["one pan","meal-prep friendly"],
+ ing:[["chk",5.5,"oz","cubed"],["yog",0.25,"cup","for marinade"],["cauli",1.5,"cup"],["on",0.5,"","wedges"],["basm",0.5,"cup"],["curry"],["garam"],["ging"]],
+ steps:["Coat chicken in yogurt, curry powder, garam masala, and ginger.","Spread on a tray with cauliflower and onion.","Roast at 450°F for 20 minutes.","Serve over basmati."]},
+{id:"n35",type:"Dinner",emoji:"🦐",name:"Garlic Shrimp Zoodle Scampi",why:"Classic scampi with zucchini noodles in place of pasta. 47 g of protein and under 400 kcal.",time:15,day:"rest",tags:["quick-cook"],
+ ing:[["shr",7,"oz"],["zuc",2,"","spiralized"],["butter",1,"tsp"],["oil",1,"tsp"],["gar",3,"","minced"],["parm",1,"tbsp"],["ct",0.5,"cup"],["lem",0.5],["flakes"]],
+ steps:["Sauté garlic in butter and oil for 30 seconds.","Add shrimp and cook 2 minutes per side.","Toss in zoodles and tomatoes for 2 minutes.","Finish with lemon, parmesan, and chili flakes."]},
+{id:"n36",type:"Dinner",emoji:"🍗",name:"BBQ Chicken, Sweet Potato & Slaw",why:"Backyard BBQ flavor with lean chicken and a creamy yogurt slaw.",time:30,day:"train",tags:["meal-prep friendly"],
+ ing:[["chk",5.5,"oz"],["bbq",2,"tbsp"],["swp",6,"oz","wedges"],["slaw",1,"cup"],["yog",0.125,"cup","for slaw"],["spap"]],
+ steps:["Roast sweet potato wedges with smoked paprika at 425°F for 25 minutes.","Bake or grill the chicken, brushing on BBQ sauce for the last 5 minutes.","Toss slaw with yogurt, salt, and pepper, then plate everything."]},
+{id:"n37",type:"Dinner",emoji:"🥔",name:"Pork Tenderloin with Cauliflower Mash",why:"Lean pork with creamy cauliflower mash in place of potatoes. Comfort food for a rest day.",time:30,day:"rest",tags:["high fiber"],
+ ing:[["pork",6,"oz"],["cauli",2,"cup"],["butter",1,"tsp"],["parm",1,"tbsp"],["gb",1,"cup"],["dij",1,"tsp"],["thyme"]],
+ steps:["Rub pork with Dijon and thyme and roast at 425°F to 145°F, about 20 minutes.","Steam cauliflower, then mash with butter and parmesan.","Steam the green beans, then slice the pork and serve."]},
+{id:"n38",type:"Dinner",emoji:"🌯",name:"Turkey Burrito Skillet",why:"Everything from a burrito in one pan. Good for training days and easy to batch.",time:25,day:"train",tags:["one pan","meal-prep friendly","high fiber"],
+ ing:[["tur",5,"oz"],["brice",0.5,"cup"],["bb",0.33,"cup"],["salsa",0.25,"cup"],["corn",0.25,"cup"],["bp",0.5,"","diced"],["shc",0.125,"cup"],["taco"]],
+ steps:["Brown turkey with peppers and taco seasoning.","Stir in rice, beans, corn, and salsa until hot.","Top with cheese and cover until melted."]},
+{id:"n39",type:"Dinner",emoji:"🐟",name:"Miso-Glazed Cod with Bok Choy",why:"A savory-sweet glaze on very lean cod. Quick enough for a weeknight.",time:20,day:"any",tags:["quick-cook"],
+ ing:[["cod",8,"oz"],["miso",1,"tbsp"],["honey",1,"tsp"],["bok",2,"cup","halved"],["brice",0.5,"cup"],["sesoil",0.5,"tsp"],["scal"]],
+ steps:["Mix miso and honey and brush over the cod.","Broil 8–10 minutes until flaky.","Sauté bok choy in sesame oil for 3 minutes.","Serve with rice and scallions."]},
+{id:"n40",type:"Dinner",emoji:"🥩",name:"Steak Fajita Rice Bowl",why:"Juicy flank steak and charred peppers with enough carbs to recover from training.",time:25,day:"train",tags:["meal-prep friendly"],
+ ing:[["flank",5,"oz","sliced thin"],["bp",1,"","sliced"],["on",0.5,"","sliced"],["brice",0.5,"cup"],["bb",0.25,"cup"],["salsa",3,"tbsp"],["lime",0.5],["yog",0.125,"cup"],["chili"],["cum"]],
+ steps:["Season steak with chili powder and cumin.","Sear 3 minutes per side, then rest and slice.","Char peppers and onion in the same pan.","Build bowls with rice, beans, steak, veggies, salsa, and yogurt."]},
+{id:"n41",type:"Dinner",emoji:"🍝",name:"Chicken Parm Spaghetti Squash",why:"Chicken parm over spaghetti squash in place of pasta. Comfort food with almost 50 g of protein.",time:35,day:"rest",tags:["meal-prep friendly"],
+ ing:[["chk",5.5,"oz"],["mar",0.5,"cup"],["moz",0.25,"cup"],["squash",1.5,"cup"],["parm",1,"tbsp"],["basil"]],
+ steps:["Microwave halved spaghetti squash cut-side down for 10–12 minutes, then fluff into strands.","Bake seasoned chicken at 425°F for 18 minutes.","Top with marinara and mozzarella and broil 3 minutes.","Serve over squash with parmesan and basil."]},
+{id:"n42",type:"Dinner",emoji:"🌿",name:"Thai Basil Turkey Stir-Fry",why:"A takeout favorite made lean and topped with a fried egg.",time:20,day:"train",tags:["quick-cook"],
+ ing:[["tur",5,"oz"],["sfv",1.5,"cup"],["jrice",0.75,"cup"],["soy",1,"tbsp"],["honey",1,"tsp"],["gar",2,"","minced"],["egg",1],["basil"],["flakes"]],
+ steps:["Brown turkey with garlic and chili flakes.","Add the veggie mix, soy, and honey, then stir-fry 4 minutes and fold in basil.","Fry an egg.","Serve over rice with the egg on top."]},
+{id:"n43",type:"Dinner",emoji:"🐟",name:"Salmon with Lemon-Dill Yogurt & Quinoa",why:"Omega-3-rich salmon with a cool yogurt sauce. Simple and good for recovery.",time:20,day:"any",tags:["omega-3"],
+ ing:[["sal",5.5,"oz"],["yog",0.25,"cup","+ dill & lemon"],["quin",0.5,"cup"],["broc",1,"cup"],["oil",1,"tsp"],["lem",0.5],["dill"]],
+ steps:["Bake salmon at 400°F for 12 minutes.","Roast or steam the broccoli.","Stir dill and lemon into the yogurt.","Serve salmon over quinoa with the sauce."]},
+{id:"n44",type:"Dinner",emoji:"🌶️",name:"Lean Beef Chili Mac",batch:4,why:"A kid-friendly comfort meal made with lean beef and whole-wheat pasta. Easy to batch.",time:30,day:"train",tags:["meal-prep friendly","one pan","freezer friendly"],
+ ing:[["beef",4.5,"oz"],["wwp",1.5,"oz"],["kb",0.25,"cup"],["crt",0.5,"cup"],["on",0.25,"","diced"],["bp",0.25,"","diced"],["shc",0.125,"cup"],["chili"],["cum"]],
+ steps:["Brown beef with onion and pepper.","Add tomatoes, beans, spices, and 1 cup water per serving.","Stir in dry pasta and simmer covered 10–12 minutes until tender.","Top with cheese."]},
+{id:"n45",type:"Dinner",emoji:"🥦",name:"Peanut Tofu & Broccoli Stir-Fry",why:"Crispy tofu in a light peanut sauce. A plant-based dinner with 40+ g of protein.",time:25,day:"train",tags:["vegetarian"],
+ ing:[["tofu",10,"oz","cubed"],["broc",1.5,"cup"],["bp",0.5,"","sliced"],["pb2",2,"tbsp"],["soy",1,"tbsp"],["brice",0.5,"cup"],["gar",1],["ging"],["sri"]],
+ steps:["Press and cube the tofu, then crisp it in a nonstick pan for 10 minutes.","Stir-fry broccoli and pepper 4 minutes.","Whisk powdered peanut butter, soy, garlic, ginger, sriracha, and water, then toss everything together.","Serve over rice."]},
+{id:"n46",type:"Dinner",emoji:"🌿",name:"Herb-Crusted Chicken with Brussels & Wild Rice",why:"A crunchy parmesan crust with no frying. Brussels sprouts add fiber.",time:30,day:"any",tags:["one pan"],
+ ing:[["chk",5.5,"oz"],["crumbs",2,"tbsp"],["parm",1,"tbsp"],["dij",1,"tsp"],["brus",1,"cup","halved"],["wrice",0.5,"cup"],["oil",1,"tsp"],["thyme"]],
+ steps:["Brush chicken with Dijon, then press on breadcrumbs, parmesan, and thyme.","Roast with oiled Brussels sprouts at 425°F for 20 minutes.","Serve with wild rice."]},
+{id:"n47",type:"Dinner",emoji:"🌮",name:"Shrimp Tacos with Crunchy Slaw",why:"Fast, fresh taco night with lean shrimp and a yogurt-lime slaw.",time:20,day:"train",tags:["quick-cook"],
+ ing:[["shr",6,"oz"],["ctort",3],["slaw",1,"cup"],["yog",0.125,"cup"],["lime",0.5],["avo",0.25],["chili"]],
+ steps:["Season shrimp with chili powder and sear 2 minutes per side.","Toss slaw with yogurt and lime.","Fill warm tortillas with shrimp, slaw, and avocado."]},
+{id:"n48",type:"Dinner",emoji:"🛶",name:"Turkey Stuffed Zucchini Boats",why:"Zucchini boats filled with turkey and marinara. Low-carb and good for meal prep.",time:30,day:"rest",tags:["meal-prep friendly"],
+ ing:[["zuc",2,"","halved & scooped"],["tur",5,"oz"],["mar",0.33,"cup"],["moz",0.25,"cup"],["on",0.25,"","diced"],["ital"]],
+ steps:["Heat oven to 400°F. Scoop the zucchini, chop the flesh, and brown it with turkey and onion.","Stir in marinara and Italian seasoning.","Fill the boats, top with mozzarella, and bake 18 minutes."]},
+// ---------- SNACKS ----------
+{id:"n49",type:"Snack",emoji:"🍎",name:"Apple Slices & PB Yogurt Dip",why:"A sweet, crunchy snack with 20 g of protein.",time:3,day:"any",tags:["no cook","vegetarian"],
+ ing:[["yog",0.75,"cup"],["pb2",1,"tbsp"],["apple",1,"","sliced"],["cin"]],
+ steps:["Stir powdered peanut butter and cinnamon into the yogurt.","Dip the apple slices."]},
+{id:"n50",type:"Snack",emoji:"🫛",name:"Sea Salt Edamame",why:"Plant protein with fiber, ready in 3 minutes.",time:3,day:"any",tags:["vegetarian","high fiber"],
+ ing:[["eda",1,"cup"],["salt"]],
+ steps:["Microwave or steam the edamame for 3 minutes.","Sprinkle with flaky salt."]},
+{id:"n51",type:"Snack",emoji:"🍓",name:"Cottage Cheese Berry Crunch",why:"Casein protein with berries and walnuts. A good pick before bed.",time:2,day:"any",tags:["no cook","vegetarian"],
+ ing:[["cc",0.75,"cup"],["ber",0.5,"cup"],["walnut",1,"tbsp"]],
+ steps:["Top cottage cheese with berries and walnuts."]},
+{id:"n52",type:"Snack",emoji:"☕",name:"Protein Hot Cocoa",why:"A warm, chocolatey drink with 20 g of protein.",time:4,day:"rest",tags:["vegetarian"],
+ ing:[["milk",1,"cup"],["whey",0.5,"scoop","chocolate"],["cocoa",2,"tsp"]],
+ steps:["Warm the milk (don't boil it).","Whisk in cocoa, then whey off the heat until smooth."]},
+{id:"n53",type:"Snack",emoji:"🥒",name:"Turkey Hummus Cucumber Stacks",why:"Crunchy, savory, and almost no carbs.",time:5,day:"rest",tags:["no cook"],
+ ing:[["deli",4,"oz"],["hum",2,"tbsp"],["cuke",0.5,"","sliced thick"]],
+ steps:["Spread hummus on cucumber rounds.","Top with folded turkey slices."]},
+{id:"n54",type:"Snack",emoji:"🥚",name:"Egg & Cottage Cheese Snack Box",why:"A grab-and-go box that tastes like a mini lunch.",time:5,day:"any",tags:["portable","meal-prep friendly","vegetarian"],
+ ing:[["egg",1,"","hard-boiled"],["cc",0.5,"cup"],["ct",0.5,"cup"],["crack",4]],
+ steps:["Pack the egg, cottage cheese, tomatoes, and crackers in a container.","Season the egg with salt and pepper."]},
+{id:"n55",type:"Snack",emoji:"🍤",name:"Shrimp Cocktail Cup",why:"Nearly pure protein, about 29 g for 160 kcal.",time:3,day:"rest",tags:["no cook"],
+ ing:[["shr",5,"oz","cooked, chilled"],["cock",2,"tbsp"],["lem",0.25]],
+ steps:["Arrange the chilled shrimp around a cup of cocktail sauce.","Squeeze lemon over the top."]},
+{id:"n56",type:"Snack",emoji:"🍌",name:"Banana Peanut Butter Shake",why:"Carbs plus protein to refuel after lifting.",time:3,day:"train",tags:["post-workout","portable"],
+ ing:[["whey",1],["ban",0.5],["pb",1,"tbsp"],["am",1,"cup"]],
+ steps:["Blend everything with ice until smooth."]},
+{id:"n57",type:"Snack",emoji:"🐟",name:"Smoked Salmon Cucumber Bites",why:"Omega-3s and protein in a fancy-looking, low-carb snack.",time:5,day:"rest",tags:["omega-3"],
+ ing:[["sm",3,"oz"],["ccl",1,"tbsp"],["cuke",0.5,"","sliced"],["dill"]],
+ steps:["Dab cream cheese on the cucumber rounds.","Top with salmon and dill."]},
+{id:"n58",type:"Snack",emoji:"🥣",name:"Greek Yogurt Granola Parfait",why:"A training-day snack with some carbs and 26 g of protein.",time:3,day:"train",tags:["no cook","vegetarian"],
+ ing:[["yog",1,"cup"],["gran",0.25,"cup"],["ber",0.5,"cup"],["honey",1,"tsp"]],
+ steps:["Layer yogurt, berries, and granola.","Drizzle with honey."]},
+{id:"n59",type:"Snack",emoji:"🍘",name:"Tuna Salad Rice Cakes",why:"Crunchy rice cakes topped with a lean, creamy tuna salad.",time:5,day:"any",tags:["no cook"],
+ ing:[["tuna",3,"oz"],["yog",0.125,"cup"],["dij",1,"tsp"],["cel",0.5,"stalk","diced"],["rice_cake",2]],
+ steps:["Mix tuna, yogurt, Dijon, and celery.","Spread onto the rice cakes."]},
+{id:"n60",type:"Snack",emoji:"🍢",name:"Turkey Caprese Skewers",why:"A party-style snack that's mostly protein.",time:5,day:"rest",tags:["no cook","portable"],
+ ing:[["str",1,"","cubed"],["deli",3,"oz","folded"],["ct",0.5,"cup"],["basil"],["vin",1,"tbsp"]],
+ steps:["Thread tomatoes, cheese cubes, folded turkey, and basil onto toothpicks.","Drizzle with vinaigrette."]}
+];
+
+/* ===================== MEAL GENERATOR =====================
+ * Builds new cards from components (protein + carb + veg + flavor profile), sized to hit
+ * protein and carb targets for the chosen meal type and training/rest day. Macros come from FOOD.
+ */
+const GEN = {
+  proteins: {
+    chicken:{k:"chk",oz:6,short:"Chicken",group:"Chicken",cook:"Season the chicken and sear 5–6 minutes per side (or bake at 425°F for 18–20 minutes) until it reaches 165°F, then slice."},
+    thigh:{k:"thigh",oz:6,short:"Chicken Thigh",group:"Chicken",cook:"Sear the thighs 5–6 minutes per side until they reach 175°F, then slice."},
+    turkey:{k:"tur",oz:5.5,short:"Turkey",group:"Turkey",cook:"Brown the ground turkey in a hot pan for 6–7 minutes, breaking it up."},
+    beef:{k:"beef",oz:5,short:"Beef",group:"Beef",cook:"Brown the lean beef for 6–7 minutes and drain any fat."},
+    steak:{k:"sir",oz:5.5,short:"Steak",group:"Beef",cook:"Pat the steak dry, sear 3–4 minutes per side, rest 5 minutes, and slice thin."},
+    pork:{k:"pork",oz:6,short:"Pork",group:"Pork",cook:"Roast the tenderloin at 425°F for 18–20 minutes to 145°F, rest, and slice."},
+    salmon:{k:"sal",oz:6,short:"Salmon",group:"Fish",cook:"Bake the salmon at 400°F for 12 minutes until it flakes."},
+    cod:{k:"cod",oz:8,short:"Cod",group:"Fish",cook:"Bake the cod at 400°F for 10–12 minutes until opaque and flaky."},
+    shrimp:{k:"shr",oz:7,short:"Shrimp",group:"Shellfish",cook:"Sear the shrimp 2 minutes per side until pink."},
+    tofu:{k:"tofu",oz:11,short:"Tofu",group:"Tofu",cook:"Press and cube the tofu, then crisp it in a nonstick pan or air fryer for 10–12 minutes."}
+  },
+  carbs: {
+    brice:{k:"brice",q:0.75,label:"brown rice",step:"Warm the rice (or cook a batch for the week)."},
+    jrice:{k:"jrice",q:0.75,label:"jasmine rice",step:"Warm the rice (or cook a batch for the week)."},
+    quin:{k:"quin",q:0.75,label:"quinoa",step:"Warm the quinoa (or cook a batch)."},
+    farro:{k:"farro",q:0.75,label:"farro",step:"Warm the farro (or cook a batch)."},
+    swp:{k:"swp",q:7,label:"sweet potato",step:"Cube the sweet potato and roast at 425°F for 25 minutes (or microwave 6 minutes)."},
+    pot:{k:"pot",q:7,label:"potatoes",step:"Halve the potatoes and roast at 425°F for 25 minutes."},
+    wwp:{k:"wwp",q:2,label:"whole-wheat pasta",step:"Boil the pasta according to the package and save a splash of pasta water."},
+    ctort:{k:"ctort",q:3,label:"corn tortillas",step:"Warm the tortillas in a dry skillet."},
+    pita:{k:"pita",q:1,label:"pita",step:"Warm the pita."},
+    cauliR:{k:"cauliR",q:1.5,label:"cauliflower rice",step:"Sauté the cauliflower rice 4–5 minutes."},
+    squash:{k:"squash",q:1.5,label:"spaghetti squash",step:"Microwave halved spaghetti squash 10–12 minutes and fluff into strands."},
+    greens:{k:"greens",q:2,label:"greens",step:"Pile the greens into a big bowl."},
+    zoodle:{k:"zuc",q:2,label:"zucchini noodles",step:"Spiralize the zucchini and sauté 2 minutes."}
+  },
+  veg: {
+    broc:{k:"broc",q:1.5,label:"Broccoli"}, peppers:{k:"bp",q:1,label:"Peppers",extra:[["on",0.5]]}, gb:{k:"gb",q:1.5,label:"Green Beans"},
+    zuc:{k:"zuc",q:1,label:"Zucchini"}, asp:{k:"asp",q:0.5,label:"Asparagus"}, brus:{k:"brus",q:1.5,label:"Brussels Sprouts"},
+    spin:{k:"spin",q:2,label:"Spinach"}, snap:{k:"snap",q:1,label:"Snap Peas"}, sfv:{k:"sfv",q:1.5,label:"Veggies"}, mush:{k:"mush",q:1,label:"Mushrooms"},
+    cauli:{k:"cauli",q:1.5,label:"Cauliflower"}, slaw:{k:"slaw",q:1.5,label:"Slaw"}, salad:{k:"cuke",q:0.5,label:"Cucumber Salad",extra:[["ct",0.5]]}
+  },
+  profiles: [
+    {id:"mex",adj:"Chipotle Lime",formats:["Bowl","Tacos","Salad"],veg:["peppers","broc","slaw"],add:[["salsa",3,"tbsp"],["lime",0.5],["yog",0.125,"cup"],["cum"],["chili"],["cil"]],fat:[["avo",0.25]],
+      season:"chili powder, cumin, and a squeeze of lime",finish:"Top with salsa, a spoon of Greek yogurt, cilantro, and lime."},
+    {id:"med",adj:"Lemon Oregano",formats:["Bowl","Sheet-Pan","Salad","Pita"],veg:["zuc","peppers","salad","spin"],add:[["lem",0.5],["gar",1],["oil",2,"tsp"],["feta",0.5,"oz"],["oreg"]],
+      season:"lemon, garlic, and oregano",finish:"Finish with crumbled feta and a squeeze of lemon."},
+    {id:"asian",adj:"Sesame Ginger",formats:["Stir-Fry","Bowl"],veg:["broc","snap","sfv","peppers"],add:[["soy",1.5,"tbsp"],["honey",1,"tsp"],["sesoil",1,"tsp"],["gar",1],["ging"],["scal"]],
+      season:"a little soy sauce and grated ginger",finish:"Toss with soy, honey, garlic, and ginger until glossy, and drizzle with sesame oil and scallions."},
+    {id:"teri",adj:"Teriyaki",formats:["Bowl","Stir-Fry"],veg:["broc","snap","sfv"],add:[["teri",2,"tbsp"],["sesame"],["scal"]],
+      season:"salt and pepper",finish:"Glaze with teriyaki sauce and top with sesame seeds and scallions."},
+    {id:"ital",adj:"Tuscan Herb",formats:["Pasta","Skillet","Bowl"],veg:["spin","zuc","mush","broc"],add:[["mar",0.5,"cup"],["gar",1],["parm",1,"tbsp"],["ital"],["basil"]],
+      season:"Italian seasoning and garlic",finish:"Simmer with marinara, then finish with parmesan and basil."},
+    {id:"bbq",adj:"Smoky BBQ",formats:["Sheet-Pan","Bowl"],veg:["slaw","gb","broc"],add:[["bbq",2,"tbsp"],["spap"]],
+      season:"smoked paprika",finish:"Brush with BBQ sauce for the last few minutes."},
+    {id:"cajun",adj:"Cajun Spiced",formats:["Sheet-Pan","Bowl","Skillet"],veg:["peppers","gb","zuc","asp"],add:[["cajun"],["oil",1,"tsp"],["lem",0.5]],
+      season:"Cajun seasoning",finish:"Finish with a squeeze of lemon."},
+    {id:"curry",adj:"Golden Curry",formats:["Bowl","Skillet"],veg:["cauli","spin","peppers"],add:[["coco",0.25,"cup"],["crt",0.25,"cup"],["curry"],["garam"],["ging"],["gar",1]],
+      season:"curry powder and a pinch of garam masala",finish:"Simmer with light coconut milk, tomatoes, ginger, and garlic for 8 minutes."},
+    {id:"thai",adj:"Thai Peanut",formats:["Stir-Fry","Bowl","Salad"],veg:["slaw","broc","peppers","snap"],add:[["pb2",2,"tbsp"],["soy",1,"tbsp"],["lime",0.5],["sri"]],
+      season:"salt and pepper",finish:"Whisk powdered peanut butter, soy, lime, sriracha, and a little water, then toss it all together."},
+    {id:"pesto",adj:"Basil Pesto",formats:["Pasta","Sheet-Pan","Bowl"],veg:["zuc","asp","broc","spin"],add:[["pesto",1,"tbsp"],["ct",0.5,"cup"],["parm",1,"tbsp"]],
+      season:"salt, pepper, and garlic powder",finish:"Toss with pesto and cherry tomatoes and top with parmesan."},
+    {id:"greek",adj:"Greek",formats:["Pita","Bowl","Salad"],veg:["salad","spin","peppers"],add:[["tz",0.25,"cup"],["ron",0.125],["oreg"],["lem",0.5]],
+      season:"oregano, lemon, and garlic powder",finish:"Spoon tzatziki over the top and add sliced red onion."}
+  ],
+  formatCarb: {
+    train:{Bowl:["brice","quin","farro","jrice"],Tacos:["ctort"],Salad:["quin","farro"],Pasta:["wwp"],"Sheet-Pan":["swp","pot"],"Stir-Fry":["jrice","brice"],Pita:["pita"],Skillet:["brice","swp"]},
+    rest:{Bowl:["cauliR","quin"],Tacos:["ctort"],Salad:["greens"],Pasta:["zoodle","squash"],"Sheet-Pan":["cauliR"],"Stir-Fry":["cauliR"],Pita:["greens"],Skillet:["cauliR","squash"]}
+  },
+  breakfast: {
+    train:[
+      {name:"{flav} Protein Oats",base:[["oats",0.5,"cup"],["whey",1],["milk",1,"cup"]],opts:[["ban",0.5],["ber",0.75,"cup"],["apple",0.5]],top:[["walnut",1,"tbsp"],["chia",1,"tbsp"],["pb",1,"tbsp"]],flav:["Cinnamon","Vanilla","Mocha"],
+        steps:["Simmer oats in milk for 4 minutes.","Take off the heat and stir in whey.","Top with the fruit and toppings."]},
+      {name:"{flav} Breakfast Tacos",base:[["egg",2],["ew",0.5,"cup"],["ctort",2],["salsa",2,"tbsp"]],opts:[["bp",0.5],["spin",1,"oz"],["mush",0.5,"cup"]],top:[["shc",0.125,"cup"],["avo",0.125]],flav:["Sunrise","Ranchero","Green Chile"],
+        steps:["Sauté the veggies 3 minutes.","Scramble in eggs and egg whites.","Fill warm tortillas and top with salsa and cheese."]},
+      {name:"{flav} Yogurt Power Bowl",base:[["yog",1.5,"cup"],["gran",0.25,"cup"]],opts:[["ber",0.75,"cup"],["ban",0.5],["mango",0.5,"cup"],["pine",0.5,"cup"]],top:[["honey",1,"tsp"],["chia",1,"tbsp"]],flav:["Sunshine","Tropical","Berry Blast"],
+        steps:["Spoon yogurt into a bowl.","Top with fruit, granola, and the toppings."]},
+      {name:"{flav} Breakfast Sandwich",base:[["emuf",1],["egg",1],["ew",0.5,"cup"]],opts:[["ham",2,"oz"],["tsaus",2,"oz"],["sm",2,"oz"]],top:[["swiss",1],["spin",1,"oz"]],flav:["Classic","Deli","Diner"],
+        steps:["Cook the egg and egg whites in a sprayed ramekin.","Warm the meat in the same pan.","Stack on the toasted muffin."]}
+    ],
+    rest:[
+      {name:"{flav} Veggie Scramble",base:[["egg",2],["ew",0.75,"cup"]],opts:[["spin",1,"oz"],["mush",0.75,"cup"],["bp",0.5],["ct",0.5,"cup"]],top:[["feta",0.5,"oz"],["avo",0.25],["moz",0.125,"cup"]],flav:["Garden","Farmhouse","Mediterranean"],
+        steps:["Sauté the veggies 3–4 minutes in a sprayed pan.","Add eggs and egg whites and stir gently until just set.","Top and serve."]},
+      {name:"{flav} Cottage Cheese Bowl",base:[["cc",1.25,"cup"]],opts:[["ct",0.5,"cup"],["cuke",0.5],["ber",0.5,"cup"]],top:[["walnut",1,"tbsp"],["ebs"],["avo",0.25]],flav:["Savory","Crunchy","Fresh"],
+        steps:["Spoon cottage cheese into a bowl.","Add the toppings and season."]},
+      {name:"{flav} Egg White Omelet",base:[["ew",1,"cup"],["egg",1]],opts:[["spin",1,"oz"],["mush",0.75,"cup"],["tom",1]],top:[["feta",0.5,"oz"],["ham",2,"oz"],["moz",0.125,"cup"]],flav:["Spinach","Denver","Garden"],
+        steps:["Sauté the fillings 3 minutes and set them aside.","Pour the eggs into a sprayed pan, cook until set, fill, and fold."]},
+      {name:"{flav} Chia Protein Pudding",base:[["chia",2,"tbsp"],["am",1,"cup"],["whey",1],["yog",0.5,"cup"]],opts:[["rasp",0.5,"cup"],["straw",0.5,"cup"]],top:[["walnut",1,"tbsp"],["cocoa",1,"tsp"]],flav:["Vanilla Berry","Chocolate","Strawberry"],
+        steps:["Whisk protein into the almond milk.","Stir in chia and yogurt, then chill 3+ hours.","Top and enjoy."]}
+    ]
+  },
+  snack: {
+    bases:[{k:"yog",q:1,u:"cup",n:"Greek Yogurt"},{k:"cc",q:0.75,u:"cup",n:"Cottage Cheese"},{k:"deli",q:4,u:"oz",n:"Turkey Roll-Ups"},{k:"jerky",q:1.5,u:"oz",n:"Jerky"},
+      {k:"egg",q:2,u:"",n:"Hard-Boiled Eggs"},{k:"tuna",q:3,u:"oz",n:"Tuna"},{k:"eda",q:1,u:"cup",n:"Edamame"},{k:"whey",q:1,u:"scoop",n:"Protein Shake"},
+      {k:"str",q:2,u:"",n:"String Cheese"},{k:"sm",q:3,u:"oz",n:"Smoked Salmon"},{k:"shr",q:5,u:"oz",n:"Shrimp"}],
+    train:[["ban",1,"","Banana"],["apple",1,"","Apple"],["ber",0.75,"cup","Berries"],["rice_cake",2,"","Rice Cakes"],["crack",6,"","Crackers"],["pine",0.5,"cup","Pineapple"],["gran",0.25,"cup","Granola"]],
+    rest:[["cuke",0.5,"","Cucumber"],["ct",0.75,"cup","Cherry Tomatoes"],["almonds",10,"","Almonds"],["bcar",0.75,"cup","Baby Carrots"],["walnut",1,"tbsp","Walnuts"],["cel",2,"stalk","Celery"]]
+  }
+};
+
 
 /* ===================== APP ===================== */
 const TYPES = ["All","Breakfast","Lunch","Dinner","Snack"];
-const TYPE_COLOR = {Breakfast:"var(--breakfast)",Lunch:"var(--lunch)",Dinner:"var(--dinner)",Snack:"var(--snack)"};
-const byId = Object.fromEntries(MEALS.map(m => [m.id, m]));
+const MEAL_TYPES = ["Breakfast","Lunch","Dinner","Snack"];
+const TYPE_COLOR = {Breakfast:"var(--breakfast)",Lunch:"var(--lunch)",Dinner:"var(--dinner)",Snack:"var(--snack)",Extra:"var(--sage)"};
+const DAY_NAMES = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+const DAY_SHORT = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+const DEFAULT_TRAIN_DAYS = [1, 3, 4];   // Tue, Thu, Fri (Mon = 0)
 const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const LS = {
   get(k, d){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; }catch(e){ return d; } },
   set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
 };
+const round5 = x => Math.round(x / 5) * 5;
+const todayIdx = () => (new Date().getDay() + 6) % 7;
+const dateKey = d => { const x = d || new Date(); return `${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,"0")}-${String(x.getDate()).padStart(2,"0")}`; };
+
+/* ---------- amounts & units ---------- */
+const VOL = {tsp:1, tbsp:3, cup:48};
+const WT  = {oz:1, lb:16, g:1/28.3495, kg:35.274};
+const PLURAL = {slice:"slices",clove:"cloves",head:"heads",stalk:"stalks",scoop:"scoops",sheet:"sheets",strip:"strips",bunch:"bunches"};
+function fmtNum(x, fracs){
+  const FR = {0:"",0.125:"⅛",0.25:"¼",0.333:"⅓",0.5:"½",0.667:"⅔",0.75:"¾"};
+  let w = Math.floor(x + 1e-9), r = x - w, best = 0;
+  [...fracs, 1].forEach(f => { if (Math.abs(r - f) < Math.abs(r - best)) best = f; });
+  if (best === 1){ w += 1; best = 0; }
+  if (w === 0 && best === 0) best = fracs.find(f => f > 0);
+  const key = Object.keys(FR).find(k => Math.abs(k - best) < 0.01);
+  return (w ? String(w) : "") + FR[key];
+}
+function fmtVol(t){
+  const cq = t / 48, clean = [0.25, 1/3, 2/3, 0.75].some(f => Math.abs(cq - f) < 0.01);
+  if (t >= 23.9 || (t >= 11.9 && clean)){ const c = t / 48; return `${fmtNum(c, [0,.125,.25,.333,.5,.667,.75])} ${c > 1.01 ? "cups" : "cup"}`; }
+  if (t >= 2.99) return `${fmtNum(t / 3, [0,.333,.5,.667])} tbsp`;
+  return `${fmtNum(t, [0,.25,.333,.5,.667,.75])} tsp`;
+}
+function fmtWt(oz){
+  if (oz >= 16){ const lb = oz / 16, s = `${fmtNum(lb, [0,.25,.5,.75])} lb`; return Math.abs(Math.round(lb * 4) / 4 - lb) > 0.01 ? `${s} (${+oz.toFixed(1)} oz)` : s; }
+  return `${fmtNum(oz, [0,.5])} oz`;
+}
+function fmtCount(n, u, roundUp){
+  const q = roundUp ? Math.ceil(n * 4 - 1e-6) / 4 : n;
+  const s = fmtNum(q, [0,.25,.333,.5,.667,.75]);
+  return u ? `${s} ${q > 1 ? (PLURAL[u] || u + "s") : u}` : s;
+}
+function fmtAmt(q, u){
+  if (VOL[u]) return fmtVol(q * VOL[u]);
+  if (WT[u]) return fmtWt(q * WT[u]);
+  return fmtCount(q, u, false);
+}
+const PROPER = /^(Greek|Dijon|Italian|Swiss|Kalamata|Cajun|Thai|BBQ|English)\b/;
+function displayName(name, qty){
+  let n = name, cooked = false;
+  if (/\(cooked\)$/.test(n)){ n = n.replace(/\s*\(cooked\)$/, ""); cooked = true; }
+  const lc1 = x => PROPER.test(x) ? x : x.charAt(0).toLowerCase() + x.slice(1);
+  const i = n.indexOf(", ");
+  if (i > 0) n = n.slice(i + 2) + " " + lc1(n.slice(0, i));
+  n = lc1(n);
+  if (cooked) n = "cooked " + n;
+  if (qty != null){
+    if (qty <= 1 && /[^s]s$/.test(n) && !/(ss|us|is)$/.test(n)) n = n.replace(/s$/, "");
+    else if (qty > 1 && !/s$/.test(n) && !/\)$/.test(n)) n = /o$/.test(n) ? n + "es" : n + "s";
+  }
+  return n;
+}
+function ingText(q, u, name, note){
+  if (q == null) { const d = displayName(name); return d.charAt(0).toUpperCase() + d.slice(1) + (note ? `, ${note}` : ""); }
+  const countish = !VOL[u] && !WT[u] && !u;
+  return `${fmtAmt(q, u)} ${displayName(name, countish ? q : null)}${note ? `, ${note}` : ""}`;
+}
+
+/* ---------- food lookups & compact meals ---------- */
+const FOOD_KEY = {}; Object.entries(FOOD).forEach(([k, v]) => FOOD_KEY[v[0]] = k);
+function conv(q, u, bu){
+  if (u === bu) return q;
+  if (VOL[u] && VOL[bu]) return q * VOL[u] / VOL[bu];
+  if (WT[u] && WT[bu]) return q * WT[u] / WT[bu];
+  return null;
+}
+function macrosOf(entries){   // entries: [key, qty, unit]
+  let k = 0, p = 0, c = 0, f = 0;
+  entries.forEach(([key, q, u]) => {
+    const F = FOOD[key]; if (!F || q == null) return;
+    const x = conv(q, (u == null || u === "") ? F[2] : u, F[2]); if (x == null) return;
+    k += F[3] * x; p += F[4] * x; c += F[5] * x; f += F[6] * x;
+  });
+  return {kcal: Math.round(k), p: Math.round(p), c: Math.round(c), f: Math.round(f)};
+}
+function buildCompact(src){
+  const m = Object.assign({}, src);
+  const mac = macrosOf(src.ing);
+  Object.assign(m, mac);
+  m.ing = src.ing.map(([key, q, u, note]) => {
+    const F = FOOD[key]; const unit = (u == null || u === "") ? F[2] : u;
+    return [ingText(q, unit, F[0], note), [q == null ? null : q, unit, F[0], F[1]]];
+  });
+  m.compact = src.ing;
+  return m;
+}
+let customSpecs = LS.get("mealdeck.custom", []);
+const ALLM = [...MEALS, ...MEALS2.map(buildCompact)];
+const byId = {};
+function registerMeal(m){
+  const names = [];
+  m.ing.forEach(l => l.slice(1).forEach(t => names.push(t[2].toLowerCase())));
+  m._names = names.filter(n => !/broth/.test(n));
+  m._all = names;
+  m._protein = proteinGroup(m);
+  m._prep = !!(m.batch || m.tags.includes("meal-prep friendly"));
+  byId[m.id] = m;
+}
+const PROTEIN_GROUPS = [["Chicken",/chicken/],["Turkey",/turkey/],["Beef",/beef|steak|sirloin|flank/],["Pork",/\bpork\b|\bham\b/],["Fish",/salmon|\bcod\b|tilapia|tuna/],["Shellfish",/shrimp/],["Tofu",/tofu/],["Eggs",/\beggs?\b|egg whites/],["Dairy",/yogurt|cottage|whey/]];
+function proteinGroup(m){
+  for (const n of m._names) for (const [g, re] of PROTEIN_GROUPS) if (re.test(n)) return g;
+  return "Other";
+}
+ALLM.forEach(registerMeal);
+customSpecs.forEach(s => { try { const m = buildCompact(s); ALLM.push(m); registerMeal(m); } catch(e){} });
+
+/* ---------- state ---------- */
 let favs    = LS.get("mealdeck.favs", []).filter(id => byId[id]);
 let skipped = LS.get("mealdeck.skipped", []).filter(id => byId[id]);
 let prefs   = Object.assign({day:"train", type:"All"}, LS.get("mealdeck.prefs", {}));
 let goals   = Object.assign({weight:"", goal:""}, LS.get("mealdeck.goals", {}));
-let favType = "All";
-let deck = [], history = [], busy = false;
+let filters = Object.assign({exclude:[], avoid:"", include:[]}, LS.get("mealdeck.filters", {}));
+let ratings = LS.get("mealdeck.ratings", {});
+let logData = LS.get("mealdeck.log", {});
+let groc = Object.assign({off:[], serv:{}, checked:[], cleared:[], hideStaples:true, mealsOpen:true, added:[], addons:[]}, LS.get("mealdeck.grocery", {}));
+let plan = LS.get("mealdeck.plan", null);
+let favType = "All", deck = [], history = [], busy = false, meTab = "tracker", ingOpen = false;
 const persist = () => { LS.set("mealdeck.favs", favs); LS.set("mealdeck.skipped", skipped); LS.set("mealdeck.prefs", prefs); };
+const saveFilters = () => LS.set("mealdeck.filters", filters);
+const saveRatings = () => LS.set("mealdeck.ratings", ratings);
+const saveLog = () => LS.set("mealdeck.log", logData);
+const saveGroc = () => LS.set("mealdeck.grocery", groc);
+const savePlan = () => LS.set("mealdeck.plan", plan);
 
-function tagsFor(m){
-  const t = [];
-  if (m.day === "train") t.push(["training day","t-train"]);
-  if (m.day === "rest")  t.push(["lower carb","t-rest"]);
-  if (m.time <= 15) t.push(["quick",""]);
-  m.tags.forEach(x => { if (!t.some(y => y[0] === x)) t.push([x,""]); });
-  return t;
-}
-const dayLabel = d => d === "train" ? "💪 Great on training days" : d === "rest" ? "🧘 Lower-carb · rest days" : "⚖️ Any day";
-function shuffle(a){ for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
-function matches(m){
-  if (prefs.type !== "All" && m.type !== prefs.type) return false;
-  if (prefs.day === "train" && m.day === "rest") return false;
-  if (prefs.day === "rest" && m.day === "train") return false;
-  return true;
-}
-function poolSize(){ return MEALS.filter(matches).length; }
-function buildDeck(){
-  deck = shuffle(MEALS.filter(m => matches(m) && !favs.includes(m.id) && !skipped.includes(m.id)).map(m => m.id));
-  ensureDeck();
-}
-function ensureDeck(){
-  if (deck.length) return;
-  const sk = MEALS.filter(m => matches(m) && skipped.includes(m.id) && !favs.includes(m.id)).map(m => m.id);
-  if (!sk.length) return;
-  skipped = skipped.filter(id => !sk.includes(id));
-  deck = shuffle(sk);
-  persist();
-  toast("🔄 That's the whole deck! Reshuffling the meals you skipped.");
-}
+/* data migration: v1 (single-file app) -> v2. Only adds fields; never removes saved data. */
+(function migrate(){
+  const v = LS.get("mealdeck.v", 1);
+  if (v < 2){
+    if (!Array.isArray(groc.added)) groc.added = [];
+    if (!Array.isArray(groc.addons)) groc.addons = [];
+    ["off","checked","cleared"].forEach(k => { if (!Array.isArray(groc[k])) groc[k] = []; });
+    if (typeof groc.serv !== "object" || !groc.serv) groc.serv = {};
+    saveGroc(); persist(); LS.set("mealdeck.v", 2);
+  }
+})();
 
-/* ---------- goals math ---------- */
+/* ---------- filters: exclusions & ingredients ---------- */
+const EXCL = {
+  fish:{label:"No fish", re:/salmon|\bcod\b|tilapia|tuna|sardine|trout|halibut/},
+  shellfish:{label:"No shellfish", re:/shrimp|crab|scallop|lobster/},
+  pork:{label:"No pork", re:/\bpork\b|\bham\b|prosciutto/},
+  redmeat:{label:"No red meat", re:/beef|steak|sirloin|flank|bison|lamb|jerky/},
+  dairy:{label:"No dairy", re:/yogurt|cheese|cottage|feta|parmesan|mozzarella|ricotta|skim milk|tzatziki|whey|caesar|^butter$/},
+  eggs:{label:"No eggs", re:/\beggs?\b|egg whites/},
+  veg:{label:"Vegetarian", re:/chicken|turkey|beef|steak|sirloin|flank|pork|\bham\b|bacon|sausage|salmon|\bcod\b|tilapia|tuna|shrimp|jerky|broth/}
+};
+function tokRe(tok){
+  let t = tok.toLowerCase().trim().replace(/[^a-z0-9 %-]/g, "");
+  if (!t) return null;
+  t = t.replace(/oes$/, "o").replace(/ies$/, "y").replace(/([^s])s$/, "$1");
+  const core = /y$/.test(t) ? `${t.slice(0,-1)}(y|ies)` : `${t}(e?s)?`;
+  return new RegExp(`\\b${core}\\b`);
+}
+const avoidTokens = () => filters.avoid.split(",").map(s => s.trim()).filter(Boolean);
+function nameExcluded(n){
+  n = n.toLowerCase();
+  if (filters.exclude.some(c => EXCL[c] && EXCL[c].re.test(n))) return true;
+  return avoidTokens().some(t => { const re = tokRe(t); return re && re.test(n); });
+}
+const isExcluded = m => m._all.some(nameExcluded);
+const includeMatch = (m, inc = filters.include) => !inc.length || inc.every(t => { const re = tokRe(t); return !re || m._names.some(n => re.test(n)) || re.test(m.name.toLowerCase()); });
+
+/* ---------- ratings & similarity weighting ---------- */
+const STAR_W = {1:0.15, 2:0.4, 3:1, 4:1.8, 5:2.5};
+let weightCache = null;
+function weightFor(m){
+  if (!weightCache){
+    weightCache = {};
+    const liked = [], disliked = [];
+    Object.entries(ratings).forEach(([id, r]) => { const x = byId[id]; if (!x || !r.stars) return; if (r.stars >= 4) liked.push(x); else if (r.stars <= 2) disliked.push(x); });
+    ALLM.forEach(x => {
+      let w = 1; const r = ratings[x.id];
+      if (r && r.stars) w *= STAR_W[r.stars];
+      else {
+        liked.forEach(l => { if (l._protein === x._protein) w *= 1.15; if (l.tags.filter(t => x.tags.includes(t)).length >= 2) w *= 1.08; });
+        disliked.forEach(d => { if (d._protein === x._protein) w *= 0.85; });
+      }
+      weightCache[x.id] = Math.max(0.05, Math.min(w, 4));
+    });
+  }
+  return weightCache[m.id] ?? 1;
+}
+function weightedShuffle(ids){ return ids.map(id => [id, -Math.log(Math.random() || 1e-9) / weightFor(byId[id])]).sort((a, b) => a[1] - b[1]).map(x => x[0]); }
+
+/* ---------- goals & targets ---------- */
 function goalNumbers(){
   const w = parseFloat(goals.weight), g = parseFloat(goals.goal);
   if (!(w >= 80 && w <= 500)) return null;
   const base = (g >= 80 && g <= 500) ? g : w;
-  return {
-    w, base,
-    pLo: Math.round(base * 0.8 / 5) * 5, pHi: Math.round(base * 1.0 / 5) * 5,
-    mLo: Math.round(w * 14 / 50) * 50, mHi: Math.round(w * 16 / 50) * 50
-  };
+  return { w, base, pLo: round5(base * 0.8), pHi: round5(base * 1.0), mLo: Math.round(w * 14 / 50) * 50, mHi: Math.round(w * 16 / 50) * 50 };
 }
+function targets(){
+  const g = goalNumbers();
+  const p = g ? round5((g.pLo + g.pHi) / 2) : 160;
+  const mid = g ? Math.round((g.mLo + g.mHi) / 2 / 50) * 50 : 2500;
+  return {p, kTrain: mid, kRest: mid - 300, set: !!g};
+}
+const trainDays = () => (plan && plan.trainDays) || DEFAULT_TRAIN_DAYS;
+const isTrainDay = d => trainDays().includes(d);
+const calTarget = d => { const t = targets(); return isTrainDay(d) ? t.kTrain : t.kRest; };
+
 
 /* ---------- card markup ---------- */
+function tagsFor(m){
+  const t = [];
+  if (m.gen) t.push(["✨ generated","t-gen"]);
+  if (m.day === "train") t.push(["training day","t-train"]);
+  if (m.day === "rest")  t.push(["lower carb","t-rest"]);
+  if (m.time <= 15) t.push(["quick",""]);
+  m.tags.forEach(x => { if (x !== "generated" && !t.some(y => y[0] === x)) t.push([x,""]); });
+  return t;
+}
+const dayLabel = d => d === "train" ? "💪 Great on training days" : d === "rest" ? "🧘 Lower-carb · rest days" : "⚖️ Any day";
+function shuffle(a){ for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function ratingBadge(m){
+  const r = ratings[m.id]; if (!r || (!r.cooked && !r.stars)) return "";
+  return `${r.cooked ? `👨‍🍳 Cooked ${r.cooked}×` : ""}${r.cooked && r.stars ? " · " : ""}${r.stars ? `${"★".repeat(r.stars)}` : ""}`;
+}
 function macroBlock(m){
-  const pc = m.p * 4, cc = m.c * 4, fc = m.f * 9, tot = pc + cc + fc;
+  const pc = m.p * 4, cc = m.c * 4, fc = m.f * 9, tot = pc + cc + fc || 1;
   return `<div class="macros">
       <div class="m kcal"><b>${m.kcal}</b><span>kcal</span></div>
       <div class="m"><b>${m.p}g</b><span>Protein</span></div>
@@ -716,29 +1355,73 @@ function macroBlock(m){
     <div class="est"><span>Estimated · per serving</span><span>${Math.round(pc/tot*100)}% protein · ${Math.round(cc/tot*100)}% carbs · ${Math.round(fc/tot*100)}% fat</span></div>`;
 }
 function goalFit(m){
-  const g = goalNumbers();
-  if (!g) return "";
-  const pct = Math.round(m.p / ((g.pLo + g.pHi) / 2) * 100);
-  return `<div class="goalfit">✓ About ${pct}% of your daily protein target</div>`;
+  const t = targets(); if (!t.set) return "";
+  return `<div class="goalfit">✓ About ${Math.round(m.p / t.p * 100)}% of your daily protein target</div>`;
 }
 const tagHtml = m => `<div class="tags">${tagsFor(m).map(([t,c]) => `<span class="tag ${c}">${esc(t)}</span>`).join("")}</div>`;
-function recipeHtml(m){
-  return `<div class="recipe">
-    <h4>Ingredients · 1 serving</h4><ul>${m.ing.map(i => `<li>${esc(i[0])}</li>`).join("")}</ul>
-    <h4>Steps</h4><ol>${m.steps.map(s => `<li>${esc(s)}</li>`).join("")}</ol>
-  </div>`;
+
+/* ---------- recipe block: scaler, batch prep, actions ---------- */
+const rsState = {};
+const rsGet = id => rsState[id] || (rsState[id] = {n:1, batch:false});
+function storageTips(m){
+  const n = m._all.join(" "), tips = [];
+  const fish = /salmon|\bcod\b|tilapia|tuna|shrimp/.test(n);
+  if (m.tags.includes("no cook") && m.type !== "Lunch") tips.push("Assemble in jars or containers, and add crunchy toppings (granola, nuts) right before eating so they stay crisp.");
+  if (m.tags.includes("freezer friendly")) tips.push("Freezes well. Portion and freeze for up to 3 months, then thaw overnight in the fridge.");
+  if (fish) tips.push("Seafood is best within 2 days. Cook enough for 2 days, or keep raw portions frozen and cook as needed.");
+  else tips.push("Refrigerate in airtight containers for up to 4 days. Reheat to 165°F (about 90 seconds in the microwave, stirring halfway).");
+  if (/salad|slaw|lettuce|wrap/i.test(m.name)) tips.push("Keep dressing or sauce in a separate small container until you eat it.");
+  if (/rice|quinoa|farro|potato|pasta/.test(n)) tips.push("Cook the grains or potatoes in one big batch and spread them out to cool before portioning.");
+  tips.push("Use the same containers for every portion. Label them with the date.");
+  return tips;
 }
+function scaledLines(m, k){
+  const out = [];
+  m.ing.forEach(line => {
+    const items = line.slice(1);
+    if (!items.length) return;
+    out.push(items.map(([q, u, name]) => q == null ? ingText(null, u, name) + " (to taste)" : ingText(q * k, u, name)).join(" + "));
+  });
+  return out;
+}
+function recipeHtml(m){
+  const s = rsGet(m.id), k = s.n;
+  const lines = k === 1 && !s.batch ? m.ing.map(i => i[0]) : scaledLines(m, k);
+  return `<div class="recipe-wrap" data-mid="${m.id}"><div class="recipe">
+    <div class="actrow">
+      <button class="act" data-act="ate" data-id="${m.id}">✓ Ate this</button>
+      <button class="act" data-act="cooked" data-id="${m.id}">👨‍🍳 Cooked it</button>
+      <button class="act" data-act="groc" data-id="${m.id}">🛒 Add ${k}</button>
+    </div>
+    ${ratingBadge(m) ? `<div class="rbadge">${ratingBadge(m)}</div>` : ""}
+    <div class="scaler">
+      <span>Servings</span>
+      <div class="stepper"><button data-act="rs-" data-id="${m.id}" aria-label="Fewer servings">−</button><output>${k}</output><button data-act="rs+" data-id="${m.id}" aria-label="More servings">+</button></div>
+      <button class="switch-row mini" data-act="rsb" data-id="${m.id}"><span>Batch prep</span><span class="switch ${s.batch ? "on" : ""}"></span></button>
+    </div>
+    <p class="scal-note">Per serving (est.): ${m.kcal} kcal · ${m.p}g protein · ${m.c}g carbs · ${m.f}g fat${k > 1 ? `<br><b>Total for ${k}: ${Math.round(m.kcal * k).toLocaleString()} kcal · ${m.p * k}g protein</b>` : ""}</p>
+    <h4>Ingredients · ${k === 1 ? "1 serving" : `${k} servings`}</h4><ul>${lines.map(i => `<li>${esc(i)}</li>`).join("")}</ul>
+    <h4>Steps</h4><ol>${m.steps.map(st => `<li>${esc(st)}</li>`).join("")}</ol>
+    ${s.batch ? `<div class="batchbox"><h4>📦 Batch prep for ${k}</h4><ul>${storageTips(m).map(t => `<li>${esc(t)}</li>`).join("")}</ul>
+      <button class="btn" data-act="groc" data-id="${m.id}" style="width:100%;margin-top:8px">🛒 Put ${k} servings on the grocery list</button></div>` : ""}
+  </div></div>`;
+}
+function refreshRecipes(id){
+  document.querySelectorAll(`.recipe-wrap[data-mid="${id}"]`).forEach(w => { w.outerHTML = recipeHtml(byId[id]); });
+}
+
 function makeCard(m){
   const el = document.createElement("div");
   el.className = "card";
   el.dataset.id = m.id;
   el.style.setProperty("--tc", TYPE_COLOR[m.type]);
+  const rb = ratingBadge(m);
   el.innerHTML = `
     <div class="stamp save">SAVE</div><div class="stamp skip">SKIP</div>
     <div class="card-inner">
       <div class="face front">
         <div class="hero"><span class="pill type">${m.type}</span><span class="pill time">⏱ ${m.time} min</span>
-          <span class="emoji">${m.emoji}</span><span class="pill day">${dayLabel(m.day)}</span></div>
+          <span class="emoji">${m.emoji}</span><span class="pill day">${dayLabel(m.day)}</span>${rb ? `<span class="pill cooked">${rb}</span>` : ""}</div>
         <div class="front-body">
           <h2 class="name">${esc(m.name)}</h2>
           <p class="why">${esc(m.why)}</p>
@@ -758,7 +1441,29 @@ function makeCard(m){
   return el;
 }
 
-/* ---------- stack rendering ---------- */
+/* ---------- deck ---------- */
+function matches(m){
+  if (prefs.type !== "All" && m.type !== prefs.type) return false;
+  if (prefs.day === "train" && m.day === "rest") return false;
+  if (prefs.day === "rest" && m.day === "train") return false;
+  if (isExcluded(m)) return false;
+  return includeMatch(m);
+}
+const poolSize = () => ALLM.filter(matches).length;
+function buildDeck(){
+  weightCache = null;
+  deck = weightedShuffle(ALLM.filter(m => matches(m) && !favs.includes(m.id) && !skipped.includes(m.id)).map(m => m.id));
+  ensureDeck();
+}
+function ensureDeck(){
+  if (deck.length) return;
+  const sk = ALLM.filter(m => matches(m) && skipped.includes(m.id) && !favs.includes(m.id)).map(m => m.id);
+  if (!sk.length) return;
+  skipped = skipped.filter(id => !sk.includes(id));
+  deck = weightedShuffle(sk);
+  persist();
+  toast("🔄 That's the whole deck! Reshuffling the meals you skipped.");
+}
 const stack = $("#stack");
 function renderStack(reset){
   if (reset) stack.innerHTML = "";
@@ -787,18 +1492,22 @@ function renderStack(reset){
 function renderEmpty(){
   const e = document.createElement("div");
   e.className = "empty";
-  const savedHere = MEALS.filter(m => matches(m) && favs.includes(m.id)).length;
-  e.innerHTML = savedHere
-    ? `<div class="big">🏆</div><h3>You saved every meal here!</h3><p>All ${savedHere} meals in this filter are in your favorites. Try another meal type or day mode, or open Favorites to start cooking.</p>
-       <div class="row-btns" style="justify-content:center"><button class="btn" data-go="favs">Open favorites</button><button class="btn ghost" data-all="1">Show all meals</button></div>`
-    : `<div class="big">🍽️</div><h3>No meals match</h3><p>Try a different filter.</p><button class="btn" data-all="1">Show all meals</button>`;
-  e.querySelector("[data-go]")?.addEventListener("click", () => showView("favs"));
-  e.querySelector("[data-all]")?.addEventListener("click", () => { prefs.type = "All"; prefs.day = "all"; applyFilters(); });
+  const savedHere = ALLM.filter(m => matches(m) && favs.includes(m.id)).length;
+  if (filters.include.length && !poolSize()){
+    e.innerHTML = `<div class="big">🔍</div><h3>No meals use all of those</h3><p>Nothing in the cookbook has <b>${esc(filters.include.join(", "))}</b>${prefs.type !== "All" ? ` for ${prefs.type.toLowerCase()}` : ""}. Remove an ingredient, or build a new meal.</p>
+      <div class="row-btns" style="justify-content:center"><button class="btn ghost" data-clear-inc="1">Clear ingredients</button><button class="btn" data-gen="1">✨ Build a meal</button></div>`;
+  } else if (savedHere){
+    e.innerHTML = `<div class="big">🏆</div><h3>You saved every meal here!</h3><p>All ${savedHere} meals in this filter are in your favorites. Try another filter, or build a brand-new meal.</p>
+       <div class="row-btns" style="justify-content:center"><button class="btn" data-gen="1">✨ Build a meal</button><button class="btn ghost" data-all="1">Show all meals</button></div>`;
+  } else {
+    e.innerHTML = `<div class="big">🍽️</div><h3>No meals match</h3><p>Try a different filter, or check your foods-to-avoid list in Me → Goals.</p><button class="btn" data-all="1">Show all meals</button>`;
+  }
+  e.querySelector("[data-all]")?.addEventListener("click", () => { prefs.type = "All"; prefs.day = "all"; filters.include = []; saveFilters(); applyFilters(); });
+  e.querySelector("[data-clear-inc]")?.addEventListener("click", () => { filters.include = []; saveFilters(); applyFilters(); });
+  e.querySelector("[data-gen]")?.addEventListener("click", () => openGenerator());
   stack.appendChild(e);
 }
-function topCard(){ return stack.querySelector(".card.pos-0:not(.leaving)"); }
-
-/* ---------- actions ---------- */
+const topCard = () => stack.querySelector(".card.pos-0:not(.leaving)");
 function act(kind){
   if (busy || !deck.length) return;
   const id = deck[0], el = topCard();
@@ -818,9 +1527,7 @@ function act(kind){
     el.style.opacity = 0;
     setTimeout(() => el.remove(), 420);
   }
-  ensureDeck();
-  renderStack();
-  updateBadge();
+  ensureDeck(); renderStack(); updateBadge();
   setTimeout(() => busy = false, 260);
 }
 function undo(){
@@ -832,14 +1539,13 @@ function undo(){
   toast("↩️ Brought it back");
 }
 function flip(){ const el = topCard(); if (el) el.classList.toggle("flipped"); }
-
-/* ---------- swipe / drag ---------- */
 function attachDrag(el){
   let sx = 0, sy = 0, dx = 0, down = false, moved = false, pid = null;
   const stamps = () => [el.querySelector(".stamp.save"), el.querySelector(".stamp.skip")];
   const resetStamps = () => stamps().forEach(s => s.style.opacity = 0);
   el.addEventListener("pointerdown", e => {
     if (!el.classList.contains("pos-0") || el.classList.contains("leaving") || busy) return;
+    if (e.target.closest("button")) return;
     if (e.pointerType === "mouse" && e.button !== 0) return;
     down = true; moved = false; dx = 0; sx = e.clientX; sy = e.clientY; pid = e.pointerId;
   });
@@ -872,49 +1578,159 @@ function attachDrag(el){
   el.addEventListener("pointercancel", e => end(e, true));
 }
 
-/* ---------- filters ---------- */
+/* ---------- deck controls & ingredient filter ---------- */
+const ING_CHIPS = ["Chicken","Turkey","Beef","Salmon","Shrimp","Eggs","Tofu","Greek yogurt","Rice","Potato","Pasta","Oats","Broccoli","Spinach","Beans","Avocado"];
 function renderControls(){
   document.querySelectorAll("#daySeg button").forEach(b => b.classList.toggle("on", b.dataset.day === prefs.day));
-  $("#typeChips").innerHTML = TYPES.map(t => `<button class="chip ${prefs.type === t ? "on" : ""}" data-type="${t}">${t === "All" ? "All meals" : t}</button>`).join("");
+  const n = filters.include.length;
+  $("#typeChips").innerHTML = TYPES.map(t => `<button class="chip ${prefs.type === t ? "on" : ""}" data-type="${t}">${t === "All" ? "All meals" : t}</button>`).join("")
+    + `<button class="chip ing ${n || ingOpen ? "on-ing" : ""}" id="ingToggle">🔍 Ingredients${n ? ` (${n})` : ""}</button>`;
+  const p = $("#ingPanel");
+  p.hidden = !ingOpen;
+  if (ingOpen){
+    const ex = [...filters.exclude.map(c => EXCL[c]?.label).filter(Boolean), ...avoidTokens().map(t => "no " + t)];
+    p.innerHTML = `<form id="ingForm" class="ingform"><input id="ingInput" type="search" placeholder="What can I make with… chicken, rice" autocomplete="off" enterkeyhint="search"><button class="btn" type="submit">Add</button></form>
+      ${n ? `<div class="incl">${filters.include.map(t => `<button class="chip on" data-inc-rm="${esc(t)}">${esc(t)} ✕</button>`).join("")}<button class="linkish" data-inc-clear="1">Clear</button></div>` : ""}
+      <div class="chips ingchips">${ING_CHIPS.filter(c => !filters.include.some(t => t.toLowerCase() === c.toLowerCase())).map(c => `<button class="chip" data-inc-add="${c}">+ ${c}</button>`).join("")}</div>
+      <p class="gnote" style="padding:2px 2px 0">${n ? `<b>${poolSize()}</b> meals use ${n > 1 ? "all of these" : "it"}. ` : "Pick ingredients to find meals that use them. "}${ex.length ? `Avoiding: ${esc(ex.join(", "))} (edit in Me → Goals).` : ""}</p>`;
+  }
 }
-function applyFilters(){ persist(); history = []; renderControls(); buildDeck(); renderStack(true); }
+function applyFilters(){ persist(); saveFilters(); history = []; renderControls(); buildDeck(); renderStack(true); }
 $("#daySeg").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; prefs.day = b.dataset.day; applyFilters(); });
-$("#typeChips").addEventListener("click", e => { const b = e.target.closest(".chip"); if (!b) return; prefs.type = b.dataset.type; applyFilters(); });
+$("#typeChips").addEventListener("click", e => {
+  if (e.target.closest("#ingToggle")){ ingOpen = !ingOpen; renderControls(); if (ingOpen) $("#ingInput")?.focus({preventScroll:true}); return; }
+  const b = e.target.closest(".chip"); if (!b) return; prefs.type = b.dataset.type; applyFilters();
+});
+function addIncludes(str){
+  str.split(/,|\band\b|\bwith\b/).map(s => s.trim().toLowerCase()).filter(s => s && s.length > 1 && !/^(what|can|i|make)$/.test(s))
+    .forEach(t => { if (!filters.include.includes(t)) filters.include.push(t); });
+}
+$("#ingPanel").addEventListener("submit", e => { e.preventDefault(); const v = $("#ingInput").value; if (!v.trim()) return; addIncludes(v.replace(/what can i make with/i, "")); applyFilters(); });
+$("#ingPanel").addEventListener("click", e => {
+  const a = e.target.closest("[data-inc-add]"), r = e.target.closest("[data-inc-rm]"), c = e.target.closest("[data-inc-clear]");
+  if (a){ addIncludes(a.dataset.incAdd); applyFilters(); }
+  else if (r){ filters.include = filters.include.filter(t => t !== r.dataset.incRm); applyFilters(); }
+  else if (c){ filters.include = []; applyFilters(); }
+});
 $("#skipBtn").onclick = () => act("skip");
 $("#saveBtn").onclick = () => act("save");
 $("#flipBtn").onclick = flip;
 $("#undoBtn").onclick = undo;
 
-/* ---------- favorites ---------- */
-function updateBadge(){ $("#favBadge").textContent = favs.length || ""; }
-function renderFavs(){
-  const types = TYPES.filter(t => t === "All" || favs.some(id => byId[id].type === t));
-  if (!types.includes(favType)) favType = "All";
-  $("#favChips").innerHTML = favs.length ? types.map(t => `<button class="chip ${favType === t ? "on" : ""}" data-type="${t}">${t === "All" ? `All (${favs.length})` : t}</button>`).join("") : "";
-  const list = favs.map(id => byId[id]).filter(m => favType === "All" || m.type === favType);
-  $("#favSub").textContent = favs.length ? "Meals you've saved. Tap one to open the recipe." : "";
-  $("#favGroc").style.display = favs.length ? "" : "none";
-  $("#favList").innerHTML = favs.length ? list.map(m => `
-    <div class="fav" style="--tc:${TYPE_COLOR[m.type]}" data-id="${m.id}">
-      <button class="thumb" data-open="${m.id}" aria-label="Open ${esc(m.name)}">${m.emoji}</button>
-      <button class="info" data-open="${m.id}"><b>${esc(m.name)}</b><small>${m.type} · ${m.kcal} kcal · ${m.p}g protein · ⏱ ${m.time} min</small></button>
-      <button class="icon-btn" data-remove="${m.id}" title="Remove" aria-label="Remove ${esc(m.name)} from favorites">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg></button>
-    </div>`).join("")
-    : `<div class="empty" style="position:relative;inset:auto;min-height:320px"><div class="big">💛</div><h3>No favorites yet</h3><p>Swipe right or tap the heart on any meal card to save it here.</p><button class="btn" data-go="deck">Browse meals</button></div>`;
-}
-$("#favChips").addEventListener("click", e => { const b = e.target.closest(".chip"); if (!b) return; favType = b.dataset.type; renderFavs(); });
-$("#favList").addEventListener("click", e => {
-  const o = e.target.closest("[data-open]"), r = e.target.closest("[data-remove]"), g = e.target.closest("[data-go]");
-  if (g) return showView("deck");
-  if (r){
-    const id = r.dataset.remove;
-    favs = favs.filter(x => x !== id); persist(); updateBadge();
-    if (matches(byId[id]) && !deck.includes(id)) { deck.push(id); renderStack(); }
-    renderFavs(); toast("Removed from favorites");
-  } else if (o) openModal(byId[o.dataset.open]);
-});
 
+/* ---------- sheets (modal) ---------- */
+function openSheet(html, tc){
+  const s = $("#sheet");
+  s.style.setProperty("--tc", tc || "var(--accent)");
+  s.innerHTML = html;
+  s.querySelector(".close")?.addEventListener("click", closeModal);
+  $("#modal").classList.add("open"); $("#modal").setAttribute("aria-hidden","false");
+  s.scrollTop = 0; const c = s.querySelector(".content"); if (c) c.scrollTop = 0;
+  return s;
+}
+function closeModal(){ $("#modal").classList.remove("open"); $("#modal").setAttribute("aria-hidden","true"); }
+$("#modal").addEventListener("click", e => { if (e.target.id === "modal") closeModal(); });
+function openModal(m, extra){
+  const fav = favs.includes(m.id);
+  const s = openSheet(`<div class="hero" style="position:relative"><span class="pill type">${m.type}</span><span class="emoji">${m.emoji}</span>
+      <button class="close" aria-label="Close">✕</button><span class="pill day">${dayLabel(m.day)}</span></div>
+    <div class="content">
+      ${extra || ""}
+      <h2 class="name">${esc(m.name)}</h2>
+      <p class="why" style="margin:6px 0 12px">${esc(m.why)}</p>
+      ${macroBlock(m)}
+      <div style="margin:10px 0 2px">${goalFit(m)}</div>
+      <div style="margin:10px 0">${tagHtml(m)}</div>
+      <p class="note">⏱ About ${m.time} minutes${m.batch ? ` · Meal prep: makes ${m.batch} servings` : ""}</p>
+      ${recipeHtml(m)}
+      <div class="row-btns" style="margin-top:16px">
+        <button class="btn ${fav ? "ghost" : ""}" id="mFav">${fav ? "Remove from favorites" : "♥ Save to favorites"}</button>
+        <button class="btn ghost" id="mClose">Close</button>
+      </div>
+    </div>`, TYPE_COLOR[m.type]);
+  s.querySelector("#mClose").onclick = closeModal;
+  s.querySelector("#mFav").onclick = () => { toggleFav(m.id); openModal(m, extra); };
+}
+function toggleFav(id){
+  if (favs.includes(id)){
+    favs = favs.filter(x => x !== id);
+    if (matches(byId[id]) && !deck.includes(id)) deck.push(id);
+    toast("Removed from favorites");
+  } else { favs = [id, ...favs]; deck = deck.filter(x => x !== id); toast("❤️ Saved to favorites"); }
+  persist(); updateBadge(); renderStack();
+  if (currentView === "me") renderMe();
+}
+
+/* ---------- tracker logging ---------- */
+const todayLog = () => logData[dateKey()] || [];
+function logEntry(e){ const k = dateKey(); (logData[k] = logData[k] || []).push(Object.assign({t: Date.now()}, e)); saveLog(); }
+function totalsFor(key){ return (logData[key] || []).reduce((a, e) => ({p: a.p + e.p, kcal: a.kcal + e.kcal}), {p:0, kcal:0}); }
+function openAte(id, startN){
+  const m = byId[id]; let n = startN || 1;
+  const draw = () => {
+    const s = openSheet(`<div class="content sheet-pad"><button class="close" aria-label="Close">✕</button>
+      <h3 class="sheet-title">✓ Log what you ate</h3>
+      <div class="ate-meal"><span class="emoji-lg">${m.emoji}</span><div><b>${esc(m.name)}</b><small>${m.type}</small></div></div>
+      <div class="scaler" style="justify-content:center"><span>Servings eaten</span>
+        <div class="stepper"><button id="aMinus" aria-label="Less">−</button><output>${n}</output><button id="aPlus" aria-label="More">+</button></div></div>
+      <p class="ate-sum"><b>${Math.round(m.p * n)} g protein</b> · ${Math.round(m.kcal * n)} kcal <small>(est.)</small></p>
+      <button class="btn" id="aLog" style="width:100%">Log it for today</button></div>`, TYPE_COLOR[m.type]);
+    s.querySelector("#aMinus").onclick = () => { n = Math.max(0.5, n - 0.5); draw(); };
+    s.querySelector("#aPlus").onclick = () => { n = Math.min(6, n + 0.5); draw(); };
+    s.querySelector("#aLog").onclick = () => {
+      logEntry({id: m.id, name: m.name, emoji: m.emoji, n, p: Math.round(m.p * n), kcal: Math.round(m.kcal * n)});
+      closeModal();
+      const t = totalsFor(dateKey());
+      toast(`✓ Logged · today ${t.p} / ${targets().p} g protein`);
+      if (currentView === "me") renderMe();
+      if (currentView === "plan") renderPlan();
+    };
+  };
+  draw();
+}
+
+/* ---------- cooked it & ratings ---------- */
+function openCooked(id){
+  const m = byId[id], prev = ratings[id] || {}; let stars = prev.stars || 0;
+  const draw = () => {
+    const s = openSheet(`<div class="content sheet-pad"><button class="close" aria-label="Close">✕</button>
+      <h3 class="sheet-title">👨‍🍳 How was it?</h3>
+      <div class="ate-meal"><span class="emoji-lg">${m.emoji}</span><div><b>${esc(m.name)}</b><small>${prev.cooked ? `Cooked ${prev.cooked}× so far` : "First time cooking it"}</small></div></div>
+      <div class="thumbs"><button class="thumb ${stars === 1 ? "on" : ""}" data-s="1">👎 Not for me</button><button class="thumb ${stars === 5 ? "on" : ""}" data-s="5">👍 Loved it</button></div>
+      <div class="stars">${[1,2,3,4,5].map(i => `<button class="star ${i <= stars ? "on" : ""}" data-s="${i}" aria-label="${i} stars">★</button>`).join("")}</div>
+      <p class="gnote" style="text-align:center">Highly rated meals (and similar ones) show up more in your deck and plan. Low-rated ones show up less.</p>
+      <button class="btn" id="cSave" style="width:100%">${stars ? "Save rating" : "Mark as cooked"}</button></div>`, TYPE_COLOR[m.type]);
+    s.querySelectorAll("[data-s]").forEach(b => b.onclick = () => { stars = +b.dataset.s; draw(); });
+    s.querySelector("#cSave").onclick = () => {
+      ratings[id] = {stars: stars || prev.stars || 0, cooked: (prev.cooked || 0) + 1, last: dateKey()};
+      saveRatings(); weightCache = null; closeModal();
+      toast(stars ? `Thanks! Rated ${stars}★` : "👨‍🍳 Marked as cooked");
+      refreshBadges(id);
+    };
+  };
+  draw();
+}
+function refreshBadges(id){
+  const m = byId[id], rb = ratingBadge(m);
+  document.querySelectorAll(`.card[data-id="${id}"] .hero`).forEach(h => {
+    let p = h.querySelector(".pill.cooked"); if (!p){ p = document.createElement("span"); p.className = "pill cooked"; h.appendChild(p); }
+    p.textContent = rb;
+  });
+  refreshRecipes(id);
+  if (currentView === "me") renderMe();
+}
+
+/* ---------- global action buttons (recipes, plan, favorites) ---------- */
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-act]"); if (!b) return;
+  const id = b.dataset.id, a = b.dataset.act, m = byId[id]; if (!m) return;
+  e.stopPropagation();
+  if (a === "ate") openAte(id, +(b.dataset.n || 1));
+  else if (a === "cooked") openCooked(id);
+  else if (a === "groc"){ addToGrocery(id, rsGet(id).n); }
+  else if (a === "rs-" || a === "rs+"){ const s = rsGet(id); s.n = Math.max(1, Math.min(12, s.n + (a === "rs+" ? 1 : -1))); refreshRecipes(id); }
+  else if (a === "rsb"){ const s = rsGet(id); s.batch = !s.batch; if (s.batch && s.n === 1) s.n = m.batch || 4; refreshRecipes(id); }
+});
 
 /* ---------- grocery list ---------- */
 const SECTIONS = {P:"Produce",M:"Meat & Seafood",D:"Dairy & Eggs",A:"Pantry",S:"Spices",F:"Frozen",B:"Bakery",O:"Other"};
@@ -922,48 +1738,31 @@ const SEC_ORDER = ["P","M","D","A","S","F","B","O"];
 const SEC_ICON = {P:"🥬",M:"🥩",D:"🥚",A:"🥫",S:"🧂",F:"🧊",B:"🍞",O:"🛒"};
 const STAPLES = new Set(["Olive oil","Cooking spray","Hot sauce","Sriracha","Baking powder","Vanilla extract","Cornstarch"]);
 const isStaple = it => it.sec === "S" || STAPLES.has(it.name);
-const VOL = {tsp:1, tbsp:3, cup:48};                       // in teaspoons
-const WT  = {oz:1, lb:16, g:1/28.3495, kg:35.274};          // in ounces
-const PLURAL = {slice:"slices",clove:"cloves",head:"heads",stalk:"stalks",scoop:"scoops",sheet:"sheets",strip:"strips",bunch:"bunches"};
-let groc = Object.assign({off:[], serv:{}, checked:[], cleared:[], hideStaples:true, mealsOpen:true}, LS.get("mealdeck.grocery", {}));
-const saveGroc = () => LS.set("mealdeck.grocery", groc);
-const servingsFor = id => groc.serv[id] || byId[id].batch || 1;
-const selectedMeals = () => favs.filter(id => !groc.off.includes(id));
-
-function fmtNum(x, fracs){
-  const FR = {0:"",0.125:"⅛",0.25:"¼",0.333:"⅓",0.5:"½",0.667:"⅔",0.75:"¾"};
-  let w = Math.floor(x), r = x - w, best = 0;
-  [...fracs, 1].forEach(f => { if (Math.abs(r - f) < Math.abs(r - best)) best = f; });
-  if (best === 1){ w += 1; best = 0; }
-  if (w === 0 && best === 0) best = fracs.find(f => f > 0);   // never show "0"
-  const key = Object.keys(FR).find(k => Math.abs(k - best) < 0.01);
-  return (w ? String(w) : "") + FR[key];
+function getMeal(id){
+  if (id === "_addons") return {id:"_addons", type:"Extra", emoji:"➕", name:"Plan add-ons (calorie boosters)", tags:[], ing: groc.addons.map(t => ["", t])};
+  return byId[id];
 }
-function fmtVol(t){
-  if (t >= 23.9){ const c = t / 48; return `${fmtNum(c, [0,.125,.25,.333,.5,.667,.75])} ${c > 1.01 ? "cups" : "cup"}`; }
-  if (t >= 2.99) return `${fmtNum(t / 3, [0,.333,.5,.667])} tbsp`;
-  return `${fmtNum(t, [0,.25,.333,.5,.667,.75])} tsp`;
-}
-function fmtWt(oz){
-  if (oz >= 16){ const lb = oz / 16, s = `${fmtNum(lb, [0,.25,.5,.75])} lb`; return Math.abs(Math.round(lb * 4) / 4 - lb) > 0.01 ? `${s} (${+oz.toFixed(1)} oz)` : s; }
-  return `${fmtNum(oz, [0,.5])} oz`;
-}
-function fmtCount(n, u){
-  const q = Math.ceil(n * 4 - 1e-6) / 4;                 // round counts up to the nearest ¼ for shopping
-  const s = fmtNum(q, [0,.25,.5,.75]);
-  return u ? `${s} ${q > 1 ? (PLURAL[u] || u + "s") : u}` : s;
+const listIds = () => [...favs, ...groc.added.filter(id => !favs.includes(id) && (id === "_addons" ? groc.addons.length : byId[id]))];
+const servingsFor = id => id === "_addons" ? 1 : (groc.serv[id] || getMeal(id).batch || 1);
+const selectedMeals = () => listIds().filter(id => !groc.off.includes(id));
+function addToGrocery(id, n){
+  if (!favs.includes(id) && !groc.added.includes(id)) groc.added.push(id);
+  groc.off = groc.off.filter(x => x !== id);
+  groc.serv[id] = n;
+  saveGroc();
+  toast(`🛒 ${byId[id].name}: ${n} serving${n > 1 ? "s" : ""} on the grocery list`);
 }
 function fmtItem(it){
   const parts = [];
   if (it.wt) parts.push(fmtWt(it.wt));
   if (it.vol) parts.push(fmtVol(it.vol));
-  Object.entries(it.counts).forEach(([u, n]) => parts.push(fmtCount(n, u)));
+  Object.entries(it.counts).forEach(([u, n]) => parts.push(fmtCount(n, u, true)));
   return parts.length ? parts.join(" + ") : "as needed";
 }
 function buildGrocery(){
   const items = {};
   selectedMeals().forEach(id => {
-    const m = byId[id], k = servingsFor(id);
+    const m = getMeal(id), k = servingsFor(id);
     m.ing.forEach(line => line.slice(1).forEach(([q, u, n, s]) => {
       const it = items[n] || (items[n] = {name:n, sec:s, vol:0, wt:0, counts:{}, meals:[]});
       if (!it.meals.includes(id)) it.meals.push(id);
@@ -976,16 +1775,13 @@ function buildGrocery(){
   });
   return Object.values(items).map(it => Object.assign(it, {qty: fmtItem(it), staple: isStaple(it)}));
 }
-function visibleItems(){
-  return buildGrocery().filter(it => !(groc.hideStaples && it.staple) && !groc.cleared.includes(it.name));
-}
-const shortName = id => byId[id].name.replace(/^(Better-Than-Takeout|Lightened|Light|Hearty|Loaded|Savory|Crunchy|Sheet-Pan|Slow-Cooker|High-Protein|Open-Faced)\s+/, "");
-
+const visibleItems = () => buildGrocery().filter(it => !(groc.hideStaples && it.staple) && !groc.cleared.includes(it.name));
+const shortName = id => id === "_addons" ? "Plan add-ons" : byId[id].name.replace(/^(Better-Than-Takeout|Lightened|Light|Hearty|Loaded|Savory|Crunchy|Sheet-Pan|Slow-Cooker|High-Protein|Open-Faced)\s+/, "");
 function renderGrocery(){
-  const body = $("#grocBody");
-  if (!favs.length){
+  const body = $("#grocBody"), ids = listIds();
+  if (!ids.length){
     body.innerHTML = `<div class="empty" style="position:relative;inset:auto;min-height:320px"><div class="big">🛒</div><h3>Nothing to shop for yet</h3>
-      <p>Save meals you like (swipe right or tap ♥), and they'll show up here as a grocery list sorted by store section.</p><button class="btn" data-go="deck">Browse meals</button></div>`;
+      <p>Save meals you like, add a recipe with 🛒, or send your weekly plan here. Items are sorted by store section.</p><button class="btn" data-go="deck">Browse meals</button></div>`;
     body.querySelector("[data-go]").onclick = () => showView("deck");
     return;
   }
@@ -994,15 +1790,15 @@ function renderGrocery(){
   const nStaples = all.filter(it => it.staple && !groc.cleared.includes(it.name)).length;
   const nCleared = all.filter(it => groc.cleared.includes(it.name)).length;
   const done = items.filter(it => groc.checked.includes(it.name)).length;
-  const mealRows = favs.map(id => { const m = byId[id], off = groc.off.includes(id);
+  const mealRows = ids.map(id => { const m = getMeal(id), off = groc.off.includes(id), extra = !favs.includes(id);
     return `<div class="gmeal ${off ? "off" : ""}" data-meal="${id}">
       <button class="gm-check" data-toggle-meal="${id}" aria-label="${off ? "Include" : "Exclude"} ${esc(m.name)}">${off ? "" : "✓"}</button>
-      <button class="gm-name" data-toggle-meal="${id}"><span style="font-size:22px">${m.emoji}</span><span>${esc(m.name)}<small>${m.type}${m.batch ? ` · batch of ${m.batch}` : ""}</small></span></button>
-      <div class="stepper" aria-label="Servings"><button data-step="-1" data-id="${id}" aria-label="Fewer servings">−</button><output>${servingsFor(id)}×</output><button data-step="1" data-id="${id}" aria-label="More servings">+</button></div>
+      <button class="gm-name" data-toggle-meal="${id}"><span style="font-size:22px">${m.emoji}</span><span>${esc(m.name)}<small>${m.type}${m.batch ? ` · batch of ${m.batch}` : ""}${extra ? " · added" : ""}</small></span></button>
+      ${id === "_addons" ? "" : `<div class="stepper" aria-label="Servings"><button data-step="-1" data-id="${id}" aria-label="Fewer servings">−</button><output>${servingsFor(id)}×</output><button data-step="1" data-id="${id}" aria-label="More servings">+</button></div>`}
+      ${extra ? `<button class="icon-btn sm" data-unadd="${id}" aria-label="Remove from list">✕</button>` : ""}
     </div>`; }).join("");
   const secs = SEC_ORDER.map(sc => {
-    const list = items.filter(it => it.sec === sc).sort((a, b) =>
-      (groc.checked.includes(a.name) - groc.checked.includes(b.name)) || a.name.localeCompare(b.name));
+    const list = items.filter(it => it.sec === sc).sort((a, b) => (groc.checked.includes(a.name) - groc.checked.includes(b.name)) || a.name.localeCompare(b.name));
     if (!list.length) return "";
     const left = list.filter(it => !groc.checked.includes(it.name)).length;
     return `<div class="gsec"><h4>${SEC_ICON[sc]} ${SECTIONS[sc]}<span>${left ? left + " left" : "✓ done"}</span></h4>
@@ -1012,7 +1808,7 @@ function renderGrocery(){
   }).join("");
   body.innerHTML = `
     <div class="panel">
-      <button class="gpanel-head" id="gMealsHead"><b>Meals on this list</b><span>${sel.length} of ${favs.length} · ${groc.mealsOpen ? "Hide ▲" : "Edit ▼"}</span></button>
+      <button class="gpanel-head" id="gMealsHead"><b>Meals on this list</b><span>${sel.length} of ${ids.length} · ${groc.mealsOpen ? "Hide ▲" : "Edit ▼"}</span></button>
       ${groc.mealsOpen ? `<div class="gmeals">${mealRows}</div>` : ""}
     </div>
     <div class="panel" style="padding:14px 16px">
@@ -1022,18 +1818,15 @@ function renderGrocery(){
       <button class="btn" id="gCopy">📋 Copy list</button>
       <button class="btn" id="gShare" style="background:var(--sage);box-shadow:0 8px 18px -10px rgba(79,125,92,.8)">📤 Share</button>
     </div>
-    <div class="gtools">
-      <button class="btn ghost" id="gClear">Clear checked</button>
-      <button class="btn ghost" id="gReset">Reset list</button>
-    </div>
-    ${items.length ? `<div class="gprog"><span>${done} of ${items.length} checked</span><span class="track"><i style="width:${items.length ? done / items.length * 100 : 0}%"></i></span></div>` : ""}
+    <div class="gtools"><button class="btn ghost" id="gClear">Clear checked</button><button class="btn ghost" id="gReset">Reset list</button></div>
+    ${items.length ? `<div class="gprog"><span>${done} of ${items.length} checked</span><span class="track"><i style="width:${done / items.length * 100}%"></i></span></div>` : ""}
     ${sel.length ? (secs || `<p class="gnote">Everything is checked off and cleared. 🎉</p>`) : `<p class="gnote">Select at least one meal above to build your list.</p>`}
     ${nCleared ? `<p class="gnote">${nCleared} checked item${nCleared > 1 ? "s" : ""} cleared. <button class="linkish" id="gRestore">Restore</button></p>` : ""}
     <p class="gnote">Amounts are combined across meals and rounded up to the nearest easy amount. Rice, quinoa, and other grains marked "(cooked)" are cooked amounts, so buy about ⅓ as much dry. Meat and fish weights are as listed in each recipe.</p>`;
 }
 function grocText(){
   const items = visibleItems().filter(it => !groc.checked.includes(it.name));
-  const lines = ["🛒 Meal Deck grocery list", "For: " + selectedMeals().map(id => byId[id].name + (servingsFor(id) > 1 ? ` ×${servingsFor(id)}` : "")).join(", "), ""];
+  const lines = ["🛒 Meal Deck grocery list", "For: " + selectedMeals().map(id => getMeal(id).name + (servingsFor(id) > 1 ? ` ×${servingsFor(id)}` : "")).join(", "), ""];
   SEC_ORDER.forEach(sc => {
     const list = items.filter(it => it.sec === sc).sort((a, b) => a.name.localeCompare(b.name));
     if (!list.length) return;
@@ -1055,8 +1848,9 @@ async function copyText(t){
 }
 $("#grocBody").addEventListener("click", async e => {
   const t = e.target;
-  const tm = t.closest("[data-toggle-meal]"), st = t.closest("[data-step]"), gi = t.closest("[data-item]");
-  if (tm){ const id = tm.dataset.toggleMeal; groc.off = groc.off.includes(id) ? groc.off.filter(x => x !== id) : [...groc.off, id]; }
+  const tm = t.closest("[data-toggle-meal]"), st = t.closest("[data-step]"), gi = t.closest("[data-item]"), un = t.closest("[data-unadd]");
+  if (un){ const id = un.dataset.unadd; groc.added = groc.added.filter(x => x !== id); if (id === "_addons") groc.addons = []; }
+  else if (tm){ const id = tm.dataset.toggleMeal; groc.off = groc.off.includes(id) ? groc.off.filter(x => x !== id) : [...groc.off, id]; }
   else if (st){ const id = st.dataset.id; groc.serv[id] = Math.max(1, Math.min(20, servingsFor(id) + +st.dataset.step)); }
   else if (gi){ const n = gi.dataset.item; groc.checked = groc.checked.includes(n) ? groc.checked.filter(x => x !== n) : [...groc.checked, n]; }
   else if (t.closest("#gMealsHead")) groc.mealsOpen = !groc.mealsOpen;
@@ -1069,8 +1863,8 @@ $("#grocBody").addEventListener("click", async e => {
   }
   else if (t.closest("#gRestore")){ groc.cleared = []; }
   else if (t.closest("#gReset")){
-    if (!confirm("Reset the grocery list? This unchecks everything, brings back cleared items, and includes all favorites at default servings.")) return;
-    Object.assign(groc, {off:[], serv:{}, checked:[], cleared:[]}); toast("🔄 Grocery list reset");
+    if (!confirm("Reset the grocery list? This unchecks everything, brings back cleared items, removes added meals, and includes all favorites at default servings.")) return;
+    Object.assign(groc, {off:[], serv:{}, checked:[], cleared:[], added:[], addons:[]}); toast("🔄 Grocery list reset");
   }
   else if (t.closest("#gCopy")){ const ok = await copyText(grocText()); toast(ok ? "📋 List copied to clipboard" : "Couldn't copy. Try Share instead."); return; }
   else if (t.closest("#gShare")){
@@ -1083,72 +1877,530 @@ $("#grocBody").addEventListener("click", async e => {
   const y = $("#grocScroll").scrollTop; saveGroc(); renderGrocery(); $("#grocScroll").scrollTop = y;
 });
 
-$("#favGroc").onclick = () => showView("grocery");
 
-/* ---------- modal ---------- */
-function openModal(m){
-  const s = $("#sheet");
-  s.style.setProperty("--tc", TYPE_COLOR[m.type]);
-  s.innerHTML = `<div class="hero" style="position:relative"><span class="pill type">${m.type}</span><span class="emoji">${m.emoji}</span>
-      <button class="close" aria-label="Close">✕</button><span class="pill day">${dayLabel(m.day)}</span></div>
-    <div class="content">
-      <h2 class="name">${esc(m.name)}</h2>
-      <p class="why" style="margin:6px 0 12px">${esc(m.why)}</p>
-      ${macroBlock(m)}
-      <div style="margin:10px 0 2px">${goalFit(m)}</div>
-      <div style="margin:10px 0">${tagHtml(m)}</div>
-      <p class="note">⏱ About ${m.time} minutes${m.batch ? ` · Meal prep: makes ${m.batch} servings` : ""}</p>
-      ${recipeHtml(m)}
-      <div class="row-btns" style="margin-top:16px">
-        <button class="btn ghost" data-remove-modal="${m.id}">${favs.includes(m.id) ? "Remove from favorites" : "Close"}</button>
+/* ---------- weekly plan ---------- */
+const BOOSTERS = {
+  train: [
+    {n:"Banana", ing:[["ban",1]]}, {n:"¾ cup cooked brown rice", ing:[["brice",0.75,"cup"]]}, {n:"Toast with honey", ing:[["bread",1],["honey",1,"tsp"]]},
+    {n:"Apple", ing:[["apple",1]]}, {n:"Rice cakes with peanut butter", ing:[["rice_cake",2],["pb",1,"tbsp"]]}, {n:"Bowl of oatmeal (½ cup dry oats)", ing:[["oats",0.5,"cup"]]},
+    {n:"Baked sweet potato", ing:[["swp",6,"oz"]]}, {n:"Granola sprinkle (¼ cup)", ing:[["gran",0.25,"cup"]]},
+    {n:"Peanut butter & honey toast", ing:[["bread",2],["pb",1.5,"tbsp"],["honey",1,"tsp"]]}, {n:"1 cup cooked jasmine rice", ing:[["jrice",1,"cup"]]},
+    {n:"Glass of skim milk", ing:[["milk",1,"cup"]]}
+  ],
+  rest: [
+    {n:"20 almonds", ing:[["almonds",20]]}, {n:"½ avocado", ing:[["avo",0.5]]}, {n:"Apple + 1 tbsp peanut butter", ing:[["apple",1],["pb",1,"tbsp"]]},
+    {n:"1 tbsp olive oil (on salad or veggies)", ing:[["oil",1,"tbsp"]]}, {n:"String cheese + walnuts", ing:[["str",1],["walnut",2,"tbsp"]]},
+    {n:"Hummus & baby carrots", ing:[["hum",4,"tbsp"],["bcar",1,"cup"]]}, {n:"1 cup berries", ing:[["ber",1,"cup"]]},
+    {n:"2 tbsp peanut butter + celery", ing:[["pb",2,"tbsp"],["cel",2,"stalk"]]}, {n:"¼ cup mixed nuts (almonds + walnuts)", ing:[["almonds",12],["walnut",2,"tbsp"]]},
+    {n:"Cheese & crackers", ing:[["ched",1],["crack",6]]}
+  ]
+};
+Object.values(BOOSTERS).flat().forEach(b => { Object.assign(b, macrosOf(b.ing)); b.excluded = () => b.ing.some(([k]) => nameExcluded(FOOD[k][0])); });
+const slotTypes = n => ["Breakfast","Lunch","Dinner", ...Array(n).fill("Snack")];
+function newPlan(){
+  return {trainDays:[...DEFAULT_TRAIN_DAYS], snacks:2, sel: todayIdx(), open:false,
+    days: Array.from({length:7}, () => ({slots: slotTypes(2).map(t => ({t, id:null, k:1, lock:false})), addons:[]}))};
+}
+const dayOk = (m, train) => train ? m.day !== "rest" : m.day !== "train";
+function weekCounts(skipDay){
+  const c = {};
+  plan.days.forEach((d, i) => d.slots.forEach(s => { if (s.id && (i !== skipDay || s.lock)) c[s.id] = (c[s.id] || 0) + 1; }));
+  return c;
+}
+const repLimit = m => m._prep ? (m.type === "Breakfast" ? 2 : 3) : 1;
+function candidates(t, train, opts = {}){
+  let list = ALLM.filter(m => m.type === t && dayOk(m, train) && !isExcluded(m));
+  if (opts.include && filters.include.length){ const f = list.filter(m => includeMatch(m)); if (f.length) list = f; }
+  return list;
+}
+function dayTotals(day){
+  const tot = {p:0, kcal:0, c:0, f:0};
+  day.slots.forEach(s => { const m = byId[s.id]; if (!m) return; tot.p += m.p * s.k; tot.kcal += m.kcal * s.k; tot.c += m.c * s.k; tot.f += m.f * s.k; });
+  day.addons.forEach(a => { const b = BOOSTERS[a.set][a.i]; if (!b) return; tot.p += b.p; tot.kcal += b.kcal; tot.c += b.c; tot.f += b.f; });
+  return {p: Math.round(tot.p), kcal: Math.round(tot.kcal), c: Math.round(tot.c), f: Math.round(tot.f)};
+}
+/* Size servings and add calorie boosters so the day lands near its protein and calorie targets. */
+function balanceDay(d){
+  const day = plan.days[d], train = isTrainDay(d), T = targets(), kT = calTarget(d);
+  day.slots.forEach(s => { if (!s.lock) s.k = 1; });
+  day.addons = [];
+  let tot = dayTotals(day);
+  const ups = day.slots.filter(s => !s.lock && byId[s.id]).sort((a, b) => byId[b.id].p / byId[b.id].kcal - byId[a.id].p / byId[a.id].kcal);
+  for (const s of ups){
+    if (tot.p >= T.p - 8) break;
+    const m = byId[s.id], add = m.type === "Snack" ? 1 : 0.5;
+    if (tot.kcal + m.kcal * add > kT + 150) continue;
+    s.k += add; tot = dayTotals(day);
+  }
+  const set = train ? "train" : "rest", pool = BOOSTERS[set].map((b, i) => ({b, i})).filter(x => !x.b.excluded());
+  let guard = 0;
+  while (kT - tot.kcal > 120 && day.addons.length < 4 && guard++ < 6){
+    const gap = kT - tot.kcal;
+    const used = new Set(day.addons.flatMap(a => BOOSTERS[a.set][a.i].ing.map(e => e[0] === "jrice" ? "brice" : e[0])));
+    const fit = pool.filter(x => !x.b.ing.some(e => used.has(e[0] === "jrice" ? "brice" : e[0])) && x.b.kcal <= gap + 80).sort((a, b) => b.b.kcal - a.b.kcal);
+    if (!fit.length) break;
+    const pick = fit[Math.floor(Math.random() * Math.min(2, fit.length))];
+    day.addons.push({set, i: pick.i}); tot = dayTotals(day);
+  }
+  // still well short on calories (big calorie targets): add half servings to the most calorie-dense mains
+  const dense = day.slots.filter(s => !s.lock && byId[s.id] && byId[s.id].type !== "Snack").sort((a, b) => byId[b.id].kcal / byId[b.id].p - byId[a.id].kcal / byId[a.id].p);
+  for (const s of dense){
+    if (kT - tot.kcal < 200) break;
+    if (s.k >= 2) continue;
+    s.k += 0.5; tot = dayTotals(day);
+  }
+  return tot;
+}
+function scoreDay(d){
+  const T = targets(), kT = calTarget(d), tot = dayTotals(plan.days[d]);
+  const pd = tot.p - T.p, kd = tot.kcal - kT;
+  let s = (pd < 0 ? -pd * 4 : Math.max(0, pd - 20) * 1.5) + Math.abs(kd) / 12;
+  plan.days[d].slots.forEach(x => { if (byId[x.id]) s -= Math.log(weightFor(byId[x.id])) * 6; if (x.k > 1) s += 4; });
+  return s + plan.days[d].addons.length * 5;
+}
+function pickWeighted(list, w){
+  const tot = list.reduce((a, m) => a + w(m), 0); if (!tot) return null;
+  let r = Math.random() * tot;
+  for (const m of list){ r -= w(m); if (r <= 0) return m; }
+  return list[list.length - 1];
+}
+function fillDay(d){
+  const day = plan.days[d], train = isTrainDay(d);
+  const prev = d > 0 ? plan.days[d - 1] : null;
+  let best = null, bestScore = Infinity;
+  for (let tries = 0; tries < 24; tries++){
+    const counts = weekCounts(d), usedToday = new Set(day.slots.filter(s => s.lock && s.id).map(s => s.id));
+    day.slots.forEach(s => {
+      if (s.lock && s.id) return;
+      const pool = candidates(s.t, train);
+      let pick = null;
+      if (prev && (s.t === "Lunch" || s.t === "Dinner") && Math.random() < 0.55){
+        const ps = prev.slots.find(x => x.t === s.t), pm = ps && byId[ps.id];
+        if (pm && pm._prep && dayOk(pm, train) && !isExcluded(pm) && (counts[pm.id] || 0) < repLimit(pm) && !usedToday.has(pm.id)) pick = pm;
+      }
+      if (!pick) pick = pickWeighted(pool, m => usedToday.has(m.id) || (counts[m.id] || 0) >= repLimit(m) ? 0 : weightFor(m) * (favs.includes(m.id) ? 1.4 : 1))
+        || pickWeighted(pool, m => usedToday.has(m.id) ? 0 : 1);
+      s.id = pick ? pick.id : null; s.sw = [];
+      if (pick){ usedToday.add(pick.id); counts[pick.id] = (counts[pick.id] || 0) + 1; }
+    });
+    balanceDay(d);
+    const sc = scoreDay(d);
+    if (sc < bestScore){ bestScore = sc; best = JSON.parse(JSON.stringify(day)); }
+  }
+  plan.days[d] = best;
+}
+function fillWeek(){ weightCache = null; for (let d = 0; d < 7; d++) fillDay(d); savePlan(); }
+function ensurePlan(){
+  if (!plan || !Array.isArray(plan.days) || plan.days.length !== 7){ plan = newPlan(); fillWeek(); }
+}
+function swapSlot(d, si){
+  const day = plan.days[d], s = day.slots[si], cur = byId[s.id], train = isTrainDay(d);
+  const today = new Set(day.slots.map(x => x.id)), counts = weekCounts(-1);
+  s.sw = s.sw || [];
+  if (cur && !s.sw.includes(cur.id)) s.sw.push(cur.id);
+  let pool = candidates(s.t, train, {include:true}).filter(m => !today.has(m.id) && (counts[m.id] || 0) < repLimit(m) + 1);
+  const ref = cur || {p: s.t === "Snack" ? 22 : 42, kcal: s.t === "Snack" ? 200 : 430};
+  pool.sort((a, b) => (Math.abs(a.p - ref.p) * 2 + Math.abs(a.kcal - ref.kcal) / 15 - Math.log(weightFor(a)) * 10) - (Math.abs(b.p - ref.p) * 2 + Math.abs(b.kcal - ref.kcal) / 15 - Math.log(weightFor(b)) * 10));
+  let next = pool.find(m => !s.sw.includes(m.id));
+  if (!next){ s.sw = cur ? [cur.id] : []; next = pool.find(m => !s.sw.includes(m.id)); }
+  if (!next) return toast("No other matches for this slot");
+  s.id = next.id; s.sw.push(next.id);
+  balanceDay(d); savePlan(); renderPlan();
+  toast(`🔄 Swapped in ${next.name}`);
+}
+function sendWeekToGrocery(){
+  const counts = {};
+  plan.days.forEach(day => day.slots.forEach(s => { if (s.id) counts[s.id] = (counts[s.id] || 0) + s.k; }));
+  const ids = Object.keys(counts);
+  ids.forEach(id => { if (!favs.includes(id) && !groc.added.includes(id)) groc.added.push(id); groc.serv[id] = Math.ceil(counts[id] - 1e-9); });
+  const add = {};
+  plan.days.forEach(day => day.addons.forEach(a => { const b = BOOSTERS[a.set][a.i]; if (!b) return;
+    b.ing.forEach(([k, q, u]) => { const F = FOOD[k], unit = u || F[2], key = F[0] + "|" + unit; add[key] = add[key] ? [add[key][0] + q, unit, F[0], F[1]] : [q, unit, F[0], F[1]]; }); }));
+  groc.addons = Object.values(add);
+  if (groc.addons.length && !groc.added.includes("_addons")) groc.added.push("_addons");
+  if (!groc.addons.length) groc.added = groc.added.filter(x => x !== "_addons");
+  groc.off = listIds().filter(id => !ids.includes(id) && id !== "_addons");
+  groc.checked = []; groc.cleared = []; groc.mealsOpen = false;
+  saveGroc();
+  toast(`🛒 This week's ${ids.length} meals are on your grocery list`);
+  showView("grocery");
+}
+function renderPlan(){
+  ensurePlan();
+  const T = targets(), sel = plan.sel ?? todayIdx(), day = plan.days[sel], train = isTrainDay(sel), tot = dayTotals(day), kT = calTarget(sel);
+  const strip = plan.days.map((d, i) => { const t = dayTotals(d), pct = Math.min(100, Math.round(t.p / T.p * 100));
+    return `<button class="dpill ${i === sel ? "on" : ""} ${i === todayIdx() ? "today" : ""}" data-day="${i}"><b>${DAY_SHORT[i]}</b><span>${isTrainDay(i) ? "💪" : "🧘"}</span><i style="--w:${pct}%"></i></button>`; }).join("");
+  const bar = (v, t, cls) => `<span class="ptrack ${cls}"><i style="width:${Math.min(100, v / t * 100)}%"></i></span>`;
+  const rows = day.slots.map((s, si) => { const m = byId[s.id];
+    if (!m) return `<div class="slot"><span class="slot-type">${s.t}</span><span class="slot-main"><b>No match</b><small>Check your foods-to-avoid list.</small></span><button class="sbtn" data-swap="${si}" aria-label="Swap">🔄</button></div>`;
+    return `<div class="slot ${s.lock ? "locked" : ""}" style="--tc:${TYPE_COLOR[m.type]}">
+      <span class="slot-type">${s.t}</span>
+      <button class="slot-main" data-open="${m.id}" data-k="${s.k}"><span class="slot-emoji">${m.emoji}</span><span><b>${esc(m.name)}</b>
+        <small>${s.k !== 1 ? `<em>×${s.k}</em> · ` : ""}${Math.round(m.p * s.k)}g protein · ${Math.round(m.kcal * s.k)} kcal${ratingBadge(m) ? " · " + ratingBadge(m) : ""}</small></span></button>
+      <div class="slot-btns">
+        <button class="sbtn" data-swap="${si}" title="Swap for the next best match" aria-label="Swap">🔄</button>
+        <button class="sbtn ${s.lock ? "on" : ""}" data-lock="${si}" title="${s.lock ? "Unlock" : "Lock"}" aria-label="${s.lock ? "Unlock" : "Lock"}">${s.lock ? "🔒" : "🔓"}</button>
+        <button class="sbtn" data-act="ate" data-id="${m.id}" data-n="${s.k}" title="Ate this" aria-label="Ate this">✓</button>
+      </div></div>`; }).join("");
+  const addons = day.addons.map((a, ai) => { const b = BOOSTERS[a.set][a.i]; return b ? `<span class="addon">+ ${esc(b.n)} <small>${b.kcal} kcal</small><button data-rmaddon="${ai}" aria-label="Remove">✕</button></span>` : ""; }).join("");
+  $("#planBody").innerHTML = `
+    <div class="plan-head"><h2 class="section-title">This week</h2><button class="btn ghost sm" id="pRegen">🎲 Regenerate</button></div>
+    <p class="section-sub">${T.set ? "" : "Using default targets. Add your weight in <b>Me → Goals</b> for personal ones. "}Protein <b>${T.p} g</b> a day · calories <b>${T.kTrain.toLocaleString()}</b> on training days, <b>${T.kRest.toLocaleString()}</b> on rest days.</p>
+    <div class="panel pset">
+      <button class="gpanel-head" id="pSetHead"><b>Plan settings</b><span>${plan.open ? "Hide ▲" : "Edit ▼"}</span></button>
+      ${plan.open ? `<div class="pset-body"><label>Training days</label>
+        <div class="daychips">${DAY_SHORT.map((n, i) => `<button class="chip ${isTrainDay(i) ? "on" : ""}" data-tday="${i}">${n}</button>`).join("")}</div>
+        <label>Snacks per day</label>
+        <div class="seg small">${[1,2].map(n => `<button class="${plan.snacks === n ? "on" : ""}" data-snacks="${n}">${n} snack${n > 1 ? "s" : ""}</button>`).join("")}</div>
+        <p class="gnote">Training days get higher-carb meals and rest days get lower-carb ones. 🔒 Lock a meal to keep it when you regenerate. Meal-prep recipes can repeat up to 3 days in a row.</p></div>` : ""}
+    </div>
+    <div class="dstrip">${strip}</div>
+    <div class="dayc">
+      <div class="dayc-head"><div><h3>${DAY_NAMES[sel]}</h3><span class="dtype ${train ? "t" : "r"}">${train ? "💪 Training day · higher carb" : "🧘 Rest day · lower carb"}</span></div></div>
+      <div class="totals">
+        <div><span>Protein</span><b>${tot.p} <small>/ ${T.p} g</small></b>${bar(tot.p, T.p, "p")}</div>
+        <div><span>Calories</span><b>${tot.kcal.toLocaleString()} <small>/ ${kT.toLocaleString()}</small></b>${bar(tot.kcal, kT, "k")}</div>
+        <p class="tsub">Carbs ${tot.c} g · Fat ${tot.f} g (estimated)</p>
       </div>
-    </div>`;
-  s.querySelector(".close").onclick = closeModal;
-  s.querySelector("[data-remove-modal]").onclick = () => {
-    if (favs.includes(m.id)){ favs = favs.filter(x => x !== m.id); persist(); updateBadge(); if (matches(m) && !deck.includes(m.id)) deck.push(m.id); renderFavs(); renderStack(); toast("Removed from favorites"); }
-    closeModal();
+      ${rows}
+      ${addons ? `<div class="addons"><span class="addon-h">To reach your calories:</span>${addons}</div>` : ""}
+    </div>
+    <button class="btn" id="pSend" style="width:100%;margin:6px 0 10px">🛒 Send this week to grocery list</button>
+    <p class="gnote">Totals are estimates. ×1.5 means eat one and a half servings. Add-ons are simple extras to help you reach your calories without cooking another meal.</p>`;
+}
+$("#planBody").addEventListener("click", e => {
+  const t = e.target, sel = plan.sel ?? todayIdx();
+  const dp = t.closest("[data-day]"), sw = t.closest("[data-swap]"), lk = t.closest("[data-lock]"), op = t.closest("[data-open]"),
+        td = t.closest("[data-tday]"), sn = t.closest("[data-snacks]"), ra = t.closest("[data-rmaddon]");
+  if (t.closest("[data-act]")) return;
+  if (dp){ plan.sel = +dp.dataset.day; }
+  else if (sw){ return swapSlot(sel, +sw.dataset.swap); }
+  else if (lk){ const s = plan.days[sel].slots[+lk.dataset.lock]; s.lock = !s.lock; toast(s.lock ? "🔒 Locked. It stays when you regenerate" : "🔓 Unlocked"); }
+  else if (op){ const m = byId[op.dataset.open]; rsGet(m.id).n = 1; return openModal(m, `<p class="plan-note">📅 ${DAY_NAMES[sel]} · ${+op.dataset.k !== 1 ? `${op.dataset.k} servings` : "1 serving"}</p>`); }
+  else if (t.closest("#pRegen")){ fillWeek(); toast("🎲 New plan. Locked meals stayed put"); }
+  else if (t.closest("#pSetHead")){ plan.open = !plan.open; }
+  else if (td){ const i = +td.dataset.tday; plan.trainDays = plan.trainDays.includes(i) ? plan.trainDays.filter(x => x !== i) : [...plan.trainDays, i].sort(); fillDay(i); }
+  else if (sn){ const n = +sn.dataset.snacks; if (n !== plan.snacks){ plan.snacks = n; plan.days.forEach(d => { const keep = d.slots.filter(s => s.t !== "Snack"), snacks = d.slots.filter(s => s.t === "Snack").slice(0, n); while (snacks.length < n) snacks.push({t:"Snack", id:null, k:1, lock:false}); d.slots = [...keep, ...snacks]; }); fillWeek(); } }
+  else if (ra){ plan.days[sel].addons.splice(+ra.dataset.rmaddon, 1); }
+  else if (t.closest("#pSend")){ return sendWeekToGrocery(); }
+  else return;
+  savePlan(); const y = $("#planScroll").scrollTop; renderPlan(); $("#planScroll").scrollTop = y;
+});
+
+
+/* ---------- "Build me a new meal" generator ---------- */
+const rnd = a => a[Math.floor(Math.random() * a.length)];
+const foodOk = k => FOOD[k] && !nameExcluded(FOOD[k][0]);
+const entOk = e => foodOk(e[0]);
+function specMacros(ing){ return macrosOf(ing); }
+const unitOf = (k, u) => (u == null || u === "") ? FOOD[k][2] : u;
+function stepFor(k, u){ const un = unitOf(k, u); return un === "cup" ? 0.25 : un === "oz" ? (k === "wwp" ? 0.5 : 1) : 1; }
+const FORMAT_EMOJI = {Bowl:"🍲",Tacos:"🌮",Salad:"🥗",Pasta:"🍝","Sheet-Pan":"🍗","Stir-Fry":"🥘",Pita:"🥙",Skillet:"🍳"};
+const PROTEIN_EMOJI = {salmon:"🐟",cod:"🐟",shrimp:"🍤",steak:"🥩",tofu:"🌱"};
+const genProteins = () => Object.entries(GEN.proteins).filter(([, p]) => foodOk(p.k));
+function genMain(type, train, opt = {}){
+  const prots = genProteins(); if (!prots.length) return null;
+  const [pid, P] = opt.protein && GEN.proteins[opt.protein] && foodOk(GEN.proteins[opt.protein].k) ? [opt.protein, GEN.proteins[opt.protein]] : rnd(prots);
+  const prof = GEN.profiles.find(p => p.id === opt.profile) || rnd(GEN.profiles);
+  let formats = prof.formats; if (type === "Lunch"){ const f = formats.filter(x => x !== "Sheet-Pan"); if (f.length) formats = f; }
+  const fmt = rnd(formats);
+  const carbIds = GEN.formatCarb[train ? "train" : "rest"][fmt].filter(c => foodOk(GEN.carbs[c].k));
+  const C = GEN.carbs[rnd(carbIds.length ? carbIds : ["greens"])];
+  const vegIds = prof.veg.filter(v => foodOk(GEN.veg[v].k) && !(GEN.veg[v].k === C.k));
+  const V = GEN.veg[rnd(vegIds.length ? vegIds : ["broc"])];
+  const prot = [P.k, P.oz, "oz"], carb = [C.k, C.q];
+  const rest = [[V.k, V.q], ...(V.extra || [])].filter(entOk);
+  const adds = prof.add.filter(entOk), fat = train ? [] : (prof.fat || []).filter(entOk);
+  const ing = () => [prot, carb, ...rest, ...adds, ...fat, ["spray"], ["salt"], ["pep"]];
+  // tune protein to ~40–48 g and carbs to the day type
+  let mac = specMacros(ing()), g = 0;
+  while (mac.p < 40 && prot[1] < 10 && g++ < 20){ prot[1] += 0.5; mac = specMacros(ing()); }
+  while (mac.p > 48 && prot[1] > 3 && g++ < 40){ prot[1] -= 0.5; mac = specMacros(ing()); }
+  const st = stepFor(C.k), lo = train ? 45 : 0, hi = train ? 65 : 30;
+  g = 0;
+  while (mac.c < lo && g++ < 12){ carb[1] += st; mac = specMacros(ing()); }
+  while (mac.c > hi && carb[1] > st && g++ < 24){ carb[1] -= st; mac = specMacros(ing()); }
+  if (!train && mac.kcal < 380 && !fat.length){ fat.push(foodOk("avo") ? ["avo", 0.25] : ["oil", 1, "tsp"]); mac = specMacros(ing()); }
+  let fname = fmt;
+  if (!train && fmt === "Pita") fname = "Plate";
+  if (fmt === "Pasta" && C.k !== "wwp") fname = C.k === "zuc" ? "Zoodles" : "Squash Pasta";
+  const name = `${prof.adj} ${P.short} ${fname}`;
+  const lc = s => s.charAt(0).toLowerCase() + s.slice(1);
+  const vegWord = lc(V.label);
+  const cookVeg = /slaw|salad|spinach/i.test(V.label)
+    ? (V.label === "Spinach" ? "Wilt the spinach in the hot pan for 1 minute." : `Toss the ${vegWord} with a pinch of salt.`)
+    : fmt === "Sheet-Pan" ? `Spread the ${vegWord} on the same sheet pan with cooking spray, salt, and pepper, and roast alongside for 15–20 minutes.`
+    : `Sauté or roast the ${vegWord} (5–7 minutes in a hot pan, or 15–20 minutes at 425°F) until tender-crisp.`;
+  const assemble = {Bowl:`Build the bowl: ${C.label}, then ${vegWord} and ${P.short.toLowerCase()}.`, Tacos:`Fill the warm tortillas with the ${P.short.toLowerCase()} and ${vegWord}.`,
+    Salad:`Pile the ${C.label}, ${vegWord}, and sliced ${P.short.toLowerCase()} into a big bowl and toss.`, Pasta:`Toss the ${C.label} with the ${P.short.toLowerCase()} and ${vegWord}.`,
+    "Sheet-Pan":`Plate the ${P.short.toLowerCase()} with the ${vegWord} and ${C.label}.`, "Stir-Fry":`Add the ${vegWord} back to the pan with the ${P.short.toLowerCase()} and serve over ${C.label}.`,
+    Pita:`Stuff the ${C.label} with the ${P.short.toLowerCase()} and ${vegWord}.`, Skillet:`Fold everything together in the skillet and serve.`}[fmt];
+  const steps = [C.step, `Season the ${P.short.toLowerCase()} with ${prof.season}. ${P.cook}`, cookVeg, prof.finish, assemble];
+  const time = (fmt === "Sheet-Pan" || C.k === "swp" || C.k === "pot") ? 35 : C.k === "squash" ? 30 : 25;
+  return {type, emoji: PROTEIN_EMOJI[pid] || FORMAT_EMOJI[fmt], name, time, day: train ? "train" : "rest",
+    tags: ["high protein", train ? "higher carb" : "lower carb", ...(["Bowl","Sheet-Pan","Skillet"].includes(fmt) ? ["meal-prep friendly"] : [])],
+    why: `${mac.p} g of protein from ${P.short.toLowerCase()}, ${train ? `with ${C.label} to fuel your training` : `kept lower-carb with ${C.label} for a rest day`}, and ${vegWord} for fiber and volume.`,
+    ing: ing(), steps};
+}
+const BF_EMOJI = {Oats:"🥣",Tacos:"🌮",Bowl:"🫐",Sandwich:"🥪",Scramble:"🍳",Omelet:"🍳",Pudding:"🍮"};
+function genBreakfast(train){
+  const tpls = GEN.breakfast[train ? "train" : "rest"].filter(t => t.base.every(entOk));
+  if (!tpls.length) return null;
+  const T = rnd(tpls), base = T.base.map(e => [...e]);
+  const opts = T.opts.filter(entOk), tops = T.top.filter(entOk);
+  const ing = [...base]; if (opts.length) ing.push([...rnd(opts)]); if (tops.length) ing.push([...rnd(tops)]);
+  let mac = specMacros(ing), g = 0;
+  const boost = foodOk("ew") && !/Pudding|Oats|Yogurt|Cottage/.test(T.name) ? ["ew", 0, "cup"] : foodOk("yog") ? ["yog", 0, "cup"] : foodOk("whey") ? ["whey", 0] : null;
+  if (boost){ while (mac.p < 36 && g++ < 6){ if (!ing.includes(boost)) ing.push(boost); boost[1] += boost[0] === "whey" ? 0.5 : 0.25; mac = specMacros(ing); } }
+  if (["egg","ew","ham","tsaus","sm","spin","mush","bp","tom"].some(k => ing.some(e => e[0] === k))) ing.push(["spray"]);
+  if (/Scramble|Omelet|Tacos/.test(T.name)) ing.push(["salt"], ["pep"]);
+  const name = T.name.replace("{flav}", rnd(T.flav)), key = Object.keys(BF_EMOJI).find(k => name.includes(k));
+  return {type:"Breakfast", emoji: BF_EMOJI[key] || "🍳", name, time: /Pudding/.test(name) ? 5 : 12, day: train ? "train" : "rest",
+    tags: ["high protein", train ? "higher carb" : "lower carb", ...(/Pudding|Oats/.test(name) ? ["meal-prep friendly"] : [])],
+    why: `${mac.p} g of protein to start the day${train ? ", with carbs to fuel your lift" : ", lower in carbs for a rest day"}.`,
+    ing, steps: [...T.steps]};
+}
+function genSnack(train){
+  const bases = GEN.snack.bases.filter(b => foodOk(b.k)), sides = GEN.snack[train ? "train" : "rest"].filter(s => foodOk(s[0]));
+  if (!bases.length) return null;
+  const B = rnd(bases), base = [B.k, B.q, B.u], ing = [base];
+  const S = sides.length ? rnd(sides) : null; if (S) ing.push([S[0], S[1], S[2]]);
+  let mac = specMacros(ing), g = 0;
+  while (mac.p < 17 && g++ < 4){ base[1] = +(base[1] * 1.25).toFixed(2); mac = specMacros(ing); }
+  if (["yog","cc"].includes(B.k) && foodOk("cin") && train) ing.push(["cin"]);
+  const name = S ? `${B.n} + ${S[3]}` : B.n;
+  return {type:"Snack", emoji: {yog:"🥣",cc:"🥣",deli:"🦃",jerky:"🥩",egg:"🥚",tuna:"🐟",eda:"🫛",whey:"🥤",str:"🧀",sm:"🐟",shr:"🍤"}[B.k] || "🥜",
+    name, time: B.k === "egg" ? 12 : 5, day: train ? "train" : "rest", tags: ["high protein","no cook", train ? "higher carb" : "lower carb"],
+    why: `${mac.p} g of protein to bridge meals${train ? ", with quick carbs around training" : " without many carbs"}.`,
+    ing, steps: [B.k === "egg" ? "Hard-boil the eggs (10 minutes), cool in ice water, and peel." : `Portion out the ${B.n.toLowerCase()}.`, S ? `Serve with the ${S[3].toLowerCase()}.` : "Enjoy."]};
+}
+function generateMeal(type, train, opt){
+  const s = type === "Breakfast" ? genBreakfast(train) : type === "Snack" ? genSnack(train) : genMain(type, train, opt);
+  if (!s) return null;
+  s.id = "g" + Date.now().toString(36) + Math.floor(Math.random() * 1296).toString(36);
+  s.gen = true; if (!s.tags.includes("generated")) s.tags.push("generated");
+  return s;
+}
+const genState = {type:null, train:null, protein:"any", profile:"any", spec:null, saved:false};
+function openGenerator(){
+  if (genState.type == null){ const h = new Date().getHours(); genState.type = h < 10 ? "Breakfast" : h < 14 ? "Lunch" : h < 17 ? "Snack" : "Dinner"; }
+  if (genState.train == null) genState.train = isTrainDay(todayIdx());
+  drawGenerator();
+}
+function drawGenerator(){
+  const G = genState, main = G.type === "Lunch" || G.type === "Dinner";
+  const prots = genProteins();
+  let preview = "";
+  if (G.spec){
+    const m = buildCompact(G.spec);
+    preview = `<div class="genres" style="--tc:${TYPE_COLOR[m.type]}">
+      <div class="genhero"><span class="pill type">${m.type}</span><span class="emoji">${m.emoji}</span><span class="pill day">${dayLabel(m.day)}</span></div>
+      <div class="genbody"><h2 class="name">${esc(m.name)}</h2><p class="why">${esc(m.why)}</p>${macroBlock(m)}
+        <div class="recipe"><h4>Ingredients · 1 serving</h4><ul>${m.ing.map(i => `<li>${esc(i[0])}</li>`).join("")}</ul>
+        <h4>Steps</h4><ol>${m.steps.map(s => `<li>${esc(s)}</li>`).join("")}</ol></div>
+        <p class="gnote">Macros are calculated from the ingredients (estimates). ⏱ About ${m.time} minutes.</p>
+      </div></div>
+      <div class="row-btns" style="margin-top:12px">
+        ${G.saved ? `<button class="btn ghost" id="gOpen">Open recipe ✓ Saved</button>` : `<button class="btn" id="gSave">♥ Save this meal</button>`}
+        <button class="btn ghost" id="gAgain">🎲 Build another</button>
+      </div>`;
+  }
+  const s = openSheet(`<div class="content sheet-pad"><button class="close" aria-label="Close">✕</button>
+    <h3 class="sheet-title">✨ Build me a new meal</h3>
+    <p class="gnote" style="margin:0 0 12px">Mixes a protein, a carb, veggies, and a flavor, then sizes the portions to fit your goals.</p>
+    <label class="glabel">Meal</label>
+    <div class="seg small" id="gType">${MEAL_TYPES.map(t => `<button class="${G.type === t ? "on" : ""}" data-t="${t}">${t}</button>`).join("")}</div>
+    <label class="glabel">Day</label>
+    <div class="seg small" id="gDay"><button class="${G.train ? "on" : ""}" data-d="1">💪 Training</button><button class="${G.train ? "" : "on"}" data-d="0">🧘 Rest</button></div>
+    ${main ? `<label class="glabel">Protein</label><div class="wrapchips" id="gProt"><button class="chip ${G.protein === "any" ? "on" : ""}" data-p="any">Surprise me</button>${prots.map(([id, p]) => `<button class="chip ${G.protein === id ? "on" : ""}" data-p="${id}">${p.short}</button>`).join("")}</div>
+      <label class="glabel">Flavor</label><div class="wrapchips" id="gProf"><button class="chip ${G.profile === "any" ? "on" : ""}" data-f="any">Surprise me</button>${GEN.profiles.map(p => `<button class="chip ${G.profile === p.id ? "on" : ""}" data-f="${p.id}">${p.adj}</button>`).join("")}</div>` : ""}
+    ${filters.exclude.length || filters.avoid ? `<p class="gnote">Leaving out the foods on your avoid list.</p>` : ""}
+    <button class="btn" id="gBuild" style="width:100%;margin:14px 0 4px">${G.spec ? "✨ Build it again" : "✨ Build it"}</button>
+    <div id="gOut">${preview}</div></div>`, "var(--accent)");
+  const rebuild = () => { const y = s.querySelector(".content").scrollTop; drawGenerator(); $("#sheet .content").scrollTop = y; };
+  s.querySelectorAll("#gType [data-t]").forEach(b => b.onclick = () => { G.type = b.dataset.t; rebuild(); });
+  s.querySelectorAll("#gDay [data-d]").forEach(b => b.onclick = () => { G.train = b.dataset.d === "1"; rebuild(); });
+  s.querySelectorAll("#gProt [data-p]").forEach(b => b.onclick = () => { G.protein = b.dataset.p; rebuild(); });
+  s.querySelectorAll("#gProf [data-f]").forEach(b => b.onclick = () => { G.profile = b.dataset.f; rebuild(); });
+  const build = () => {
+    G.spec = generateMeal(G.type, G.train, {protein: G.protein, profile: G.profile}); G.saved = false;
+    if (!G.spec) return toast("Your avoid list rules out every option for this meal type");
+    drawGenerator(); setTimeout(() => $("#gOut")?.scrollIntoView({behavior:"smooth", block:"start"}), 50);
   };
-  $("#modal").classList.add("open"); $("#modal").setAttribute("aria-hidden","false");
+  s.querySelector("#gBuild").onclick = build;
+  s.querySelector("#gAgain")?.addEventListener("click", build);
+  s.querySelector("#gSave")?.addEventListener("click", () => {
+    customSpecs.push(G.spec); LS.set("mealdeck.custom", customSpecs);
+    const m = buildCompact(G.spec); registerMeal(m); ALLM.push(m);
+    if (!favs.includes(m.id)) favs = [m.id, ...favs];
+    persist(); updateBadge(); G.saved = true; weightCache = null;
+    toast("❤️ Saved to favorites and added to your meal library");
+    rebuild();
+  });
+  s.querySelector("#gOpen")?.addEventListener("click", () => openModal(byId[G.spec.id]));
 }
-function closeModal(){ $("#modal").classList.remove("open"); $("#modal").setAttribute("aria-hidden","true"); }
-$("#modal").addEventListener("click", e => { if (e.target.id === "modal") closeModal(); });
 
-/* ---------- goals ---------- */
-function renderGoals(){
-  $("#wIn").value = goals.weight; $("#gIn").value = goals.goal;
-  renderGoalStats();
-  const sk = skipped.length;
-  $("#dataNote").textContent = `${MEALS.length} meals in the cookbook · ${favs.length} saved · ${sk} skipped. Everything is stored only in this browser.`;
+
+/* ---------- Me: tracker, favorites, goals ---------- */
+function ringSvg(v, t){
+  const r = 52, C = 2 * Math.PI * r, pct = Math.min(1, t ? v / t : 0);
+  return `<svg class="ring" viewBox="0 0 128 128" aria-hidden="true"><circle cx="64" cy="64" r="${r}" class="ring-bg"/>
+    <circle cx="64" cy="64" r="${r}" class="ring-fg ${v >= t ? "done" : ""}" stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${(C * (1 - pct)).toFixed(1)}" transform="rotate(-90 64 64)"/></svg>`;
 }
-function renderGoalStats(){
-  const g = goalNumbers();
-  $("#goalStats").innerHTML = g ? `
+function renderTracker(){
+  const T = targets(), di = todayIdx(), kT = calTarget(di), tot = totalsFor(dateKey()), entries = todayLog();
+  const left = Math.max(0, T.p - tot.p);
+  const pd = plan && plan.days ? plan.days[di] : null;
+  const loggedIds = entries.map(e => e.id);
+  const planRows = pd ? pd.slots.filter(s => byId[s.id]).map(s => { const m = byId[s.id], done = loggedIds.includes(m.id);
+    return `<div class="qrow ${done ? "done" : ""}"><span class="qe">${m.emoji}</span><span class="qn"><b>${esc(m.name)}</b><small>${s.t}${s.k !== 1 ? ` · ×${s.k}` : ""} · ${Math.round(m.p * s.k)}g protein</small></span>
+      <button class="sbtn" data-act="ate" data-id="${m.id}" data-n="${s.k}" aria-label="Log ${esc(m.name)}">${done ? "✓✓" : "✓"}</button></div>`; }).join("") : "";
+  const days = Array.from({length:7}, (_, i) => { const d = new Date(); d.setDate(d.getDate() - (6 - i)); return d; });
+  const vals = days.map(d => totalsFor(dateKey(d)).p), mx = Math.max(T.p * 1.15, ...vals);
+  const hist = days.map((d, i) => `<div class="hbar ${vals[i] >= T.p ? "hit" : ""} ${i === 6 ? "today" : ""}"><span class="hv">${vals[i] || ""}</span><i style="height:${vals[i] / mx * 100}%"></i><small>${i === 6 ? "Today" : DAY_SHORT[(d.getDay() + 6) % 7]}</small></div>`).join("");
+  const hits = vals.filter(v => v >= T.p).length;
+  return `
+    <div class="panel trk">
+      <div class="ringwrap">${ringSvg(tot.p, T.p)}<div class="ringtxt"><b>${tot.p}</b><span>of ${T.p} g protein</span></div></div>
+      <div class="trk-side">
+        <p class="trk-left">${left ? `<b>${left} g</b> to go today` : "🎉 Protein goal hit!"}</p>
+        <div class="kline"><span>Calories</span><b>${tot.kcal.toLocaleString()} <small>/ ${kT.toLocaleString()}</small></b></div>
+        <span class="ptrack k"><i style="width:${Math.min(100, tot.kcal / kT * 100)}%"></i></span>
+        <small class="dtag">${isTrainDay(di) ? "💪 Training day target" : "🧘 Rest day target"}</small>
+      </div>
+    </div>
+    <div class="panel">
+      <label>Quick add</label>
+      <form id="qForm" class="qform"><input id="qName" placeholder="What (e.g. protein bar)" maxlength="40">
+        <div class="qnums"><div class="field sm"><input id="qP" type="number" inputmode="numeric" min="0" max="300" placeholder="0"><span>g protein</span></div>
+        <div class="field sm"><input id="qK" type="number" inputmode="numeric" min="0" max="5000" placeholder="0"><span>kcal</span></div></div>
+        <button class="btn" type="submit">+ Add</button></form>
+    </div>
+    ${planRows ? `<div class="panel"><label>From today's plan · ${DAY_NAMES[di]}</label>${planRows}</div>` : ""}
+    <div class="panel"><label>Today's log</label>
+      ${entries.length ? entries.map((e, i) => `<div class="qrow"><span class="qe">${e.emoji || "🍽️"}</span><span class="qn"><b>${esc(e.name)}</b><small>${e.n && e.n !== 1 ? `×${e.n} · ` : ""}${e.p}g protein · ${e.kcal} kcal</small></span><button class="icon-btn sm" data-rmlog="${i}" aria-label="Delete entry">✕</button></div>`).join("")
+        : `<p class="note">Nothing logged yet. Tap <b>✓ Ate this</b> on any recipe, the plan, or your favorites, or use quick add.</p>`}
+    </div>
+    <div class="panel"><label>Last 7 days · protein</label>
+      <div class="hist" style="--tl:${(T.p / mx * 100).toFixed(1)}%"><span class="tline"><em>${T.p} g</em></span>${hist}</div>
+      <p class="note" style="margin-top:8px">Hit your protein target ${hits} of the last 7 days.</p>
+    </div>`;
+}
+function renderFavsMe(){
+  const types = TYPES.filter(t => t === "All" || favs.some(id => byId[id].type === t));
+  if (!types.includes(favType)) favType = "All";
+  const list = favs.map(id => byId[id]).filter(m => favType === "All" || m.type === favType);
+  if (!favs.length) return `<div class="empty" style="position:relative;inset:auto;min-height:320px"><div class="big">💛</div><h3>No favorites yet</h3><p>Swipe right or tap the heart on any meal card to save it here.</p><button class="btn" data-go="deck">Browse meals</button></div>`;
+  return `<p class="section-sub">Tap a meal to open the recipe. ✓ logs it to today's tracker.</p>
+    <button class="btn fav-cta" data-go="grocery">🛒 Make a grocery list from these</button>
+    <div class="fav-filter chips">${types.map(t => `<button class="chip ${favType === t ? "on" : ""}" data-ftype="${t}">${t === "All" ? `All (${favs.length})` : t}</button>`).join("")}</div>
+    ${list.map(m => `<div class="fav" style="--tc:${TYPE_COLOR[m.type]}" data-id="${m.id}">
+      <button class="thumb" data-open="${m.id}" aria-label="Open ${esc(m.name)}">${m.emoji}</button>
+      <button class="info" data-open="${m.id}"><b>${esc(m.name)}</b><small>${m.type} · ${m.kcal} kcal · ${m.p}g protein${ratingBadge(m) ? " · " + ratingBadge(m) : ""}${m.gen ? " · ✨" : ""}</small></button>
+      <button class="icon-btn" data-act="ate" data-id="${m.id}" title="Ate this" aria-label="Log ${esc(m.name)}">✓</button>
+      <button class="icon-btn" data-remove="${m.id}" title="Remove" aria-label="Remove ${esc(m.name)} from favorites">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg></button>
+    </div>`).join("")}`;
+}
+function goalStatsHtml(){
+  const g = goalNumbers(), T = targets();
+  return g ? `
     <div class="stat"><span>Daily protein target (est.)</span><b class="hl">${g.pLo}–${g.pHi} g</b></div>
-    <div class="stat"><span>Per meal, if you eat 4 times a day</span><b>${Math.round(g.pLo/4)}–${Math.round(g.pHi/4)} g</b></div>
+    <div class="stat"><span>Plan & tracker use</span><b>${T.p} g protein</b></div>
     <div class="stat"><span>Rough maintenance calories</span><b>${g.mLo.toLocaleString()}–${g.mHi.toLocaleString()}</b></div>
+    <div class="stat"><span>Plan calories · training / rest</span><b>${T.kTrain.toLocaleString()} / ${T.kRest.toLocaleString()}</b></div>
     <p class="note" style="margin-top:6px">Protein is based on about 0.8–1 g per lb of ${g.base === g.w ? "body" : "goal"} weight. For recomposition, a common approach is to eat near maintenance on training days and about 200–400 kcal below it on rest days. Adjust based on how your weight and strength trend over 2–3 weeks.</p>`
-    : `<p class="note">Enter your weight to see an estimated daily protein target and calorie range.</p>`;
+    : `<p class="note">Enter your weight to see an estimated daily protein target and calorie range. Until then, the plan and tracker use 160 g protein and 2,500 / 2,200 kcal.</p>`;
 }
-["#wIn","#gIn"].forEach(sel => $(sel).addEventListener("input", () => {
-  goals.weight = $("#wIn").value; goals.goal = $("#gIn").value;
-  LS.set("mealdeck.goals", goals); renderGoalStats();
-  stack.querySelectorAll(".card").forEach(c => c.remove()); renderStack();
-}));
-$("#resetSkipped").onclick = () => { const n = skipped.length; skipped = []; persist(); buildDeck(); renderStack(true); renderGoals(); toast(n ? `🔄 ${n} skipped meal${n>1?"s":""} back in the deck` : "No skipped meals to bring back"); };
-$("#clearFavs").onclick = () => { if (!favs.length) return toast("No favorites to clear"); if (!confirm("Remove all saved favorites?")) return; favs = []; persist(); updateBadge(); buildDeck(); renderStack(true); renderGoals(); toast("Favorites cleared"); };
+function renderGoalsMe(){
+  const nGen = customSpecs.length;
+  return `<p class="section-sub">Build lean muscle and lose body fat. Lift 3× a week.</p>
+    <div class="panel">
+      <label for="wIn">Current body weight</label>
+      <div class="field"><input id="wIn" type="number" inputmode="decimal" min="80" max="500" placeholder="e.g. 195" value="${esc(goals.weight)}"><span>lbs</span></div>
+      <label for="gIn">Goal body weight <span style="color:var(--muted);font-weight:500">(optional)</span></label>
+      <div class="field"><input id="gIn" type="number" inputmode="decimal" min="80" max="500" placeholder="e.g. 185" value="${esc(goals.goal)}"><span>lbs</span></div>
+      <div id="goalStats">${goalStatsHtml()}</div>
+    </div>
+    <div class="panel">
+      <label>Foods to avoid</label>
+      <p class="note" style="margin-bottom:10px">Hidden everywhere: the deck, plan, swaps, and the meal builder.</p>
+      <div class="wrapchips">${Object.entries(EXCL).map(([k, v]) => `<button class="chip ${filters.exclude.includes(k) ? "on" : ""}" data-excl="${k}">${v.label}</button>`).join("")}</div>
+      <label for="avIn" style="margin-top:12px">Other foods to avoid <span style="color:var(--muted);font-weight:500">(comma separated)</span></label>
+      <div class="field"><input id="avIn" type="text" placeholder="e.g. mushrooms, olives" value="${esc(filters.avoid)}"></div>
+      <p class="note" id="exclNote">${ALLM.filter(m => !isExcluded(m)).length} of ${ALLM.length} meals fit your list.</p>
+    </div>
+    <div class="panel">
+      <label>How the deck fits your goals</label>
+      <p class="note">Main meals aim for about 35–50 g of protein and snacks for 15–30 g. They focus on whole foods and veggies. <b>Training day</b> mode leans toward meals with more carbs to fuel and refuel your lifts. <b>Rest day</b> mode leans lower-carb. Meals you rate highly (and similar ones) show up more often. Macro numbers are rough estimates for the listed portions and will vary by brand and how you measure.</p>
+    </div>
+    <div class="panel">
+      <label>Deck data</label>
+      <p class="note" style="margin-bottom:12px">${ALLM.length - nGen} meals in the cookbook${nGen ? ` + ${nGen} you built` : ""} · ${favs.length} saved · ${skipped.length} skipped · ${Object.keys(ratings).length} rated. Everything is stored only in this browser.</p>
+      <div class="row-btns"><button class="btn ghost" id="resetSkipped">Bring back skipped</button><button class="btn ghost" id="clearFavs">Clear favorites</button></div>
+    </div>
+    <p class="disclaimer">ℹ️ These are general estimates for meal planning, not medical or nutrition advice. If you have health conditions or take medications, check with your doctor or a registered dietitian before changing your diet.</p>`;
+}
+function renderMe(){
+  document.querySelectorAll("#meSeg button").forEach(b => b.classList.toggle("on", b.dataset.me === meTab));
+  const y = $("#meScroll").scrollTop;
+  $("#meBody").innerHTML = meTab === "tracker" ? renderTracker() : meTab === "favs" ? renderFavsMe() : renderGoalsMe();
+  $("#meScroll").scrollTop = y;
+}
+function reconcilePlan(){
+  if (!plan || !plan.days) return;
+  plan.days.forEach((d, i) => { if (d.slots.some(s => !s.lock && (!byId[s.id] || isExcluded(byId[s.id])))) fillDay(i); });
+  savePlan();
+}
+function filtersChanged(){
+  saveFilters(); weightCache = null; buildDeck(); renderControls(); renderStack(true); reconcilePlan();
+  const n = $("#exclNote"); if (n) n.textContent = `${ALLM.filter(m => !isExcluded(m)).length} of ${ALLM.length} meals fit your list.`;
+}
+$("#meSeg").addEventListener("click", e => { const b = e.target.closest("[data-me]"); if (!b) return; meTab = b.dataset.me; $("#meScroll").scrollTop = 0; renderMe(); });
+$("#meBody").addEventListener("click", e => {
+  const t = e.target;
+  if (t.closest("[data-act]")) return;
+  const go = t.closest("[data-go]"), ft = t.closest("[data-ftype]"), op = t.closest("[data-open]"), rm = t.closest("[data-remove]"), rl = t.closest("[data-rmlog]"), ex = t.closest("[data-excl]");
+  if (go) return showView(go.dataset.go);
+  if (ft){ favType = ft.dataset.ftype; return renderMe(); }
+  if (op) return openModal(byId[op.dataset.open]);
+  if (rm) return toggleFav(rm.dataset.remove);
+  if (rl){ const k = dateKey(); logData[k].splice(+rl.dataset.rmlog, 1); saveLog(); toast("Entry deleted"); return renderMe(); }
+  if (ex){ const k = ex.dataset.excl; filters.exclude = filters.exclude.includes(k) ? filters.exclude.filter(x => x !== k) : [...filters.exclude, k]; ex.classList.toggle("on"); filtersChanged(); return; }
+  if (t.closest("#resetSkipped")){ const n = skipped.length; skipped = []; persist(); buildDeck(); renderStack(true); renderMe(); return toast(n ? `🔄 ${n} skipped meal${n > 1 ? "s" : ""} back in the deck` : "No skipped meals to bring back"); }
+  if (t.closest("#clearFavs")){ if (!favs.length) return toast("No favorites to clear"); if (!confirm("Remove all saved favorites?")) return; favs = []; persist(); updateBadge(); buildDeck(); renderStack(true); renderMe(); return toast("Favorites cleared"); }
+});
+$("#meBody").addEventListener("input", e => {
+  if (e.target.id === "wIn" || e.target.id === "gIn"){
+    goals.weight = $("#wIn").value; goals.goal = $("#gIn").value; LS.set("mealdeck.goals", goals);
+    $("#goalStats").innerHTML = goalStatsHtml();
+    stack.querySelectorAll(".card").forEach(c => c.remove()); renderStack();
+  }
+});
+$("#meBody").addEventListener("change", e => { if (e.target.id === "avIn"){ filters.avoid = e.target.value; filtersChanged(); toast("Avoid list updated"); } });
+$("#meBody").addEventListener("submit", e => {
+  e.preventDefault(); if (e.target.id !== "qForm") return;
+  const p = Math.max(0, Math.round(+$("#qP").value || 0)), k = Math.max(0, Math.round(+$("#qK").value || 0));
+  if (!p && !k) return toast("Enter protein or calories");
+  logEntry({id: null, name: $("#qName").value.trim() || "Quick add", emoji: "➕", n: 1, p, kcal: k});
+  toast(`✓ Added ${p} g protein`); renderMe();
+});
 
-/* ---------- views & keys ---------- */
+/* ---------- views, keys, init ---------- */
 let currentView = "deck";
+function updateBadge(){ $("#favBadge").textContent = favs.length || ""; }
 function showView(v){
+  if (v === "favs" || v === "goals"){ meTab = v; v = "me"; }
   currentView = v;
   document.querySelectorAll(".view").forEach(x => x.classList.toggle("active", x.id === "view-" + v));
   document.querySelectorAll("nav button").forEach(b => b.classList.toggle("on", b.dataset.view === v));
-  if (v === "favs") renderFavs();
-  if (v === "goals") renderGoals();
+  if (v === "plan") renderPlan();
   if (v === "grocery") renderGrocery();
-  $("#counter").style.visibility = v === "deck" ? "visible" : "hidden";
+  if (v === "me") renderMe();
+  $("#hdrDeck").style.visibility = v === "deck" ? "visible" : "hidden";
 }
 document.querySelector("nav").addEventListener("click", e => { const b = e.target.closest("button"); if (b) showView(b.dataset.view); });
+$("#genBtn").onclick = openGenerator;
 document.addEventListener("keydown", e => {
   if ($("#modal").classList.contains("open")){ if (e.key === "Escape") closeModal(); return; }
   if (currentView !== "deck" || /INPUT|TEXTAREA/.test(document.activeElement.tagName)) return;
@@ -1157,12 +2409,10 @@ document.addEventListener("keydown", e => {
   else if (e.key === " " || e.key === "Enter"){ if (document.activeElement.tagName === "BUTTON" && e.key === "Enter") return; e.preventDefault(); flip(); }
   else if (e.key.toLowerCase() === "u") undo();
 });
-
 let toastT;
 function toast(msg){ const t = $("#toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("show"), 2200); }
 
-/* ---------- init ---------- */
-renderControls(); buildDeck(); renderStack(true); updateBadge();
+renderControls(); buildDeck(); renderStack(true); updateBadge(); ensurePlan();
 
 /* ---------- offline / install (only when served over http(s); harmless when opened as a file) ---------- */
 if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
