@@ -384,6 +384,7 @@ header{gap:8px}
 .muted{color:var(--muted)}
 #modeSeg button{font-size:12px}
 .stat b{white-space:nowrap}.stat{gap:10px}
+.tag.t-spicy{background:#FDE3DC;color:#B4321C}
 </style>
 </head>
 <body>
@@ -824,7 +825,10 @@ const FOOD = {
   cocoa:["Unsweetened cocoa powder","A","tsp",5,0.3,0.9,0.2], gran:["Low-sugar granola","A","cup",440,10,64,16], sri:["Sriracha","A","",0,0,0,0], hot:["Hot sauce","A","",0,0,0,0],
   sesame:["Sesame seeds","A","",0,0,0,0], gochu:["Gochujang","A","tbsp",30,0.6,6.5,0.3], kimchi:["Kimchi","P","cup",23,1.7,4,0.2], ketch:["Ketchup, no sugar added","A","tbsp",10,0.2,2,0],
   pick:["Dill pickle chips","A","",1,0,0.2,0], bbroth:["Low-sodium beef broth","A","cup",15,3,0.5,0.5], wor:["Worcestershire sauce","A","tsp",4,0,1,0], tpaste:["Tomato paste","A","tbsp",13,0.7,3,0.1],
-  hrad:["Prepared horseradish","A","tsp",2,0,0.5,0], vanilla:["Vanilla extract","A","tsp",0,0,0,0],
+  hrad:["Prepared horseradish","A","tsp",2,0,0.5,0],
+  chip:["Chipotle peppers in adobo","A","tbsp",10,0.3,1.5,0.5], harissa:["Harissa paste","A","tbsp",20,0.5,2,1.3], peri:["Peri-peri hot sauce","A","tbsp",10,0.2,1.5,0.4],
+  panko:["Whole-wheat panko breadcrumbs","A","cup",220,8,40,2.5], sverde:["Salsa verde","A","cup",80,1.5,14,2], balg:["Balsamic glaze","A","tbsp",30,0,7,0],
+  jal:["Jalapeño","P","",4,0.1,0.9,0.1], fmoz:["Fresh mozzarella","D","oz",70,5,0.5,5.5], jerk:["Jerk seasoning","S","",0,0,0,0], cay:["Cayenne pepper","S","",0,0,0,0], vanilla:["Vanilla extract","A","tsp",0,0,0,0],
   bread:["Sprouted whole-grain bread","B","slice",80,5,15,0.5], emuf:["Whole-wheat English muffin","B","",134,6,26,1.2], tort:["High-fiber tortillas","B","",115,5,18,3],
   pita:["Whole-wheat pita","B","",172,6,35,1.7], ctort:["Corn tortillas, small","B","",54,1.4,11,0.7], bun:["Whole-wheat burger buns","B","",140,6,24,2],
   salt:["Salt","S","",0,0,0,0], pep:["Black pepper","S","",0,0,0,0], cin:["Cinnamon","S","",0,0,0,0], cum:["Cumin","S","",0,0,0,0], chili:["Chili powder","S","",0,0,0,0],
@@ -1113,7 +1117,106 @@ const MEALS3 = [
  steps:["Pack the jerky, string cheese, and apple slices together."]},
 {id:"bf28",type:"Snack",emoji:"🌮",name:"Taco Beef Lettuce Cups",why:"Leftover taco beef in crunchy lettuce cups with salsa. A small, high-protein snack.",time:10,day:"rest",tags:["low carb","quick-cook"],
  ing:[["beef",3,"oz"],["bl",0.25,"head","leaves"],["salsa",2,"tbsp"],["shc",1,"tbsp"],["taco"]],
- steps:["Brown the beef with taco seasoning (or use leftovers).","Spoon into lettuce cups and top with salsa and cheese."]}
+ steps:["Brown the beef with taco seasoning (or use leftovers).","Spoon into lettuce cups and top with salsa and cheese."]},
+// ---------- SPICY BEEF ----------
+{id:"sb01",type:"Dinner",emoji:"🌶️",name:"Jalapeño Popper Smash Burger",why:"A lean smash burger topped with jalapeño cream cheese and melted cheddar, with crispy potato wedges on the side.",time:35,day:"train",tags:["spicy"],
+ ing:[["beef",5,"oz","smashed into 2 thin patties"],["bun",1],["jal",1,"","sliced (keep seeds for more heat)"],["ccl",1,"tbsp"],["ched",1],["pot",4,"oz","wedges"],["cay"],["salt"],["pep"],["spray"]],
+ steps:["Bake the potato wedges with spray, salt, and a pinch of cayenne at 425°F for 25 minutes.","Char the jalapeño slices in a hot pan for 2 minutes and stir half of them into the cream cheese.","Smash the beef into two thin patties, cook 2 minutes, flip, top with cheddar, and cook 1 minute.","Build on the toasted bun with jalapeño cream cheese and the rest of the charred jalapeños."]},
+{id:"sb02",type:"Dinner",emoji:"🍝",name:"Arrabbiata Beef Bolognese",batch:4,why:"A fiery, garlicky meat sauce with chili flakes and cayenne over whole-wheat spaghetti. A training-day comfort meal with a kick.",time:30,day:"train",tags:["spicy","meal-prep friendly","freezer friendly"],
+ ing:[["beef90",5,"oz"],["wwp",2,"oz"],["mar",0.5,"cup"],["gar",2,"clove","sliced"],["flakes",null,"","1 tsp or more"],["cay"],["on",0.25,"","diced"],["parm",1,"tbsp"],["basil"]],
+ steps:["Brown the beef with the onion, garlic, and chili flakes, 7 minutes.","Add marinara and a pinch of cayenne and simmer 10–15 minutes. Taste and add more heat if you like.","Toss with the boiled pasta and top with parmesan and basil."]},
+{id:"sb03",type:"Lunch",emoji:"🌯",name:"Chipotle Beef Burrito Bowl",batch:4,why:"Smoky-hot chipotle beef with rice, black beans, pico, and fresh jalapeño. Preps well for the week.",time:20,day:"train",tags:["spicy","meal-prep friendly","high fiber"],
+ ing:[["beef",5,"oz"],["chip",1,"tbsp","minced, with sauce"],["brice",0.5,"cup"],["bb",0.25,"cup"],["pico",0.25,"cup"],["jal",0.5,"","sliced"],["rom",0.25,"head","shredded"],["yog",2,"tbsp"],["cum"],["lime",0.25]],
+ steps:["Brown the beef with cumin, then stir in the chipotle and a splash of water and simmer 2 minutes.","Warm the rice and beans.","Build the bowl over romaine and top with pico, jalapeño, yogurt, and lime."]},
+{id:"sb04",type:"Dinner",emoji:"🥢",name:"Szechuan Chili-Garlic Beef & Green Beans",why:"Blistered green beans and lean beef in a tongue-tingling chili-garlic sauce over cauliflower rice. Low-carb.",time:20,day:"rest",tags:["spicy","low carb","quick-cook"],
+ ing:[["beef",5,"oz"],["gb",1.5,"cup"],["cauliR",1,"cup"],["soy",1.5,"tbsp"],["sri",null,"","or chili-garlic sauce, 1–2 tbsp"],["gar",3,"clove","minced"],["ging"],["flakes"],["sesoil",1,"tsp"],["scal"]],
+ steps:["Blister the green beans in a dry, very hot pan for 5–6 minutes and set them aside.","Brown the beef with garlic, ginger, and chili flakes until crispy at the edges.","Add the soy, chili-garlic sauce, and sesame oil, toss in the green beans, and serve over sautéed cauliflower rice."]},
+{id:"sb05",type:"Dinner",emoji:"🫑",name:"Hot Cajun Beef Stuffed Peppers",batch:4,why:"Peppers stuffed with Cajun-spiced beef, jalapeño, cauliflower rice, and tomato, under melted cheese. Low-carb heat.",time:40,day:"rest",tags:["spicy","meal-prep friendly","low carb"],
+ ing:[["beef",5,"oz"],["bp",1.5,"","halved"],["cauliR",0.5,"cup"],["crt",0.5,"cup"],["jal",0.5,"","minced"],["on",0.25,"","diced"],["shc",2,"tbsp"],["cajun"],["cay"]],
+ steps:["Heat oven to 400°F. Brown the beef with onion, jalapeño, cauliflower rice, Cajun seasoning, and cayenne.","Stir in the crushed tomatoes and simmer 3 minutes.","Fill the pepper halves, top with cheese, and bake 25 minutes."]},
+{id:"sb06",type:"Dinner",emoji:"🥘",name:"Spicy Kimchi Beef Cauliflower Fried Rice",why:"Gochujang and kimchi give lean beef and cauliflower rice a spicy, funky kick, topped with an egg. Low-carb.",time:20,day:"rest",tags:["spicy","low carb","one pan"],
+ ing:[["beef",5,"oz"],["cauliR",1.5,"cup"],["kimchi",0.5,"cup","chopped"],["gochu",1,"tbsp"],["soy",1,"tbsp"],["egg",1],["sesoil",1,"tsp"],["gar",1,"clove","minced"],["scal"]],
+ steps:["Brown the beef with garlic, then push it aside.","Add the cauliflower rice and kimchi and stir-fry 5 minutes until any liquid cooks off.","Stir in the gochujang and soy, and top with a fried egg, sesame oil, and scallions."]}
+];
+
+/* ===================== BAKED CHICKEN COLLECTION (macros computed from FOOD) =====================
+ * Juicy-chicken rule used throughout: pound to an even ¾ inch, bake hot (425°F), pull at 160–165°F, rest 5 minutes.
+ */
+const BAKE_TIP = "Pound to an even ¾ inch so it cooks evenly, bake at 425°F for 18–22 minutes, and pull it at 160–165°F inside. Rest 5 minutes before slicing so it stays juicy.";
+const MEALS4 = [
+// ---------- BREAKFAST (leftover baked chicken) ----------
+{id:"ck01",type:"Breakfast",emoji:"🫓",name:"Baked Chicken & Egg White Breakfast Quesadilla",why:"Leftover baked chicken plus egg whites in a crisp tortilla. A 40 g protein breakfast in 10 minutes.",time:10,day:"train",tags:["baked chicken","uses leftovers","quick-cook"],
+ ing:[["chk",3,"oz","baked and chopped (leftover)"],["tort",1],["ew",0.5,"cup"],["spin",1,"oz"],["shc",2,"tbsp"],["salsa",3,"tbsp"],["spray"]],
+ steps:["No leftovers? Bake a breast first: "+BAKE_TIP,"Scramble the egg whites with spinach in a sprayed pan.","Fill half the tortilla with eggs, chicken, and cheese, fold, and crisp 2 minutes per side. Serve with salsa."]},
+{id:"ck02",type:"Breakfast",emoji:"🌶️",name:"Spicy Southwest Chicken & Potato Hash",why:"Crispy potatoes, baked chicken, jalapeño, and hot sauce under an egg. Wakes you up.",time:20,day:"any",tags:["baked chicken","uses leftovers","spicy"],
+ ing:[["chk",3.5,"oz","baked and diced (leftover)"],["egg",1],["ew",0.5,"cup"],["pot",4,"oz","diced"],["bp",0.5,"","diced"],["jal",1,"","minced"],["cum"],["cay"],["hot"],["spray"]],
+ steps:["Microwave the potatoes 3 minutes, then crisp them with pepper and jalapeño in a sprayed skillet, 6–8 minutes.","Stir in the chicken, cumin, and a pinch of cayenne to warm through.","Add the egg and egg whites, cover until set, and finish with hot sauce."]},
+// ---------- LUNCH ----------
+{id:"ck03",type:"Lunch",emoji:"🔥",name:"Nashville Hot Baked Chicken Sandwich",why:"Crunchy oven-baked chicken brushed with cayenne-honey heat, on a bun with cool slaw and pickles.",time:30,day:"train",tags:["baked chicken","spicy"],
+ ing:[["chk",5,"oz"],["panko",0.25,"cup"],["ew",2,"tbsp"],["bun",1],["slaw",0.5,"cup"],["yog",2,"tbsp"],["pick",4],["oil",1,"tsp"],["honey",1,"tsp"],["cay"],["pap"],["garp"],["hot"],["spray"]],
+ steps:["Heat oven to 425°F. Pound the chicken to ¾ inch, dip in egg white, then press into panko and place on a sprayed rack.","Bake 18–20 minutes until 160–165°F inside, and rest 5 minutes.","Whisk the oil, honey, cayenne (1–2 tsp, to taste), paprika, garlic powder, and hot sauce and brush over the chicken.","Toss slaw with yogurt. Build the sandwich with chicken, slaw, and pickles."]},
+{id:"ck04",type:"Lunch",emoji:"🍋",name:"Bake-Ahead Lemon Pepper Chicken Meal Prep",batch:4,why:"Bake 4 breasts and a tray of veggies once, and lunch is done for the week.",time:35,day:"any",tags:["baked chicken","meal-prep friendly"],
+ ing:[["chk",5.5,"oz"],["quin",0.5,"cup"],["zuc",0.5,"","chunked"],["bp",0.5,"","chunked"],["ron",0.125,"","wedges"],["oil",1,"tsp"],["lem",0.5],["lpep"],["salt"]],
+ steps:["Heat oven to 425°F. Pound the breasts to ¾ inch and season generously with lemon pepper and salt.","Bake the chicken on one sheet pan and the oiled veggies on another for 18–22 minutes. Pull the chicken at 160–165°F and rest 5 minutes.","Slice and portion with quinoa and veggies, and squeeze lemon over the top. Keeps 4 days."]},
+{id:"ck05",type:"Lunch",emoji:"🌯",name:"Buffalo Baked Chicken Wrap",why:"Baked chicken tossed in buffalo sauce with crunchy celery and a cool yogurt-ranch.",time:25,day:"train",tags:["baked chicken","spicy","portable"],
+ ing:[["chk",5,"oz"],["hot",null,"","buffalo-style, 2–3 tbsp"],["tort",1],["rom",0.125,"head","shredded"],["cel",1,"stalk","diced"],["car",0.5,"","shredded"],["yog",3,"tbsp"],["dill"],["garp"]],
+ steps:["Bake the chicken: "+BAKE_TIP,"Slice and toss with buffalo hot sauce.","Stir yogurt with dill and garlic powder for a quick ranch.","Fill the tortilla with lettuce, celery, carrot, chicken, and ranch, and roll up."]},
+{id:"ck06",type:"Lunch",emoji:"🍠",name:"Chipotle-Lime Chicken & Sweet Potato Bowl",batch:4,why:"Smoky chipotle chicken over roasted sweet potato with black beans and pico. Spicy and filling.",time:35,day:"train",tags:["baked chicken","spicy","meal-prep friendly"],
+ ing:[["chk",5.5,"oz"],["chip",1,"tbsp","minced, with sauce"],["lime",0.5],["swp",6,"oz","cubed"],["bb",0.25,"cup"],["pico",0.25,"cup"],["yog",2,"tbsp"],["cum"],["spray"],["salt"]],
+ steps:["Heat oven to 425°F. Rub the chicken with chipotle, lime juice, cumin, and salt.","Roast the cubed sweet potato for 25 minutes. Add the chicken to the pan for the last 18–22 minutes and pull it at 160–165°F. Rest 5 minutes.","Slice and serve over sweet potato with warm beans, pico, and yogurt."]},
+{id:"ck07",type:"Lunch",emoji:"🥬",name:"Gochujang Baked Chicken Lettuce Cups",why:"Sticky, spicy Korean-style glazed chicken in crisp lettuce with kimchi crunch. Low-carb.",time:30,day:"rest",tags:["baked chicken","spicy","low carb"],
+ ing:[["chk",5.5,"oz"],["gochu",1,"tbsp"],["soy",1,"tbsp"],["honey",1,"tsp"],["bl",0.5,"head","leaves"],["cuke",0.5,"","matchsticks"],["car",0.5,"","shredded"],["kimchi",0.25,"cup"],["scal"],["sesame"]],
+ steps:["Heat oven to 425°F. Whisk gochujang, soy, and honey and brush half over the pounded chicken.","Bake 18–22 minutes to 160–165°F and brush with the rest of the glaze for the last 5 minutes. Rest, then dice.","Spoon into lettuce cups with cucumber, carrot, kimchi, scallions, and sesame seeds."]},
+{id:"ck08",type:"Lunch",emoji:"🍝",name:"Pesto Baked Chicken Pasta with Roasted Tomatoes",why:"Juicy baked chicken and blistered tomatoes tossed with pesto and whole-wheat pasta.",time:30,day:"train",tags:["baked chicken"],
+ ing:[["chk",5,"oz"],["wwp",2,"oz"],["pesto",1,"tbsp"],["ct",0.75,"cup"],["zuc",0.5,"","diced"],["parm",1,"tbsp"],["spray"],["salt"],["pep"]],
+ steps:["Roast the chicken with the tomatoes and zucchini on a sprayed sheet pan. "+BAKE_TIP,"Boil the pasta and save a splash of water.","Toss the pasta, sliced chicken, and veggies with pesto and pasta water, and top with parmesan."]},
+{id:"ck09",type:"Lunch",emoji:"🥗",name:"Blackened Cajun Baked Chicken Cobb Salad",why:"Spicy blackened chicken over a classic Cobb with egg, turkey bacon, and avocado.",time:25,day:"rest",tags:["baked chicken","spicy","low carb"],
+ ing:[["chk",5,"oz"],["cajun"],["cay"],["rom",0.5,"head","chopped"],["egg",1,"","hard-boiled"],["tbacon",1],["ct",0.5,"cup","halved"],["avo",0.125],["vin",2,"tbsp"],["spray"]],
+ steps:["Heat oven to 425°F. Coat the pounded chicken heavily with Cajun seasoning and a pinch of cayenne, and spray it lightly.","Bake 18–22 minutes to 160–165°F (broil the last 2 minutes for a dark crust), then rest 5 minutes.","Bake the turkey bacon alongside until crisp.","Arrange the lettuce, tomatoes, egg, bacon, avocado, and sliced chicken in rows and drizzle with vinaigrette."]},
+{id:"ck10",type:"Lunch",emoji:"🌿",name:"Salsa Verde Chicken with Cilantro-Lime Cauli Rice",batch:4,why:"Chicken baked under tangy salsa verde and melted cheese over cilantro-lime cauliflower rice. Bright and low-carb.",time:30,day:"rest",tags:["baked chicken","meal-prep friendly","low carb"],
+ ing:[["chk",6,"oz"],["sverde",0.33,"cup"],["shc",2,"tbsp"],["cauliR",1.5,"cup"],["lime",0.5],["cil"],["avo",0.125],["cum"],["salt"]],
+ steps:["Heat oven to 425°F. Season the pounded chicken with cumin and salt, set it in a baking dish, and pour salsa verde over the top.","Bake 18–22 minutes to 160–165°F, top with cheese for the last 3 minutes, and rest 5 minutes.","Sauté the cauliflower rice 5 minutes and toss with lime and cilantro. Serve with the chicken, extra salsa from the dish, and avocado."]},
+// ---------- DINNER ----------
+{id:"ck11",type:"Dinner",emoji:"🧀",name:"Garlic-Parmesan Crusted Chicken & Roasted Broccoli",why:"A crispy, savory parmesan crust keeps the chicken juicy. Serve with charred broccoli for a low-carb plate.",time:30,day:"rest",tags:["baked chicken","low carb"],
+ ing:[["chk",5.5,"oz"],["parm",2,"tbsp"],["crumbs",1,"tbsp"],["yog",1,"tbsp","as a binder"],["garp"],["ital"],["broc",2,"cup"],["oil",1,"tsp"],["lem",0.5]],
+ steps:["Heat oven to 425°F. Pound the chicken to ¾ inch and brush with yogurt.","Press on the parmesan, breadcrumbs, garlic powder, and Italian seasoning. Bake on a sheet pan next to the oiled broccoli for 18–22 minutes.","Pull the chicken at 160–165°F, rest 5 minutes, and finish everything with lemon."]},
+{id:"ck12",type:"Dinner",emoji:"🥬",name:"Spinach & Feta Stuffed Chicken Breast",why:"Chicken stuffed with spinach and feta and baked with blistered tomatoes and zucchini. It looks fancy but it's easy.",time:35,day:"rest",tags:["baked chicken","low carb"],
+ ing:[["chk",6,"oz"],["spin",1,"oz"],["feta",0.75,"oz"],["ct",1,"cup"],["zuc",1,"","sliced"],["oil",1,"tsp"],["garp"],["oreg"],["salt"],["pep"]],
+ steps:["Heat oven to 425°F. Cut a deep pocket into the side of the breast and stuff it with spinach and feta. Close it with a toothpick.","Season the outside and set it on a sheet pan with the oiled tomatoes and zucchini.","Bake 22–25 minutes (stuffed takes a bit longer) until 160–165°F in the thickest part, then rest 5 minutes."]},
+{id:"ck13",type:"Dinner",emoji:"🍯",name:"Honey-Mustard Sheet-Pan Chicken & Potatoes",why:"Sweet-tangy glazed chicken with crispy potatoes and green beans, all on one pan. A good post-lift dinner.",time:40,day:"train",tags:["baked chicken","one pan"],
+ ing:[["chk",6,"oz"],["dij",2,"tsp"],["honey",2,"tsp"],["pot",6,"oz","halved"],["gb",1.5,"cup"],["oil",1,"tsp"],["thyme"],["garp"],["salt"],["pep"]],
+ steps:["Heat oven to 425°F. Roast the oiled potatoes for 15 minutes.","Whisk the Dijon, honey, and thyme and brush it over the pounded chicken. Add the chicken and green beans to the pan.","Bake 18–22 minutes more until the chicken hits 160–165°F, then rest 5 minutes."]},
+{id:"ck14",type:"Dinner",emoji:"🌴",name:"Jerk Baked Chicken with Rice & Mango",why:"Fiery Jamaican jerk spice cooled down with sweet mango and lime rice. Plenty of carbs for training days.",time:35,day:"train",tags:["baked chicken","spicy"],
+ ing:[["chk",6,"oz"],["jerk"],["cay"],["lime",1],["brice",0.75,"cup"],["mango",0.5,"cup","diced"],["ron",0.125,"","diced"],["cil"],["hot"],["spray"]],
+ steps:["Rub the chicken with jerk seasoning, a pinch of cayenne, and lime juice (marinate 30 minutes or more if you can).","Bake at 425°F for 18–22 minutes to 160–165°F, then rest 5 minutes.","Toss the mango with red onion, cilantro, and lime. Serve the sliced chicken over rice with the mango salsa and hot sauce."]},
+{id:"ck15",type:"Dinner",emoji:"🍗",name:"Panko Oven-Fried Chicken Tenders & Sweet Potato Fries",why:"Crunchy oven-fried tenders and fries without the fryer. Comfort food with 45 g of protein.",time:35,day:"train",tags:["baked chicken","family favorite"],
+ ing:[["chk",6,"oz","cut into strips"],["panko",0.33,"cup"],["ew",3,"tbsp"],["pap"],["garp"],["swp",6,"oz","fries"],["bbq",1,"tbsp","for dipping"],["spray"],["salt"]],
+ steps:["Heat oven to 425°F. Toss the sweet potato fries with spray and salt and bake for 10 minutes.","Dip the chicken strips in egg white, then in panko mixed with paprika and garlic powder. Set them on a sprayed rack.","Bake the tenders with the fries for 15–18 minutes until golden and 160–165°F inside. Serve with BBQ sauce."]},
+{id:"ck16",type:"Dinner",emoji:"🍛",name:"Tandoori Baked Chicken with Roasted Cauliflower & Raita",why:"A yogurt marinade with tandoori spices makes very tender baked chicken. Served with spiced cauliflower and cooling raita.",time:35,day:"rest",tags:["baked chicken","low carb"],
+ ing:[["chk",5,"oz"],["yog",0.25,"cup","for marinade"],["garam"],["pap"],["cum"],["ging"],["gar",1,"clove","grated"],["cauli",1.5,"cup"],["oil",1,"tsp"],["yog",3,"tbsp","for raita"],["cuke",0.25,"","grated"],["lem",0.5]],
+ steps:["Marinate the chicken in yogurt, garam masala, paprika, cumin, ginger, garlic, and lemon for 30 minutes to overnight.","Bake at 425°F next to oiled, cumin-dusted cauliflower for 18–22 minutes to 160–165°F, then rest 5 minutes.","Stir the grated cucumber into the yogurt with a pinch of salt for the raita."]},
+{id:"ck17",type:"Dinner",emoji:"🍅",name:"Chicken Caprese Bake with Balsamic Zucchini",why:"Chicken topped with fresh mozzarella, tomato, and basil, then drizzled with balsamic glaze.",time:30,day:"rest",tags:["baked chicken","low carb"],
+ ing:[["chk",6,"oz"],["fmoz",1,"oz","sliced"],["tom",1,"","sliced"],["basil"],["balg",1,"tbsp"],["zuc",1,"","halved lengthwise"],["oil",1,"tsp"],["ital"],["salt"],["pep"]],
+ steps:["Heat oven to 425°F. Season the pounded chicken with Italian seasoning and bake 15 minutes alongside the oiled zucchini.","Top the chicken with tomato and mozzarella and bake 4–6 minutes more, until it's 160–165°F and the cheese melts. Rest 5 minutes.","Finish with basil and drizzle balsamic glaze over the chicken and zucchini."]},
+{id:"ck18",type:"Dinner",emoji:"🌶️",name:"Harissa Chicken & Chickpea Sheet Pan",why:"North African harissa brings real heat to chicken, roasted chickpeas, peppers, and onions. Cool it with yogurt.",time:35,day:"any",tags:["baked chicken","spicy","one pan","high fiber"],
+ ing:[["chk",5.5,"oz"],["harissa",1,"tbsp"],["chp",0.33,"cup","rinsed"],["bp",1,"","chunked"],["ron",0.25,"","wedges"],["lem",0.5],["yog",2,"tbsp"],["cum"],["spray"],["salt"]],
+ steps:["Heat oven to 425°F. Rub the chicken with harissa, cumin, salt, and lemon.","Spread the chickpeas, peppers, and onion on a sprayed sheet pan and nestle the chicken in.","Bake 18–22 minutes until the chicken is 160–165°F and the chickpeas crisp, then rest 5 minutes. Serve with yogurt."]},
+{id:"ck19",type:"Dinner",emoji:"🔥",name:"Peri-Peri Baked Chicken with Crispy Potatoes",why:"Portuguese-style hot peri-peri chicken with garlicky roast potatoes and peppery arugula.",time:40,day:"train",tags:["baked chicken","spicy"],
+ ing:[["chk",6,"oz"],["peri",2,"tbsp"],["gar",2,"clove","minced"],["lem",0.5],["pot",6,"oz","halved"],["oil",1,"tsp"],["arug",1.5,"oz"],["spap"],["salt"]],
+ steps:["Marinate the chicken in peri-peri sauce, garlic, lemon, and smoked paprika for at least 20 minutes.","Roast the oiled potatoes at 425°F for 15 minutes, then add the chicken and bake 18–22 minutes more to 160–165°F. Rest 5 minutes.","Serve over arugula with extra peri-peri sauce."]},
+{id:"ck20",type:"Dinner",emoji:"🍱",name:"Teriyaki Baked Chicken Rice Bowls",batch:4,why:"Bake 4 glazed breasts and a tray of broccoli for an easy week of teriyaki bowls.",time:35,day:"train",tags:["baked chicken","meal-prep friendly"],
+ ing:[["chk",5.5,"oz"],["teri",2,"tbsp"],["jrice",0.75,"cup"],["broc",1.5,"cup"],["sesame"],["scal"],["spray"]],
+ steps:["Heat oven to 425°F. Brush the pounded chicken with half the teriyaki and set it on a sheet pan with sprayed broccoli.","Bake 18–22 minutes to 160–165°F, brushing on the rest of the sauce for the last 5 minutes. Rest 5 minutes, then slice.","Portion over rice with broccoli, sesame seeds, and scallions. Keeps 4 days."]},
+{id:"ck21",type:"Dinner",emoji:"🥕",name:"Balsamic Glazed Chicken with Roasted Carrots & Couscous",why:"Tangy-sweet balsamic chicken with caramelized carrots and fluffy couscous to refuel.",time:35,day:"train",tags:["baked chicken"],
+ ing:[["chk",6,"oz"],["balg",1,"tbsp"],["car",1.5,"","sticks"],["cous",0.75,"cup"],["oil",1,"tsp"],["thyme"],["garp"],["salt"],["pep"]],
+ steps:["Heat oven to 425°F. Roast the oiled carrots with thyme for 10 minutes.","Season the pounded chicken, add it to the pan, and bake 18–22 minutes to 160–165°F. Brush with balsamic glaze for the last 3 minutes, then rest 5 minutes.","Serve with couscous and the roasted carrots."]},
+// ---------- SNACKS ----------
+{id:"ck22",type:"Snack",emoji:"🌶️",name:"Buffalo Baked Chicken Bites & Celery",batch:4,why:"Bite-size baked chicken tossed in hot sauce with a cool yogurt-ranch dip. A 25 g protein snack.",time:20,day:"rest",tags:["baked chicken","spicy","low carb","meal-prep friendly"],
+ ing:[["chk",3,"oz","cubed"],["hot",null,"","buffalo-style"],["yog",0.25,"cup"],["dill"],["garp"],["cel",2,"stalk","sticks"],["spray"]],
+ steps:["Bake the cubed chicken on a sprayed sheet pan at 425°F for 12–14 minutes to 160–165°F (small pieces cook fast, so don't overbake).","Toss with buffalo sauce.","Dip in yogurt mixed with dill and garlic powder, with celery on the side."]},
+{id:"ck23",type:"Snack",emoji:"🍡",name:"Chicken Caprese Skewers",why:"Leftover baked chicken, fresh mozzarella, tomatoes, and basil on a stick with balsamic. Party food that counts as protein.",time:5,day:"any",tags:["baked chicken","uses leftovers","no cook"],
+ ing:[["chk",2.5,"oz","baked and cubed (leftover)"],["fmoz",0.5,"oz"],["ct",0.5,"cup"],["basil"],["balg",1,"tsp"]],
+ steps:["Thread the chicken, mozzarella, tomatoes, and basil onto small skewers.","Drizzle with balsamic glaze."]}
 ];
 
 /* ===================== MEAL GENERATOR =====================
@@ -1122,7 +1225,7 @@ const MEALS3 = [
  */
 const GEN = {
   proteins: {
-    chicken:{k:"chk",oz:6,short:"Chicken",group:"Chicken",cook:"Season the chicken and sear 5–6 minutes per side (or bake at 425°F for 18–20 minutes) until it reaches 165°F, then slice."},
+    chicken:{k:"chk",oz:6,short:"Chicken",group:"Chicken",cook:"Pound the chicken to an even ¾ inch and bake at 425°F for 18–22 minutes, pulling it at 160–165°F inside. Rest 5 minutes so it stays juicy, then slice.",baked:true},
     thigh:{k:"thigh",oz:6,short:"Chicken Thigh",group:"Chicken",cook:"Sear the thighs 5–6 minutes per side until they reach 175°F, then slice."},
     turkey:{k:"tur",oz:5.5,short:"Turkey",group:"Turkey",cook:"Brown the ground turkey in a hot pan for 6–7 minutes, breaking it up."},
     beef:{k:"beef",oz:5,short:"Ground Beef",group:"Beef",cook:"Brown the 93% lean ground beef for 6–7 minutes and drain any fat."},
@@ -1155,7 +1258,7 @@ const GEN = {
     cauli:{k:"cauli",q:1.5,label:"Cauliflower"}, slaw:{k:"slaw",q:1.5,label:"Slaw"}, salad:{k:"cuke",q:0.5,label:"Cucumber Salad",extra:[["ct",0.5]]}
   },
   profiles: [
-    {id:"mex",adj:"Chipotle Lime",formats:["Bowl","Tacos","Salad"],veg:["peppers","broc","slaw"],add:[["salsa",3,"tbsp"],["lime",0.5],["yog",0.125,"cup"],["cum"],["chili"],["cil"]],fat:[["avo",0.25]],
+    {id:"mex",adj:"Southwest Lime",formats:["Bowl","Tacos","Salad"],veg:["peppers","broc","slaw"],add:[["salsa",3,"tbsp"],["lime",0.5],["yog",0.125,"cup"],["cum"],["chili"],["cil"]],fat:[["avo",0.25]],
       season:"chili powder, cumin, and a squeeze of lime",finish:"Top with salsa, a spoon of Greek yogurt, cilantro, and lime."},
     {id:"med",adj:"Lemon Oregano",formats:["Bowl","Sheet-Pan","Salad","Pita"],veg:["zuc","peppers","salad","spin"],add:[["lem",0.5],["gar",1],["oil",2,"tsp"],["feta",0.5,"oz"],["oreg"]],
       season:"lemon, garlic, and oregano",finish:"Finish with crumbled feta and a squeeze of lemon."},
@@ -1167,7 +1270,7 @@ const GEN = {
       season:"Italian seasoning and garlic",finish:"Simmer with marinara, then finish with parmesan and basil."},
     {id:"bbq",adj:"Smoky BBQ",formats:["Sheet-Pan","Bowl"],veg:["slaw","gb","broc"],add:[["bbq",2,"tbsp"],["spap"]],
       season:"smoked paprika",finish:"Brush with BBQ sauce for the last few minutes."},
-    {id:"cajun",adj:"Cajun Spiced",formats:["Sheet-Pan","Bowl","Skillet"],veg:["peppers","gb","zuc","asp"],add:[["cajun"],["oil",1,"tsp"],["lem",0.5]],
+    {id:"cajun",spicy:true,adj:"Cajun Spiced",formats:["Sheet-Pan","Bowl","Skillet"],veg:["peppers","gb","zuc","asp"],add:[["cajun"],["oil",1,"tsp"],["lem",0.5]],
       season:"Cajun seasoning",finish:"Finish with a squeeze of lemon."},
     {id:"curry",adj:"Golden Curry",formats:["Bowl","Skillet"],veg:["cauli","spin","peppers"],add:[["coco",0.25,"cup"],["crt",0.25,"cup"],["curry"],["garam"],["ging"],["gar",1]],
       season:"curry powder and a pinch of garam masala",finish:"Simmer with light coconut milk, tomatoes, ginger, and garlic for 8 minutes."},
@@ -1177,10 +1280,16 @@ const GEN = {
       season:"salt, pepper, and garlic powder",finish:"Toss with pesto and cherry tomatoes and top with parmesan."},
     {id:"greek",adj:"Greek",formats:["Pita","Bowl","Salad"],veg:["salad","spin","peppers"],add:[["tz",0.25,"cup"],["ron",0.125],["oreg"],["lem",0.5]],
       season:"oregano, lemon, and garlic powder",finish:"Spoon tzatziki over the top and add sliced red onion."}
+    ,{id:"buff",spicy:true,adj:"Buffalo",formats:["Salad","Bowl","Sheet-Pan"],veg:["slaw","broc","salad","cauli"],add:[["hot"],["cel",1,"stalk"],["yog",0.125,"cup"],["garp"],["cay"]],
+      season:"garlic powder and a pinch of cayenne",finish:"Toss with plenty of buffalo hot sauce and drizzle with yogurt mixed with garlic powder as a quick ranch."},
+    {id:"harissa",spicy:true,adj:"Harissa",formats:["Bowl","Sheet-Pan","Pita"],veg:["peppers","zuc","cauli","salad"],add:[["harissa",1,"tbsp"],["lem",0.5],["yog",0.125,"cup"],["cum"]],
+      season:"harissa, cumin, and salt",finish:"Spoon a little extra harissa over the top and cool it down with lemony yogurt."},
+    {id:"chipotle",spicy:true,adj:"Chipotle",formats:["Bowl","Tacos","Salad"],veg:["peppers","slaw","broc"],add:[["chip",1,"tbsp"],["lime",0.5],["salsa",2,"tbsp"],["yog",0.125,"cup"],["cil"]],
+      season:"minced chipotle in adobo, lime, and cumin",finish:"Top with salsa, a spoon of yogurt, and cilantro."}
   ],
   formatCarb: {
     train:{Bowl:["brice","quin","farro","jrice"],Tacos:["ctort"],Salad:["quin","farro"],Pasta:["wwp"],"Sheet-Pan":["swp","pot"],"Stir-Fry":["jrice","brice"],Pita:["pita"],Skillet:["brice","swp"]},
-    rest:{Bowl:["cauliR","quin"],Tacos:["ctort"],Salad:["greens"],Pasta:["zoodle","squash"],"Sheet-Pan":["cauliR"],"Stir-Fry":["cauliR"],Pita:["greens"],Skillet:["cauliR","squash"]}
+    rest:{Bowl:["cauliR"],Tacos:["ctort"],Salad:["greens"],Pasta:["zoodle","squash"],"Sheet-Pan":["cauliR"],"Stir-Fry":["cauliR"],Pita:["greens"],Skillet:["cauliR","squash"]}
   },
   breakfast: {
     train:[
@@ -1314,9 +1423,13 @@ function buildCompact(src){
   return m;
 }
 let customSpecs = LS.get("mealdeck.custom", []);
-const ALLM = [...MEALS, ...MEALS2.map(buildCompact), ...MEALS3.map(buildCompact)];
+const ALLM = [...MEALS, ...MEALS2.map(buildCompact), ...MEALS3.map(buildCompact), ...MEALS4.map(buildCompact)];
 const byId = {};
+const SPICY_IDS = new Set(["n17","n22","n42","d15","bf05","bf09","bf18"]);   // existing meals with real heat
+const BAKED_IDS = new Set(["d01","d08","n16","n27","n34","n36","n41","n46"]);  // existing meals with oven-baked chicken breast
 function registerMeal(m){
+  if (BAKED_IDS.has(m.id) && !m.tags.includes("baked chicken")) m.tags = [...m.tags, "baked chicken"];
+  if (SPICY_IDS.has(m.id) && !m.tags.includes("spicy")) m.tags = [...m.tags, "spicy"];
   const names = [];
   m.ing.forEach(l => l.slice(1).forEach(t => names.push(t[2].toLowerCase())));
   m._names = names.filter(n => !/broth/.test(n));
@@ -1395,7 +1508,7 @@ function nameExcluded(n){
   return avoidTokens().some(t => { const re = tokRe(t); return re && re.test(n); });
 }
 const isExcluded = m => m._all.some(nameExcluded);
-const includeMatch = (m, inc = filters.include) => !inc.length || inc.every(t => { const re = tokRe(t); return !re || m._names.some(n => re.test(n)) || re.test(m.name.toLowerCase()); });
+const includeMatch = (m, inc = filters.include) => !inc.length || inc.every(t => { if (m.tags.some(g => g.toLowerCase() === t.toLowerCase().trim())) return true; if (/^baked chicken$/i.test(t.trim())) return false; const re = tokRe(t); return !re || m._names.some(n => re.test(n)) || re.test(m.name.toLowerCase()); });
 
 /* ---------- ratings & similarity weighting ---------- */
 const STAR_W = {1:0.15, 2:0.4, 3:1, 4:1.8, 5:2.5};
@@ -1447,10 +1560,11 @@ const calTarget = d => { const t = targets(); return isTrainDay(d) ? t.kTrain : 
 function tagsFor(m){
   const t = [];
   if (m.gen) t.push(["✨ generated","t-gen"]);
+  if (m.tags.includes("spicy")) t.push(["🌶️ spicy","t-spicy"]);
   if (m.day === "train") t.push(["training day","t-train"]);
   if (m.day === "rest")  t.push(["lower carb","t-rest"]);
   if (m.time <= 15) t.push(["quick",""]);
-  m.tags.forEach(x => { if (x !== "generated" && !t.some(y => y[0] === x)) t.push([x,""]); });
+  m.tags.forEach(x => { if (x !== "generated" && x !== "spicy" && !t.some(y => y[0] === x)) t.push([x,""]); });
   return t;
 }
 const dayLabel = d => d === "train" ? "💪 Great on training days" : d === "rest" ? "🧘 Lower-carb · rest days" : "⚖️ Any day";
@@ -1697,7 +1811,7 @@ function attachDrag(el){
 }
 
 /* ---------- deck controls & ingredient filter ---------- */
-const ING_CHIPS = ["Chicken","Turkey","Beef","Ground beef","Salmon","Shrimp","Eggs","Tofu","Greek yogurt","Rice","Potato","Pasta","Oats","Broccoli","Spinach","Beans","Avocado"];
+const ING_CHIPS = ["Spicy","Baked chicken","Chicken","Turkey","Beef","Ground beef","Salmon","Shrimp","Eggs","Tofu","Greek yogurt","Rice","Potato","Pasta","Oats","Broccoli","Spinach","Beans","Avocado"];
 function renderControls(){
   document.querySelectorAll("#daySeg button").forEach(b => b.classList.toggle("on", b.dataset.day === prefs.day));
   const n = filters.include.length;
@@ -2256,7 +2370,7 @@ function genMain(type, train, opt = {}){
   const steps = [C.step, `Season the ${P.short.toLowerCase()} with ${prof.season}. ${P.cook}`, cookVeg, prof.finish, assemble];
   const time = (fmt === "Sheet-Pan" || C.k === "swp" || C.k === "pot") ? 35 : C.k === "squash" ? 30 : 25;
   return {type, emoji: PROTEIN_EMOJI[pid] || FORMAT_EMOJI[fmt], name, time, day: train ? "train" : "rest",
-    tags: ["high protein", train ? "higher carb" : "lower carb", ...(["Bowl","Sheet-Pan","Skillet"].includes(fmt) ? ["meal-prep friendly"] : [])],
+    tags: ["high protein", train ? "higher carb" : "lower carb", ...(["Bowl","Sheet-Pan","Skillet"].includes(fmt) ? ["meal-prep friendly"] : []), ...(P.baked ? ["baked chicken"] : []), ...(prof.spicy ? ["spicy"] : [])],
     why: `${mac.p} g of protein from ${P.short.toLowerCase()}, ${train ? `with ${C.label} to fuel your training` : `kept lower-carb with ${C.label} for a rest day`}, and ${vegWord} for fiber and volume.`,
     ing: ing(), steps};
 }
