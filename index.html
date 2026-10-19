@@ -308,6 +308,31 @@ nav button.on{color:var(--accent)}
 .addon small{font-weight:500;opacity:.8}
 .addon button{width:20px;height:20px;border-radius:50%;font-size:10px;background:rgba(0,0,0,.06)}
 .plan-note{font-size:12.5px;font-weight:700;color:var(--accent);margin-bottom:6px}
+/* add to plan */
+.act.plan-act{width:100%;flex:none;margin:-4px 0 10px;background:var(--sage-soft);color:var(--sage)}
+.dpill.off{opacity:.4;border-style:dashed;background:transparent}
+.dpill.off i{display:none}
+.dpill.off.on{opacity:.75;background:var(--ink)}
+.slot.slotempty .slot-emoji{background:#F4ECE2;color:var(--muted);font-size:20px;font-weight:700}
+.slot.slotempty .slot-main b{color:var(--muted)}
+.slot.picked .slot-type::after{content:" · picked";color:var(--muted);font-weight:700}
+.plan-tools{display:flex;gap:8px;margin:0 0 12px}
+.plan-tools .btn{flex:1;padding:9px 8px;font-size:12.5px}
+.pdays{padding:12px 14px 4px}
+.pdays .glabel{margin:0 0 8px;display:flex;justify-content:space-between;align-items:center}
+.pdays .glabel button{font-size:11.5px;font-weight:700;color:var(--accent);text-transform:none;letter-spacing:0}
+.pick-note{font-size:12.5px;line-height:1.4;background:#FFF5E6;color:#8A5A0A;border-radius:12px;padding:9px 11px;margin:8px 0}
+.pick-note.info{background:var(--sage-soft);color:var(--sage)}
+.pick-days .chip{display:flex;flex-direction:column;align-items:center;gap:1px;line-height:1.15}
+.pick-days .chip small{font-size:11px}
+.pick-list{display:flex;flex-direction:column;margin-top:6px}
+.pick-row{display:flex;align-items:center;gap:10px;padding:9px 2px;border-top:1px dashed var(--line);text-align:left;width:100%}
+.pick-row .slot-emoji{width:38px;height:38px;font-size:20px}
+.pick-row b{display:block;font-size:13.5px;line-height:1.25}
+.pick-row small{font-size:11.5px;color:var(--muted)}
+.pick-search{width:100%;padding:10px 12px;border-radius:12px;border:1.5px solid var(--line);font-size:14px;background:var(--surface);margin:4px 0 6px}
+.how{padding-left:20px;font-size:14px;line-height:1.5}.how li{margin:4px 0}
+.off-banner{display:flex;align-items:center;justify-content:space-between;gap:10px}
 /* tracker */
 .trk{display:flex;align-items:center;gap:16px}
 .ringwrap{position:relative;width:128px;height:128px;flex:none}
@@ -411,6 +436,7 @@ header{gap:8px}
         <button class="fab skip" id="skipBtn" title="Skip (←)" aria-label="Skip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
         <button class="fab save" id="saveBtn" title="Save (→)" aria-label="Save to favorites"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7.5-4.6-9.6-9.2C.8 8.3 2.9 4.5 6.6 4.5c2.1 0 3.6 1.1 4.4 2.5h2c.8-1.4 2.3-2.5 4.4-2.5 3.7 0 5.8 3.8 4.2 7.3C19.5 16.4 12 21 12 21z"/></svg></button>
         <button class="fab small" id="flipBtn" title="Full recipe (Space)" aria-label="Show full recipe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5V5a2 2 0 0 1 2-2h13v15H6a2 2 0 0 0-2 2zm0 0A2 2 0 0 0 6 22h13"/><path d="M9 8h6M9 12h4"/></svg></button>
+        <button class="fab small" id="planBtn" title="Add to plan" aria-label="Add to plan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4M12 13v5M9.5 15.5h5"/></svg></button>
       </div>
     </section>
 
@@ -1630,6 +1656,7 @@ function recipeHtml(m){
       <button class="act" data-act="cooked" data-id="${m.id}">👨‍🍳 Cooked it</button>
       <button class="act" data-act="groc" data-id="${m.id}">🛒 Add ${k}</button>
     </div>
+    <button class="act plan-act" data-act="plan" data-id="${m.id}">📅 Add to plan</button>
     ${ratingBadge(m) ? `<div class="rbadge">${ratingBadge(m)}</div>` : ""}
     <div class="scaler">
       <span>Servings</span>
@@ -1721,7 +1748,7 @@ function renderStack(reset){
     el.setAttribute("aria-hidden", i ? "true" : "false");
   });
   if (!top.length) renderEmpty();
-  $("#skipBtn").disabled = $("#saveBtn").disabled = $("#flipBtn").disabled = !top.length;
+  $("#skipBtn").disabled = $("#saveBtn").disabled = $("#flipBtn").disabled = $("#planBtn").disabled = !top.length;
   $("#undoBtn").disabled = !history.length;
   const pool = poolSize(), seen = pool - deck.length;
   $("#counter").textContent = top.length ? `${Math.min(seen + 1, pool)} / ${pool}` : `${pool} / ${pool}`;
@@ -1852,6 +1879,7 @@ $("#ingPanel").addEventListener("click", e => {
 $("#skipBtn").onclick = () => act("skip");
 $("#saveBtn").onclick = () => act("save");
 $("#flipBtn").onclick = flip;
+$("#planBtn").onclick = () => { const el = topCard(); if (el && byId[el.dataset.id]) openPlanPicker(el.dataset.id); };
 $("#undoBtn").onclick = undo;
 
 
@@ -1965,6 +1993,7 @@ document.addEventListener("click", e => {
   if (a === "ate") openAte(id, +(b.dataset.n || 1));
   else if (a === "cooked") openCooked(id);
   else if (a === "groc"){ addToGrocery(id, rsGet(id).n); }
+  else if (a === "plan") openPlanPicker(id);
   else if (a === "rs-" || a === "rs+"){ const s = rsGet(id); s.n = Math.max(1, Math.min(12, s.n + (a === "rs+" ? 1 : -1))); refreshRecipes(id); }
   else if (a === "rsb"){ const s = rsGet(id); s.batch = !s.batch; if (s.batch && s.n === 1) s.n = m.batch || 4; refreshRecipes(id); }
 });
@@ -2134,8 +2163,9 @@ const BOOSTERS = {
 };
 Object.values(BOOSTERS).flat().forEach(b => { Object.assign(b, macrosOf(b.ing)); b.excluded = () => b.ing.some(([k]) => nameExcluded(FOOD[k][0])); });
 const slotTypes = n => ["Breakfast","Lunch","Dinner", ...Array(n).fill("Snack")];
+const ALL_DAYS = [0,1,2,3,4,5,6];
 function newPlan(){
-  return {trainDays:[...DEFAULT_TRAIN_DAYS], snacks:2, sel: todayIdx(), open:false,
+  return {trainDays:[...DEFAULT_TRAIN_DAYS], snacks:2, sel: todayIdx(), open:false, active:[...ALL_DAYS],
     days: Array.from({length:7}, () => ({slots: slotTypes(2).map(t => ({t, id:null, k:1, lock:false})), addons:[]}))};
 }
 const dayOk = (m, train) => train ? m.day !== "rest" : m.day !== "train";
@@ -2162,6 +2192,7 @@ function balanceDay(d){
   day.slots.forEach(s => { if (!s.lock) s.k = 1; });
   day.addons = [];
   let tot = dayTotals(day);
+  if (day.slots.some(isEmptySlot)) return tot;   // a day still being built by hand: don't pad it with extras yet
   const ups = day.slots.filter(s => !s.lock && byId[s.id]).sort((a, b) => byId[b.id].p / byId[b.id].kcal - byId[a.id].p / byId[a.id].kcal);
   for (const s of ups){
     if (tot.p >= T.p - 8) break;
@@ -2217,7 +2248,7 @@ function fillDay(d){
       }
       if (!pick) pick = pickWeighted(pool, m => usedToday.has(m.id) || (counts[m.id] || 0) >= repLimit(m) ? 0 : weightFor(m) * (favs.includes(m.id) ? 1.4 : 1))
         || pickWeighted(pool, m => usedToday.has(m.id) ? 0 : 1);
-      s.id = pick ? pick.id : null; s.sw = [];
+      s.id = pick ? pick.id : null; s.sw = []; delete s.cleared; delete s.pick;
       if (pick){ usedToday.add(pick.id); counts[pick.id] = (counts[pick.id] || 0) + 1; }
     });
     balanceDay(d);
@@ -2226,9 +2257,103 @@ function fillDay(d){
   }
   plan.days[d] = best;
 }
-function fillWeek(){ weightCache = null; for (let d = 0; d < 7; d++) fillDay(d); savePlan(); }
+/* Fill every unlocked or empty slot. By default only on the days being planned. */
+function fillWeek(all){ weightCache = null; for (let d = 0; d < 7; d++) if (all || isActiveDay(d)) fillDay(d); savePlan(); }
+/* Migration-safe defaults for saved plans: only adds missing fields, never drops meals. */
+function normalizePlan(){
+  if (!plan || !Array.isArray(plan.days) || plan.days.length !== 7) return false;
+  if (!Array.isArray(plan.trainDays)) plan.trainDays = [...DEFAULT_TRAIN_DAYS];
+  if (plan.snacks !== 1 && plan.snacks !== 2) plan.snacks = 2;
+  let act = Array.isArray(plan.active) ? [...new Set(plan.active.map(Number).filter(i => Number.isInteger(i) && i >= 0 && i < 7))].sort() : [];
+  plan.active = act.length ? act : [...ALL_DAYS];
+  plan.days.forEach((d, i) => {
+    if (!d || typeof d !== "object") d = plan.days[i] = {slots: [], addons: []};
+    if (!Array.isArray(d.slots) || !d.slots.length) d.slots = slotTypes(plan.snacks).map(t => ({t, id:null, k:1, lock:false}));
+    if (!Array.isArray(d.addons)) d.addons = [];
+    d.slots.forEach(s => { if (typeof s.k !== "number" || !(s.k > 0)) s.k = 1; s.lock = !!s.lock; });
+  });
+  return true;
+}
 function ensurePlan(){
-  if (!plan || !Array.isArray(plan.days) || plan.days.length !== 7){ plan = newPlan(); fillWeek(); }
+  if (!normalizePlan()){ plan = newPlan(); fillWeek(true); }
+}
+const isActiveDay = d => !plan || !Array.isArray(plan.active) || plan.active.includes(d);
+const isEmptySlot = s => !!s.cleared && !byId[s.id];
+const slotLabel = (d, s) => `${DAY_SHORT[d]} ${s.t.toLowerCase()}`;
+/* Put a hand-picked meal into a slot: locked, 1 serving, then rebalance the day. */
+function placeMeal(d, si, id){
+  const day = plan.days[d], s = day.slots[si];
+  Object.assign(s, {id, k:1, lock:true, sw:[], pick:true}); delete s.cleared;
+  if (!plan.active.includes(d)) plan.active = [...plan.active, d].sort();
+  balanceDay(d);
+}
+function slotFor(d, type){
+  const sl = plan.days[d].slots, idx = sl.map((s, i) => s.t === type ? i : -1).filter(i => i >= 0);
+  if (!idx.length) return -1;
+  return idx.find(i => !byId[sl[i].id]) ?? idx[0];
+}
+function clearUnlocked(){
+  let n = 0;
+  plan.days.forEach((day, d) => { if (!isActiveDay(d)) return;
+    day.slots.forEach(s => { if (s.lock && byId[s.id]) return; if (byId[s.id]) n++; Object.assign(s, {id:null, k:1, lock:false, sw:[], cleared:true}); delete s.pick; });
+    balanceDay(d); });
+  savePlan(); return n;
+}
+/* "Add to plan" picker: choose day(s) and the meal slot. */
+function openPlanPicker(id){
+  const m = byId[id]; if (!m) return;
+  ensurePlan();
+  const types = ["Breakfast","Lunch","Dinner","Snack"];
+  let type = types.includes(m.type) ? m.type : "Dinner";
+  let days = [currentView === "plan" ? (plan.sel ?? todayIdx()) : todayIdx()];
+  const draw = () => {
+    const mism = days.filter(d => !dayOk(m, isTrainDay(d)));
+    const off = days.filter(d => !isActiveDay(d));
+    const repl = days.map(d => { const si = slotFor(d, type), s = si >= 0 && plan.days[d].slots[si], cur = s && byId[s.id];
+      return cur && cur.id !== m.id ? `${DAY_SHORT[d]}: ${esc(cur.name)}${s.lock ? " 🔒" : ""}` : null; }).filter(Boolean);
+    const sh = openSheet(`<div class="content sheet-pad"><button class="close" aria-label="Close">✕</button>
+      <h3 class="sheet-title">📅 Add to plan</h3>
+      <div class="ate-meal"><span class="emoji-lg">${m.emoji}</span><div><b>${esc(m.name)}</b><small>${m.type} · ${m.p}g protein · ${m.kcal} kcal</small></div></div>
+      <span class="glabel">Day${days.length > 1 ? "s" : ""} <small style="text-transform:none;letter-spacing:0;font-weight:600">· pick several for meal prep</small></span>
+      <div class="daychips pick-days">${DAY_SHORT.map((n, i) => `<button class="chip ${days.includes(i) ? "on" : ""}" data-pday="${i}">${n}<small>${isTrainDay(i) ? "💪" : "🧘"}</small></button>`).join("")}</div>
+      <span class="glabel">Meal</span>
+      <div class="seg small">${types.map(t => `<button class="${t === type ? "on" : ""}" data-ptype="${t}">${t}</button>`).join("")}</div>
+      ${mism.length ? `<p class="pick-note">Heads up: this is ${m.day === "train" ? "a higher-carb training-day meal and " + mism.map(d => DAY_SHORT[d]).join(", ") + (mism.length > 1 ? " are rest days" : " is a rest day") : "a lower-carb rest-day meal and " + mism.map(d => DAY_SHORT[d]).join(", ") + (mism.length > 1 ? " are training days" : " is a training day")}. It'll still go in.</p>` : ""}
+      ${off.length ? `<p class="pick-note info">${off.map(d => DAY_SHORT[d]).join(", ")} will be added to the days you're planning.</p>` : ""}
+      ${repl.length ? `<p class="gnote" style="margin-top:8px">Replaces ${repl.join(" · ")}</p>` : ""}
+      <div class="row-btns" style="margin-top:12px"><button class="btn" id="pkOk" style="flex:1" ${days.length ? "" : "disabled"}>${days.length ? `Add to ${days.length > 1 ? days.length + " days" : DAY_SHORT[days[0]]}` : "Pick a day"}</button><button class="btn ghost" id="pkCancel">Cancel</button></div>
+      <p class="gnote" style="margin-top:8px">Picked meals are locked 🔒 so Regenerate won't replace them.</p></div>`, TYPE_COLOR[m.type]);
+    sh.querySelectorAll("[data-pday]").forEach(b => b.onclick = () => { const i = +b.dataset.pday; days = days.includes(i) ? days.filter(x => x !== i) : [...days, i].sort(); draw(); });
+    sh.querySelectorAll("[data-ptype]").forEach(b => b.onclick = () => { type = b.dataset.ptype; draw(); });
+    sh.querySelector("#pkCancel").onclick = closeModal;
+    sh.querySelector("#pkOk").onclick = () => {
+      if (!days.length) return;
+      const done = [];
+      days.forEach(d => { const si = slotFor(d, type); if (si < 0) return; placeMeal(d, si, m.id); done.push(d); });
+      if (!done.length) return toast("Couldn't find that meal slot");
+      plan.sel = done[0]; savePlan(); closeModal();
+      toast(`📅 Added to ${done.map(d => DAY_SHORT[d]).join(", ")} ${type.toLowerCase()}`);
+      if (currentView === "plan") renderPlan();
+      if (currentView === "me") renderMe();
+    };
+  };
+  draw();
+}
+/* Choose a meal for one empty (or any) slot from inside the Plan tab. */
+function openSlotPicker(d, si){
+  const s = plan.days[d].slots[si], train = isTrainDay(d);
+  const list = ALLM.filter(m => m.type === s.t && !isExcluded(m))
+    .map(m => ({m, f: favs.includes(m.id), ok: dayOk(m, train), w: weightFor(m)}))
+    .sort((a, b) => (b.f - a.f) || (b.ok - a.ok) || (b.w - a.w));
+  const sh = openSheet(`<div class="content sheet-pad"><button class="close" aria-label="Close">✕</button>
+    <h3 class="sheet-title">${DAY_NAMES[d]} · ${s.t}</h3>
+    <input class="pick-search" id="psQ" placeholder="Search ${s.t.toLowerCase()} meals" autocomplete="off">
+    <div class="pick-list">${list.map(({m, f, ok}) => `<button class="pick-row" data-pick="${m.id}" data-q="${esc(m.name.toLowerCase())}" style="--tc:${TYPE_COLOR[m.type]}"><span class="slot-emoji">${m.emoji}</span><span><b>${f ? "♥ " : ""}${esc(m.name)}</b><small>${m.p}g protein · ${m.kcal} kcal${ok ? "" : ` · ${m.day === "train" ? "💪 training-day meal" : "🧘 rest-day meal"}`}</small></span></button>`).join("") || `<p class="gnote">No meals match your foods-to-avoid list.</p>`}</div></div>`, TYPE_COLOR[s.t]);
+  sh.querySelector("#psQ").oninput = e => { const q = e.target.value.toLowerCase().trim(); sh.querySelectorAll("[data-pick]").forEach(r => r.hidden = !!q && !r.dataset.q.includes(q)); };
+  sh.querySelectorAll("[data-pick]").forEach(b => b.onclick = () => {
+    placeMeal(d, si, b.dataset.pick); savePlan(); closeModal(); renderPlan();
+    toast(`📅 Added to ${slotLabel(d, s)}`);
+  });
 }
 function swapSlot(d, si){
   const day = plan.days[d], s = day.slots[si], cur = byId[s.id], train = isTrainDay(d);
@@ -2241,17 +2366,17 @@ function swapSlot(d, si){
   let next = pool.find(m => !s.sw.includes(m.id));
   if (!next){ s.sw = cur ? [cur.id] : []; next = pool.find(m => !s.sw.includes(m.id)); }
   if (!next) return toast("No other matches for this slot");
-  s.id = next.id; s.sw.push(next.id);
+  s.id = next.id; s.sw.push(next.id); delete s.cleared; delete s.pick;
   balanceDay(d); savePlan(); renderPlan();
   toast(`🔄 Swapped in ${next.name}`);
 }
 function sendWeekToGrocery(){
-  const counts = {};
-  plan.days.forEach(day => day.slots.forEach(s => { if (s.id) counts[s.id] = (counts[s.id] || 0) + s.k; }));
+  const counts = {}, act = plan.days.filter((_, i) => isActiveDay(i));
+  act.forEach(day => day.slots.forEach(s => { if (byId[s.id]) counts[s.id] = (counts[s.id] || 0) + s.k; }));
   const ids = Object.keys(counts);
   ids.forEach(id => { if (!favs.includes(id) && !groc.added.includes(id)) groc.added.push(id); groc.serv[id] = Math.ceil(counts[id] - 1e-9); });
   const add = {};
-  plan.days.forEach(day => day.addons.forEach(a => { const b = BOOSTERS[a.set][a.i]; if (!b) return;
+  act.forEach(day => day.addons.forEach(a => { const b = BOOSTERS[a.set][a.i]; if (!b) return;
     b.ing.forEach(([k, q, u]) => { const F = FOOD[k], unit = u || F[2], key = F[0] + "|" + unit; add[key] = add[key] ? [add[key][0] + q, unit, F[0], F[1]] : [q, unit, F[0], F[1]]; }); }));
   groc.addons = Object.values(add);
   if (groc.addons.length && !groc.added.includes("_addons")) groc.added.push("_addons");
@@ -2259,18 +2384,21 @@ function sendWeekToGrocery(){
   groc.off = listIds().filter(id => !ids.includes(id) && id !== "_addons");
   groc.checked = []; groc.cleared = []; groc.mealsOpen = false;
   saveGroc();
-  toast(`🛒 This week's ${ids.length} meals are on your grocery list`);
+  if (!ids.length) toast("No meals planned yet. Add some first");
+  else toast(act.length === 7 ? `🛒 This week's ${ids.length} meals are on your grocery list` : `🛒 ${ids.length} meals for ${act.length} day${act.length > 1 ? "s" : ""} are on your grocery list`);
   showView("grocery");
 }
 function renderPlan(){
   ensurePlan();
   const T = targets(), sel = plan.sel ?? todayIdx(), day = plan.days[sel], train = isTrainDay(sel), tot = dayTotals(day), kT = calTarget(sel);
+  const nAct = plan.active.length, selOn = isActiveDay(sel);
   const strip = plan.days.map((d, i) => { const t = dayTotals(d), pct = Math.min(100, Math.round(t.p / T.p * 100));
-    return `<button class="dpill ${i === sel ? "on" : ""} ${i === todayIdx() ? "today" : ""}" data-day="${i}"><b>${DAY_SHORT[i]}</b><span>${isTrainDay(i) ? "💪" : "🧘"}</span><i style="--w:${pct}%"></i></button>`; }).join("");
+    return `<button class="dpill ${i === sel ? "on" : ""} ${i === todayIdx() ? "today" : ""} ${isActiveDay(i) ? "" : "off"}" data-day="${i}" aria-label="${DAY_NAMES[i]}${isActiveDay(i) ? "" : " (not in plan)"}"><b>${DAY_SHORT[i]}</b><span>${isTrainDay(i) ? "💪" : "🧘"}</span><i style="--w:${pct}%"></i></button>`; }).join("");
   const bar = (v, t, cls) => `<span class="ptrack ${cls}"><i style="width:${Math.min(100, v / t * 100)}%"></i></span>`;
   const rows = day.slots.map((s, si) => { const m = byId[s.id];
+    if (!m && s.cleared) return `<div class="slot slotempty"><span class="slot-type">${s.t}</span><button class="slot-main" data-addslot="${si}"><span class="slot-emoji">＋</span><span><b>Empty</b><small>Add a meal or tap 🔄 to fill</small></span></button><button class="sbtn" data-swap="${si}" title="Fill with the best match" aria-label="Fill">🔄</button></div>`;
     if (!m) return `<div class="slot"><span class="slot-type">${s.t}</span><span class="slot-main"><b>No match</b><small>Check your foods-to-avoid list.</small></span><button class="sbtn" data-swap="${si}" aria-label="Swap">🔄</button></div>`;
-    return `<div class="slot ${s.lock ? "locked" : ""}" style="--tc:${TYPE_COLOR[m.type]}">
+    return `<div class="slot ${s.lock ? "locked" : ""} ${s.pick ? "picked" : ""}" style="--tc:${TYPE_COLOR[m.type]}">
       <span class="slot-type">${s.t}</span>
       <button class="slot-main" data-open="${m.id}" data-k="${s.k}"><span class="slot-emoji">${m.emoji}</span><span><b>${esc(m.name)}</b>
         <small>${s.k !== 1 ? `<em>×${s.k}</em> · ` : ""}${Math.round(m.p * s.k)}g protein · ${Math.round(m.kcal * s.k)} kcal${ratingBadge(m) ? " · " + ratingBadge(m) : ""}</small></span></button>
@@ -2281,7 +2409,7 @@ function renderPlan(){
       </div></div>`; }).join("");
   const addons = day.addons.map((a, ai) => { const b = BOOSTERS[a.set][a.i]; return b ? `<span class="addon">+ ${esc(b.n)} <small>${b.kcal} kcal</small><button data-rmaddon="${ai}" aria-label="Remove">✕</button></span>` : ""; }).join("");
   $("#planBody").innerHTML = `
-    <div class="plan-head"><h2 class="section-title">This week</h2><button class="btn ghost sm" id="pRegen">🎲 Regenerate</button></div>
+    <div class="plan-head"><h2 class="section-title">${nAct === 7 ? "This week" : `Your ${nAct}-day plan`}</h2><button class="btn ghost sm" id="pRegen" title="Fill unlocked and empty meals on your plan days">🎲 Regenerate</button></div>
     <p class="section-sub">${T.set ? "" : "Using default targets. Add your weight in <b>Me → Goals</b> for personal ones. "}<b>${GOAL_MODES[T.mode].label}</b> · protein <b>${T.p} g</b> a day · calories <b>${T.kTrain.toLocaleString()}</b> on training days, <b>${T.kRest.toLocaleString()}</b> on rest days <span class="muted">(change in Me → Goals)</span>.</p>
     <div class="panel pset">
       <button class="gpanel-head" id="pSetHead"><b>Plan settings</b><span>${plan.open ? "Hide ▲" : "Edit ▼"}</span></button>
@@ -2289,10 +2417,16 @@ function renderPlan(){
         <div class="daychips">${DAY_SHORT.map((n, i) => `<button class="chip ${isTrainDay(i) ? "on" : ""}" data-tday="${i}">${n}</button>`).join("")}</div>
         <label>Snacks per day</label>
         <div class="seg small">${[1,2].map(n => `<button class="${plan.snacks === n ? "on" : ""}" data-snacks="${n}">${n} snack${n > 1 ? "s" : ""}</button>`).join("")}</div>
-        <p class="gnote">Training days get higher-carb meals and rest days get lower-carb ones. 🔒 Lock a meal to keep it when you regenerate. Meal-prep recipes can repeat up to 3 days in a row.</p></div>` : ""}
+        <p class="gnote">Training days get higher-carb meals and rest days get lower-carb ones. 🔒 Lock a meal to keep it when you regenerate. Meal-prep recipes can repeat up to 3 days in a row. Tap 📅 Add to plan on any recipe to hand-pick it for specific days.</p></div>` : ""}
     </div>
+    <div class="panel pdays">
+      <span class="glabel"><span>Plan days · ${nAct === 7 ? "all week" : `${nAct} day${nAct > 1 ? "s" : ""}`}</span>${nAct === 7 ? "" : `<button id="pAllDays">Use all 7</button>`}</span>
+      <div class="daychips">${DAY_SHORT.map((n, i) => `<button class="chip ${isActiveDay(i) ? "on" : ""}" data-aday="${i}" aria-pressed="${isActiveDay(i)}">${n}</button>`).join("")}</div>
+    </div>
+    <div class="plan-tools"><button class="btn ghost" id="pClear">🧹 Clear unlocked</button><button class="btn ghost" id="pHow">📅 Hand-pick meals</button></div>
     <div class="dstrip">${strip}</div>
-    <div class="dayc">
+    ${selOn ? "" : `<div class="pick-note off-banner"><span>${DAY_NAMES[sel]} isn't in this plan, so it's skipped for Regenerate and the grocery list.</span><button class="btn sm" data-aday="${sel}" style="flex:none">Add ${DAY_SHORT[sel]}</button></div>`}
+    <div class="dayc" ${selOn ? "" : `style="opacity:.55"`}>
       <div class="dayc-head"><div><h3>${DAY_NAMES[sel]}</h3><span class="dtype ${train ? "t" : "r"}">${train ? "💪 Training day · higher carb" : "🧘 Rest day · lower carb"}</span></div></div>
       <div class="totals">
         <div><span>Protein</span><b>${tot.p} <small>/ ${T.p} g</small></b>${bar(tot.p, T.p, "p")}</div>
@@ -2302,22 +2436,39 @@ function renderPlan(){
       ${rows}
       ${addons ? `<div class="addons"><span class="addon-h">To reach your calories:</span>${addons}</div>` : ""}
     </div>
-    <button class="btn" id="pSend" style="width:100%;margin:6px 0 10px">🛒 Send this week to grocery list</button>
+    <button class="btn" id="pSend" style="width:100%;margin:6px 0 10px">🛒 ${nAct === 7 ? "Send this week to grocery list" : `Send these ${nAct} day${nAct > 1 ? "s" : ""} to grocery list`}</button>
     <p class="gnote">Totals are estimates. ×1.5 means eat one and a half servings. Add-ons are simple extras to help you reach your calories without cooking another meal.</p>`;
 }
 $("#planBody").addEventListener("click", e => {
   const t = e.target, sel = plan.sel ?? todayIdx();
   const dp = t.closest("[data-day]"), sw = t.closest("[data-swap]"), lk = t.closest("[data-lock]"), op = t.closest("[data-open]"),
-        td = t.closest("[data-tday]"), sn = t.closest("[data-snacks]"), ra = t.closest("[data-rmaddon]");
+        td = t.closest("[data-tday]"), sn = t.closest("[data-snacks]"), ra = t.closest("[data-rmaddon]"),
+        ad = t.closest("[data-aday]"), asl = t.closest("[data-addslot]");
   if (t.closest("[data-act]")) return;
   if (dp){ plan.sel = +dp.dataset.day; }
   else if (sw){ return swapSlot(sel, +sw.dataset.swap); }
   else if (lk){ const s = plan.days[sel].slots[+lk.dataset.lock]; s.lock = !s.lock; toast(s.lock ? "🔒 Locked. It stays when you regenerate" : "🔓 Unlocked"); }
   else if (op){ const m = byId[op.dataset.open]; rsGet(m.id).n = 1; return openModal(m, `<p class="plan-note">📅 ${DAY_NAMES[sel]} · ${+op.dataset.k !== 1 ? `${op.dataset.k} servings` : "1 serving"}</p>`); }
-  else if (t.closest("#pRegen")){ fillWeek(); toast("🎲 New plan. Locked meals stayed put"); }
+  else if (asl){ return openSlotPicker(sel, +asl.dataset.addslot); }
+  else if (ad){ const i = +ad.dataset.aday;
+    if (isActiveDay(i)){ if (plan.active.length === 1) return toast("Keep at least one day in your plan"); plan.active = plan.active.filter(x => x !== i); }
+    else { plan.active = [...plan.active, i].sort(); const d = plan.days[i]; if (d.slots.some(s => !byId[s.id] && !s.cleared)) fillDay(i); }
+  }
+  else if (t.closest("#pAllDays")){ plan.active = [...ALL_DAYS]; plan.days.forEach((d, i) => { if (d.slots.some(s => !byId[s.id] && !s.cleared)) fillDay(i); }); }
+  else if (t.closest("#pClear")){
+    const n = plan.active.length;
+    if (!confirm(`Clear every unlocked meal on your ${n === 7 ? "7 plan days" : n + " plan day" + (n > 1 ? "s" : "")}? Locked 🔒 and hand-picked meals stay. Empty slots can be filled by hand, with 🔄, or with Regenerate.`)) return;
+    const c = clearUnlocked(); toast(c ? `🧹 Cleared ${c} meal${c > 1 ? "s" : ""}. Your picks stayed` : "Nothing to clear");
+  }
+  else if (t.closest("#pHow")){ return openSheet(`<div class="content sheet-pad"><button class="close" aria-label="Close">✕</button>
+      <h3 class="sheet-title">📅 Build a menu from your picks</h3>
+      <ol class="how"><li>Choose your <b>Plan days</b> (for example Mon, Tue, Wed).</li><li>Tap <b>🧹 Clear unlocked</b> to start from a blank menu. Locked meals stay.</li><li>Open any recipe (deck, favorites, or here) and tap <b>📅 Add to plan</b>. Pick the day(s) and meal. Choose several days for meal prep.</li><li>Tap an empty slot to pick a meal, or 🔄 / Regenerate to fill the rest automatically.</li><li>Send just those days to your grocery list.</li></ol>
+      <button class="btn" style="width:100%;margin-top:10px" id="howOk">Got it</button></div>`).querySelector("#howOk").onclick = closeModal; }
+  else if (t.closest("#pRegen")){ fillWeek(); toast(plan.active.length === 7 ? "🎲 New plan. Locked meals stayed put" : `🎲 Filled your ${plan.active.length} plan days. Locked meals stayed put`); }
   else if (t.closest("#pSetHead")){ plan.open = !plan.open; }
-  else if (td){ const i = +td.dataset.tday; plan.trainDays = plan.trainDays.includes(i) ? plan.trainDays.filter(x => x !== i) : [...plan.trainDays, i].sort(); fillDay(i); }
-  else if (sn){ const n = +sn.dataset.snacks; if (n !== plan.snacks){ plan.snacks = n; plan.days.forEach(d => { const keep = d.slots.filter(s => s.t !== "Snack"), snacks = d.slots.filter(s => s.t === "Snack").slice(0, n); while (snacks.length < n) snacks.push({t:"Snack", id:null, k:1, lock:false}); d.slots = [...keep, ...snacks]; }); fillWeek(); } }
+  else if (td){ const i = +td.dataset.tday; plan.trainDays = plan.trainDays.includes(i) ? plan.trainDays.filter(x => x !== i) : [...plan.trainDays, i].sort(); if (plan.days[i].slots.some(isEmptySlot)) balanceDay(i); else fillDay(i); }
+  else if (sn){ const n = +sn.dataset.snacks; if (n !== plan.snacks){ plan.snacks = n; plan.days.forEach(d => { const keep = d.slots.filter(s => s.t !== "Snack"), snacks = d.slots.filter(s => s.t === "Snack").slice(0, n); const hand = d.slots.some(isEmptySlot); while (snacks.length < n) snacks.push(hand ? {t:"Snack", id:null, k:1, lock:false, cleared:true} : {t:"Snack", id:null, k:1, lock:false}); d.slots = [...keep, ...snacks]; });
+    weightCache = null; plan.days.forEach((d, i) => { if (d.slots.some(isEmptySlot)) balanceDay(i); else fillDay(i); }); } }
   else if (ra){ plan.days[sel].addons.splice(+ra.dataset.rmaddon, 1); }
   else if (t.closest("#pSend")){ return sendWeekToGrocery(); }
   else return;
@@ -2494,7 +2645,7 @@ function ringSvg(v, t){
 function renderTracker(){
   const T = targets(), di = todayIdx(), kT = calTarget(di), tot = totalsFor(dateKey()), entries = todayLog();
   const left = Math.max(0, T.p - tot.p);
-  const pd = plan && plan.days ? plan.days[di] : null;
+  const pd = plan && plan.days && isActiveDay(di) ? plan.days[di] : null;
   const loggedIds = entries.map(e => e.id);
   const planRows = pd ? pd.slots.filter(s => byId[s.id]).map(s => { const m = byId[s.id], done = loggedIds.includes(m.id);
     return `<div class="qrow ${done ? "done" : ""}"><span class="qe">${m.emoji}</span><span class="qn"><b>${esc(m.name)}</b><small>${s.t}${s.k !== 1 ? ` · ×${s.k}` : ""} · ${Math.round(m.p * s.k)}g protein</small></span>
